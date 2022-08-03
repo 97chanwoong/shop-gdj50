@@ -8,6 +8,13 @@
 </head>
 <body>
 	<div>
+		<% 
+			if(request.getParameter("errorMsg") != null){		
+		%>
+				<span style="color:red"><%=request.getParameter("errorMsg")%></span>		
+		<%
+			}
+		%>
 		<form id="customerForm" method="post" action="<%=request.getContextPath()%>/customerLoginAction.jsp">
 			<fieldset>
 				<legend>쇼핑몰 고객 로그인</legend>
