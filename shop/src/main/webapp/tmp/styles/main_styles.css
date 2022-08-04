@@ -887,11 +887,20 @@ section
 /*********************************
 4. Banner
 *********************************/
-
+.login
+{
+	padding-top : 200px;
+}
+.updown {
+    	border: 1px solid #cdcdcd;
+        width: 0.01px;
+        height: 400px;
+    }
 .banner
 {
 	width: 100%;
 	margin-top: 30px;
+
 }
 .banner_item
 {
@@ -1620,14 +1629,25 @@ section
 /*********************************
 11. Footer
 *********************************/
-
+.footer
+{
+   position:relative;
+   padding-top: 10px;
+   background-color: #1e1e27;
+   width:100%;
+   position:
+	fixed;
+	bottom:0;
+   
+}
 .footer_nav_container
 {
-	height: 130px;
+	height: 60px;
 }
 .cr
 {
 	margin-right: 48px;
+	text-align:center;
 }
 .footer_nav li
 {
@@ -1641,7 +1661,7 @@ section
 .footer_nav li a, .cr
 {
 	font-size: 14px;
-	color: #51545f;
+	color: #ffffff;
 	line-height: 30px;
 	-webkit-transition: all 300ms ease;
 	-moz-transition: all 300ms ease;
@@ -1683,4 +1703,7 @@ section
 .footer_social ul li a:hover
 {
 	color: #fe4c50;
+}
+h3.index{
+	text-align:center;
 }
