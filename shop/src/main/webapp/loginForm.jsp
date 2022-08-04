@@ -34,7 +34,7 @@
 	</div>
 	
 	<div>
-		<form id="employeeForm" method="post" action="<%=request.getContextPath()%>/employeeLoginAction.jsp"">
+		<form id="employeeForm" method="post" action="<%=request.getContextPath()%>/employeeLoginAction.jsp">
 			<fieldset>
 				<legend>쇼핑몰 스텝 로그인</legend>
 				<table border="1">

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="vo.*" %>
-<%@ page import="model.*" %>
+<%@ page import="repository.*" %>
+<%@ page import="service.*" %>
 <%
 	//재요청 - 접근 막기
 	if(session.getAttribute("loginEmployee") != null){ // 로그인된 사람 막기
@@ -34,9 +35,12 @@
 	System.out.println(employee.getEmployeeId() + "employee.getEmployeeId()");
 	System.out.println(employee.getEmployeePass() + "employee.getEmployeePass()");
 	
-	// customerDao 객채 생성 & 메서드 실행
-	EmployeeDao employeeDao = new EmployeeDao();
-	Employee loginEmployee = employeeDao.EmployeeLogin(employee);
+	// 메서드 실행위한 객체생성
+	EmployeeService employeeService = new EmployeeService();
+	// 메서드 리턴받을 객체생성
+	Employee loginEmployee = new Employee();
+	// 로그인메서드에 객체담기
+	loginEmployee = employeeService.getEmployeeByIdAndPw(employee);
 	
 	// 재요청
 	if(loginEmployee == null){

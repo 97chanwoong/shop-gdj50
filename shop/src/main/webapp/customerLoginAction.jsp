@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="vo.*" %>
-<%@ page import="model.*" %>
+<%@ page import="repository.*" %>
+<%@ page import="service.*" %>
 <%
-//재요청 - 접근 막기
+	//재요청 - 접근 막기
 	if(session.getAttribute("loginCustomer") != null){ // 로그인된 사람 막기
 		response.sendRedirect("./loginForm.jsp"); // 페이지 재요청
 		return;
@@ -34,9 +35,12 @@
 	System.out.println(customer.getCustomerId() + "customer.getCustomerId()");
 	System.out.println(customer.getCustomerPass() + "customer.getCustomerPass()");
 	
-	// customerDao 객채 생성 & 메서드 실행
-	CustomerDao customerDao = new CustomerDao();
-	Customer loginCustomer = customerDao.CustomerLogin(customer);
+	// 메서드 실행위한 객체생성
+	CustomerService customerService = new CustomerService();
+	// 메서드 리턴받을 객체생성
+	Customer loginCustomer = new Customer();
+	// 로그인메서드에 객체담기
+	loginCustomer = customerService.getCustomerByIdAndPw(customer);
 	
 	// 재요청
 	if(loginCustomer == null){
