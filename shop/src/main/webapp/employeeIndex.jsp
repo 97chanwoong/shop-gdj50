@@ -1,5 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	if(session.getAttribute("id") == null){
+	response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+	return;
+    } else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+    response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+    }
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -128,29 +135,40 @@
 					<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<h2 style="text-align:center">반갑습니다</h2>
+							<h2 style="text-align:center">관리자 페이지</h2>
 							<h3 class="index"><%=session.getAttribute("user")%></h3>
 							<!-- customer / employee -->
 							<h3 class="index"><%=session.getAttribute("id")%></h3>
 							<!-- 로그인 아이디 -->
 							<h3 class="index"><%=session.getAttribute("name")%></h3>
 							<!-- 로그인 이름 -->
-							<br> 
-							<% 
-								if(session.getAttribute("user") != null // null이 아니고
-								&& (session.getAttribute("user")).equals("employee")
-								&& (session.getAttribute("id").equals("admin"))){ // 레벨(session은 object 형변화)이 0보다클경우 
-							%> 	   
-								<a class="btn btn-info btn-block" 
-								   href="<%=request.getContextPath()%>/employeeIndex.jsp">관리자 페이지</a>
-							<%
-								}	
-							%>
-							
-							<a class="btn btn-secondary btn-block" 
-							   href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
-							<a class="btn btn-danger btn-block"
-							   href="<%=request.getContextPath()%>/removeIdForm.jsp">탈퇴하기</a>
+						<table class="table table-borderless table-hover text-center">
+						<tr>
+							<th>
+								<a href="<%=request.getContextPath()%>/employeeList.jsp">사원관리</a>
+							</th>
+						</tr>
+						<tr>
+							<th>
+								<a href="<%=request.getContextPath()%>/employeeList.jsp">상품관리</a>
+							</th>
+						</tr>
+						<tr>
+							<th>
+								<a href="<%=request.getContextPath()%>/employeeList.jsp">고객관리</a>
+							</th>
+						</tr>
+						<tr>
+							<th>
+								<a href="<%=request.getContextPath()%>/employeeList.jsp">주문관리</a>
+							</th>
+						</tr>
+						<tr>
+							<th>
+								<a href="<%=request.getContextPath()%>/employeeList.jsp">공지관리</a>
+							</th>
+						</tr>
+						</table>
 						</div>
 						<div class="col-md-2"></div>
 					</div>

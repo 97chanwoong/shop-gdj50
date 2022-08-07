@@ -902,6 +902,14 @@ section
 	margin-top: 30px;
 
 }
+.banner a
+{
+	color:#000000;
+}
+.banner a:hover
+{
+	color:#007bff;
+}
 .banner_item
 {
 	display: -webkit-box;
