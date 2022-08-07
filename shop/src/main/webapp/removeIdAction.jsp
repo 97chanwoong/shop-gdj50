@@ -11,7 +11,7 @@
 	
 	boolean result = false; // 결과 값을 받을 변수
 	
-	// 세션에 저장된 user 값이 고객이면 
+	// 세션에 저장된 user 값 == customer 
 	if("customer".equals(user)){
 		// 인스턴스
 		Customer customer = new Customer();
@@ -22,7 +22,7 @@
 		result = customerService.removeCustomer(customer);
 		
 	} else {
-		// 파라미터 세팅
+		//세션에 저장된 user 값 == employee 
 		Employee employee = new Employee();
 		employee.setEmployeeId(id);
 		employee.setEmployeePass(pass);
@@ -32,8 +32,7 @@
 		result = employeeService.removeEmployee(employee);
 	}
 	
-	// 탈퇴 성공 시 logout으로 세션 정리한 다음 loginForm으로
-	// 실패 시 index로
+	// 재요청
 	if(result == true){
 		System.out.println("탈퇴성공");
 		response.sendRedirect(request.getContextPath() + "/logout.jsp");

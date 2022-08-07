@@ -99,8 +99,12 @@
 											aria-hidden="true"></i></a></li>
 									<li><a href="#"><i class="fa fa-user"
 											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-shopping-cart"
-											aria-hidden="true"></i></a></li>
+									<li class="checkout">
+										<a href="#">
+											<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+											<span id="checkout_items" class="checkout_items">0</span>
+										</a>
+									</li>
 								</ul>
 								<div class="hamburger_container">
 									<i class="fa fa-bars" aria-hidden="true"></i>
@@ -192,21 +196,6 @@
 							</div>
 						</div>
 						<div class="col-lg-6">
-							<div
-								class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
-								<ul>
-									<li><a href="#"><i class="fa fa-facebook"
-											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-twitter"
-											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-instagram"
-											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-skype"
-											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-pinterest"
-											aria-hidden="true"></i></a></li>
-								</ul>
-							</div>
 						</div>
 					</div>
 					<div class="row">

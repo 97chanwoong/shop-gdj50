@@ -180,7 +180,7 @@ h6::selection
 }
 .form-control
 {
-	color: #db5246;
+	color: rgb(0, 0, 255);
 }
 section
 {
@@ -892,7 +892,7 @@ section
 	padding-top : 200px;
 }
 .updown {
-    	border: 1px solid #cdcdcd;
+    	border: 1px solid #e9e9e9;
         width: 0.01px;
         height: 400px;
     }
@@ -1629,25 +1629,13 @@ section
 /*********************************
 11. Footer
 *********************************/
-.footer
-{
-   position:relative;
-   padding-top: 10px;
-   background-color: #1e1e27;
-   width:100%;
-   position:
-	fixed;
-	bottom:0;
-   
-}
 .footer_nav_container
 {
-	height: 60px;
+	height: 130px;
 }
 .cr
 {
 	margin-right: 48px;
-	text-align:center;
 }
 .footer_nav li
 {
@@ -1661,7 +1649,7 @@ section
 .footer_nav li a, .cr
 {
 	font-size: 14px;
-	color: #ffffff;
+	color: #51545f;
 	line-height: 30px;
 	-webkit-transition: all 300ms ease;
 	-moz-transition: all 300ms ease;
@@ -1704,6 +1692,7 @@ section
 {
 	color: #fe4c50;
 }
+
 h3.index{
 	text-align:center;
 }

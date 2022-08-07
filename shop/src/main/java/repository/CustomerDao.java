@@ -4,6 +4,29 @@ import java.sql.*;
 import vo.Customer;
 
 public class CustomerDao {
+	// 회원가입
+	public int insertCustomer(Connection conn, Customer paramCustomer) throws Exception {
+		int row = 0;
+		String sql = "INSERT INTO customer VALUES(?,PASSWORD(?),?,?,?,NOW(),NOW())";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, paramCustomer.getCustomerId());
+			stmt.setString(2, paramCustomer.getCustomerPass());
+			stmt.setString(3, paramCustomer.getCustomerName());
+			stmt.setString(4, paramCustomer.getCustomerAddress());
+			stmt.setString(5, paramCustomer.getCustomerTelephone());
+			System.out.println(stmt +"<--stmt");
+			row = stmt.executeUpdate();
+			System.out.println(row +"<--row");
+		} finally {
+			if(stmt != null ) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+	
 	// Customer 로그인
 	public Customer selectCustomerLoginByIdAndPw(Connection conn, Customer customer) throws Exception {
 		Customer loginCustomer = null;
@@ -49,8 +72,4 @@ public class CustomerDao {
 		// conn.close() X
 		return row ;
 	}
-	
-	
-	
-	
 }

@@ -20,9 +20,9 @@
 	href="tmp/plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="tmp/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="tmp/styles/responsive.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-
 <body>
 	<div class="super_container">
 
@@ -101,12 +101,10 @@
 											aria-hidden="true"></i></a></li>
 									<li><a href="#"><i class="fa fa-user"
 											aria-hidden="true"></i></a></li>
-									<li class="checkout">
-										<a href="#">
-											<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-											<span id="checkout_items" class="checkout_items">0</span>
-										</a>
-									</li>
+									<li class="checkout"><a href="#"> <i
+											class="fa fa-shopping-cart" aria-hidden="true"></i> <span
+											id="checkout_items" class="checkout_items">0</span>
+									</a></li>
 								</ul>
 								<div class="hamburger_container">
 									<i class="fa fa-bars" aria-hidden="true"></i>
@@ -125,23 +123,100 @@
 		<div class="login">
 			<div class="banner">
 				<div class="container">
+					<h1 style="text-align: center;">WoongShop</h1>
+					<br>
 					<div class="row">
-						<div class="col-md-2"></div>
-						<div class="col-md-8">
-							<h2 style="text-align:center">반갑습니다</h2>
-							<h3 class="index"><%=session.getAttribute("user")%></h3>
-							<!-- customer / employee -->
-							<h3 class="index"><%=session.getAttribute("id")%></h3>
-							<!-- 로그인 아이디 -->
-							<h3 class="index"><%=session.getAttribute("name")%></h3>
-							<!-- 로그인 이름 -->
-							<br> 
-							<a class="btn btn-secondary btn-block" 
-							   href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
-							<a class="btn btn-danger btn-block"
-							   href="<%=request.getContextPath()%>/removeIdForm.jsp">탈퇴하기</a>
+						<div class="col-md-3"></div>
+						<div class="col-md-6">
+							<h3 style="text-align: center;">고객 회원가입</h3>
+							<!-- id ck form -->
+							<form action="<%=request.getContextPath()%>/idCheckAction.jsp" method="post">
+								<input type="hidden" name="Identity" value="Customer">
+								<table class="table">
+								<tr>
+								 <!-- 아이디 중복검사 -->
+									<th>아이디&nbsp;&nbsp;&nbsp;&nbsp;</th> 
+									<td>
+										<div class="input-group mb-3">
+											<input type="text"
+												placeholder="아이디를 입력하세요" name="signId" id="signId" class="form-control">
+										</div>	
+										<% 
+											if(request.getParameter("errorMsg") != null){		
+										%>
+												<span style="color:red"><%=request.getParameter("errorMsg")%></span>		
+										<%
+											}
+										%>
+									</td>
+								</tr>
+								</table>
+								<div class="form-group">
+								<button type="submit" class="btn btn-secondary btn-block">중복검사</button>
+								</div>
+							</form>	
+							<!-- 고객 가입 form -->
+							<%
+								String signId = ""; // 빈 문자열
+								if(request.getParameter("signId") != null){
+									signId = request.getParameter("signId");
+								}
+							%>	
+							<form id="addCustomerForm" action="<%=request.getContextPath()%>/addCustomerAction.jsp" method="post">					
+							<table class="table">
+								<tr>
+									<th>아이디</th>
+									<td>
+										<div class="input-guoup mb-3">
+											<input type="text" class="form-control"
+										  name="customerId" id="customerId" readonly="readonly" value="<%=signId%>">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>비밀번호</th>
+									<td>
+									<div class="input-guoup mb-3">
+									<input type="password" class="form-control"
+										placeholder="비밀번호를 입력하세요" name="customerPass" id="customerPass">
+									</div>
+									</td>
+								</tr>
+								<tr>
+									<th>이름</th>
+									<td>
+									<div class="input-guoup mb-3">
+									<input type="text" class="form-control"
+										placeholder="이름을 입력하세요" name="customerName" id="customerName">
+									</div>
+									</td>	
+								</tr>
+								<tr>
+									<th>주소</th>
+									<td>
+									<div class="input-guoup mb-3">
+									<input type="text" class="form-control"
+										placeholder="주소를 입력하세요" name="customerAddress" id="customerAddress">
+									</div>
+									</td>	
+								</tr>
+								<tr>
+									<th>전화번호</th>
+									<td>
+									<div class="input-guoup mb-3">
+									<input type="text" class="form-control"
+										placeholder="01012345678" name="customerTelephone" id="customerTelephone">
+									</div>
+									</td>
+								</tr>
+							</table>	
+							<div class="form-group">
+							<button  type="reset" class="btn btn-secondary  btn-block">초기화</button>
+							<button  id="addBtn" type="button" class="btn btn-primary  btn-block">회원가입</button>
+							</div>
+							</form>
 						</div>
-						<div class="col-md-2"></div>
+						<div class="col-md-3"></div>
 					</div>
 				</div>
 			</div>
@@ -162,23 +237,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="col-lg-6">
-						<div
-							class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
-							<ul>
-								<li><a href="#"><i class="fa fa-facebook"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-instagram"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-skype"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-pinterest"
-										aria-hidden="true"></i></a></li>
-							</ul>
-						</div>
-					</div>
+					<div class="col-lg-6"></div>
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
@@ -193,7 +252,9 @@
 				</div>
 			</div>
 		</footer>
+
 	</div>
+
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="styles/bootstrap4/popper.js"></script>
 	<script src="styles/bootstrap4/bootstrap.min.js"></script>
@@ -202,4 +263,22 @@
 	<script src="plugins/easing/easing.js"></script>
 	<script src="js/custom.js"></script>
 </body>
+<script>
+	// 고객 빈칸검사
+	$('#addBtn').click(function(){		
+		if($('#customerId').val() == ''){
+			alert('고객 아이디를 입력하세요');
+		} else if($('#customerPass').val() == ''){
+			alert('고객 패스워드를 입력하세요');
+		} else if($('#customerName').val() == ''){
+			alert('이름을 입력하세요');
+		} else if($('#customerAddress').val() == ''){
+			alert('주소를 입력하세요');
+		} else if($('#customerTelephone').val() == ''){
+			alert('전화번호를 입력하세요');
+		} else {
+			$('#addCustomerForm').submit();
+		}
+	});
+</script>
 </html>

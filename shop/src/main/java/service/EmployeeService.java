@@ -7,6 +7,36 @@ import repository.OutIdDao;
 import vo.Employee;
 
 public class EmployeeService {
+	// 회원가입 addEmployeeAction.jsp 호출
+	public boolean addEmployee(Employee paramEmployee) {
+		Connection conn = null;
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false); // executeUpdate();실행시 자동 커밋을 막는다.
+
+			EmployeeDao employeeDao = new EmployeeDao();
+			
+			if (employeeDao.insertEmployee(conn, paramEmployee) != 1) {
+				throw new Exception(); // 강제 예외처리
+			}
+			conn.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+
 	// employeeLoginAction.jsp 호출
 	public Employee getEmployeeByIdAndPw(Employee paramEmployee) {
 		Connection conn = null;
@@ -30,7 +60,7 @@ public class EmployeeService {
 		return employee;
 	}
 
-	// 스탭탈퇴 액션페이지에서 호출되는 메서드
+	// Employee 탈퇴 액션페이지에서 호출되는 메서드
 	public boolean removeEmployee(Employee paramEmployee) {
 
 		Connection conn = null;

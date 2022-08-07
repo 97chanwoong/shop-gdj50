@@ -99,8 +99,12 @@
 											aria-hidden="true"></i></a></li>
 									<li><a href="#"><i class="fa fa-user"
 											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-shopping-cart"
-											aria-hidden="true"></i></a></li>
+									<li class="checkout">
+										<a href="#">
+											<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+											<span id="checkout_items" class="checkout_items">0</span>
+										</a>
+									</li>
 								</ul>
 								<div class="hamburger_container">
 									<i class="fa fa-bars" aria-hidden="true"></i>
@@ -122,7 +126,7 @@
 					<div class="row">
 						<div class="col-md-2"></div>
 						<div class="col-md-8">
-							<h2 style="text-align:center">쇼핑몰 탈퇴</h2>
+							<h2 style="text-align:center">계정 탈퇴</h2>
 							<hr>
 							<form id="removeForm" 
 								  action="<%=request.getContextPath()%>/removeIdAction.jsp" method="post">
