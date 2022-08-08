@@ -64,11 +64,16 @@ public class GoodsDao {
 	// 반환값 : key값 jdbc(API)
 	public int insertGoods(Connection conn, Goods goods) throws Exception {
 		int keyId = 0;
-		String sql="INSERT INTO... +Statement.RETURN_GENERATED_KEYS";
-		PreparedStatement stmt = conn.prepareStatement("");
+		String sql="INSERT INTO goods (goods_name, goods_price, update_date, create_date, sold_out) VALUES(?,?,NOW(),NOW(),?)";
+		PreparedStatement stmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS); // 키값을 반환하게 변경
+		stmt.setString(1, goods.getGoodsName());
+		stmt.setInt(2, goods.getGoodsPrice());
+		stmt.setString(3, goods.getSoldOut());
+		// 디버깅
+		System.out.println(stmt + "<-- GoodsDao insertGoods stmt");
 		// 1) insert
-		// 2) select last key 값
 		stmt.executeUpdate(); // 성공한 row 의 수 
+		// 2) select last key 값
 	     ResultSet rs =	stmt.getGeneratedKeys(); // select last_key
 		if(rs.next()) {
 			keyId = rs.getInt(1);
@@ -81,6 +86,12 @@ public class GoodsDao {
 		}
 		return keyId;
 	}
+	// 상품 품절 변경
+	/*public int updateGoodsSoldOut(Connection conn, int goodsNo, String soldOut) throws Exception {
+		int row = 0;
+		
+	}*/
+	
 	
 	public Map<String, Object> selectGoodsAndImgOne(Connection conn, int goodsNo) throws Exception {
 		Map<String, Object> map = null;

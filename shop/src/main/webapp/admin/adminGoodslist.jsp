@@ -167,7 +167,7 @@
 								}
 							%>
 							<div class="text-right">
-								<a class="btn btn-outline-dark" href="<%=request.getContextPath()%>/admin/addGoodsForm.jsp">상품추가</a>
+								<a class="btn btn-light" href="<%=request.getContextPath()%>/admin/addGoodsForm.jsp">상품추가</a>
 							</div>
 							<br>
 							<table class="table text-center">
@@ -178,7 +178,7 @@
 										<th>상품가격</th>
 										<th>등록날짜</th>
 										<th>수정날짜</th>
-										<th>재고여부</th>
+										<th>품절여부</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -187,11 +187,31 @@
 									%>
 									<tr>
 										<td><%=g.getGoodsNo()%></td>
-										<td><a class="goods" href="<%=request.getContextPath()%>/admin/GoodsImgOne.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>
+										<td><a  href="<%=request.getContextPath()%>/admin/GoodsImgOne.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>
 										<td><%=g.getGoodsPrice()%></td>
 										<td><%=g.getUpdateDate()%></td>
 										<td><%=g.getCreateDate()%></td>
-										<td><%=g.getSoldOut()%></td>
+										<td>
+											<form action="<%=request.getContextPath()%>/admin/updateSoldOut.jsp" method="post">
+				            					<input type="hidden" name="employeeId" value="<%=g.getGoodsNo()%>">
+				            					<select name="soldOut">
+				            						<%
+				            							if(g.getSoldOut().equals("Y")) {
+				            						%>
+						            						<option value="Y">Y</option>
+						            						<option value="N">N</option>
+				            						<%
+				            							} else {
+				            						%>
+						            						<option value="N">N</option>
+					            							<option value="Y">Y</option>
+				            						<%
+				            							}
+				            						%>
+				            					</select>
+				            					<button type="submit" class="btn btn-outline-dark">품절변경</button> 
+				            				</form>
+				            			</td>
 									</tr>
 									<%
 										}

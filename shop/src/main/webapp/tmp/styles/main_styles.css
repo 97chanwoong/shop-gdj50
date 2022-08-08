@@ -180,7 +180,7 @@ h6::selection
 }
 .form-control
 {
-	color: rgb(0, 0, 255);
+	color:#000000;
 }
 section
 {
@@ -913,7 +913,7 @@ section
 
 .banner a:hover
 {
-	color:white;
+	color:blue;
 }
 .banner_item
 {
@@ -958,77 +958,6 @@ section
 {
 	color: #b5aec4;
 }
-/*********************************
-
-*********************************/
-.login
-{
-	padding-top : 200px;
-}
-.updown {
-    	border: 1px solid #e9e9e9;
-        width: 0.01px;
-        height: 400px;
-    }
-.adminindex
-{
-	width: 100%;
-	margin-top: 30px;
-
-}
-.adminindex a
-{
-	color:#000000;
-}
-
-.adminindex a:hover
-{
-	color:blue;
-}
-.adminindex_item
-{
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 265px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center;
-}
-.adminindex_category
-{
-	height: 50px;
-	background: #FFFFFF;
-	min-width: 180px;
-	padding-left: 25px;
-	padding-right: 25px;
-}
-.adminindex_category a
-{
-	display: block;
-	color: #1e1e27;
-	text-transform: uppercase;
-	font-size: 22px;
-	font-weight: 600;
-	text-align: center;
-	line-height: 50px;
-	width: 100%;
-	-webkit-transition: color 0.3s ease;
-	-moz-transition: color 0.3s ease;
-	-ms-transition: color 0.3s ease;
-	-o-transition: color 0.3s ease;
-	transition: color 0.3s ease;
-}
-.adminindex_category a:hover
-{
-	color: #b5aec4;
-}
-
 /*********************************
 5. New Arrivals
 *********************************/

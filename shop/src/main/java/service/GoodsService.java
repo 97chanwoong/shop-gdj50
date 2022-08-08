@@ -69,7 +69,8 @@ public class GoodsService {
 	}
 
 	//
-	/* public int addGoods(Goods goods, GoodsImg goodsImg) {
+	public int addGoods(Goods goods, GoodsImg goodsImg) {
+		int goodsNo = 0;
 		Connection conn = null;
 		try {
 			conn = new DBUtil().getConnection();
@@ -78,20 +79,22 @@ public class GoodsService {
 			goodsDao = new GoodsDao();
 			goodsImgDao = new GoodsImgDao();
 			
-			int goodsNo = goodsDao.insertGoods(conn, goods); // goodsNO가 AI로 자동생성되어 DB입력
-			if(goodsNo != 0) {
-				/*goodsImg.setGoodsNo(goodsNo);
+			goodsNo = goodsDao.insertGoods(conn, goods); // goodsNO가 AI로 자동생성되어 DB입력
+			if(goodsNo != 0) { // 0 아니면 키 있음
+				// 키값 setter
+				goodsImg.setGoodsNo(goodsNo);
 				if(goodsImgDao.insertGoodsImg(conn, goodsImg) == 0) {
 					throw new Exception(); // 이미지리 입력 실패시 강제로 롤백 (catch절 이동)
 				}
 			}
-			
-			goodsImgDao.insertGoodsImg(conn, goodsImg);
-			
 			conn.commit();
 		} catch(Exception e) {
 			e.printStackTrace();
-			conn.rollback();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		} finally {
 			if(conn != null) {
 				try {
@@ -101,8 +104,8 @@ public class GoodsService {
 				}
 			}
 		}
-		retrun
-	} */
+		return goodsNo;
+	}
 
 	// 상품 상세보기
 	public Map<String, Object> getGoodsAndImgOne(int goodsNo) {

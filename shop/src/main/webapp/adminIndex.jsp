@@ -130,7 +130,7 @@
 
 		<!-- Banner -->
 		<div class="login">
-			<div class="adminindex">
+			<div class="banner">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-1"></div>

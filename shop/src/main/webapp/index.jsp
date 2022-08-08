@@ -126,8 +126,8 @@
 			<div class="banner">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-2"></div>
-						<div class="col-md-8">
+						<div class="col-md-1"></div>
+						<div class="col-md-10">
 							<h2 style="text-align:center">반갑습니다</h2>
 							<h3 class="index"><%=session.getAttribute("user")%></h3>
 							<!-- customer / employee -->
@@ -135,26 +135,33 @@
 							<!-- 로그인 아이디 -->
 							<h3 class="index"><%=session.getAttribute("name")%></h3>
 							<!-- 로그인 이름 -->
-							<br> 
+							<table class="table table-borderless table-hover text-center">
 							<% 
 								if(session.getAttribute("user") != null // null이 아니고
 								&& (session.getAttribute("user")).equals("employee")
 								&& (session.getAttribute("id").equals("admin"))){ // 레벨(session은 object 형변화)이 0보다클경우 
 							%> 	   
-							<div>
-								<a class="btn btn-success btn-block" 
-								   href="<%=request.getContextPath()%>/adminIndex.jsp">관리자 페이지</a>
+							<tr>
+								<th>
+									<a   href="<%=request.getContextPath()%>/adminIndex.jsp">관리자 페이지</a>
+								</th>
+							</tr>
 							<%
 								}	
 							%>
-							
-							<a class="btn btn-secondary btn-block" 
-							   href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
-							<a class="btn btn-danger btn-block"
-							   href="<%=request.getContextPath()%>/removeIdForm.jsp">탈퇴하기</a>
-							</div>   
+							<tr>
+								<th>
+									<a   href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
+								</th>
+							</tr>
+							<tr>
+								<th>
+									<a href="<%=request.getContextPath()%>/removeIdForm.jsp">탈퇴하기</a>
+								</th>
+							</tr>
+							</table>
 						</div>
-						<div class="col-md-2"></div>
+						<div class="col-md-1"></div>
 					</div>
 				</div>
 			</div>
