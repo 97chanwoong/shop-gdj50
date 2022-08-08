@@ -1,5 +1,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="repository.*"%>
+<%@ page import="java.util.*"%>
+<%@ page import="service.*"%>
+<%@ page import="vo.*"%>
+<%
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp?errorMsg=No permission");
+	}
+	
+	// 페이징
+	int currentPage = 1; // 현재 페이지
+	int ROW_PER_PAGE = 10; // 10개씩
+	int lastPage = 0; // 마지막 페이지
+	
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
+	}
+	
+	// 메서드를 위한 객체 생성
+	GoodsService goodsService = new GoodsService();
+	
+	// 마지막 페이지 메서드
+	lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
+	
+	// 리스트
+	List<Goods> list = new ArrayList<Goods>();
+	list = goodsService.getGoodsListByPage(ROW_PER_PAGE, currentPage);
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,18 +40,19 @@
 <meta name="description" content="Colo Shop Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css"
-	href="tmp/styles/bootstrap4/bootstrap.min.css">
-<link href="tmp/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
+	href="../tmp/styles/bootstrap4/bootstrap.min.css">
+<link href="../tmp/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	href="../tmp/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
 <link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	href="../tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
 <link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="tmp/styles/main_styles.css">
-<link rel="stylesheet" type="text/css" href="tmp/styles/responsive.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	href="../tmp/plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="../tmp/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="../tmp/styles/responsive.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -101,12 +133,10 @@
 											aria-hidden="true"></i></a></li>
 									<li><a href="#"><i class="fa fa-user"
 											aria-hidden="true"></i></a></li>
-									<li class="checkout">
-										<a href="#">
-											<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-											<span id="checkout_items" class="checkout_items">0</span>
-										</a>
-									</li>
+									<li class="checkout"><a href="#"> <i
+											class="fa fa-shopping-cart" aria-hidden="true"></i> <span
+											id="checkout_items" class="checkout_items">0</span>
+									</a></li>
 								</ul>
 								<div class="hamburger_container">
 									<i class="fa fa-bars" aria-hidden="true"></i>
@@ -126,40 +156,76 @@
 			<div class="banner">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-2"></div>
-						<div class="col-md-8">
-							<h2 style="text-align:center">반갑습니다</h2>
-							<h3 class="index"><%=session.getAttribute("user")%></h3>
-							<!-- customer / employee -->
-							<h3 class="index"><%=session.getAttribute("id")%></h3>
-							<!-- 로그인 아이디 -->
-							<h3 class="index"><%=session.getAttribute("name")%></h3>
-							<!-- 로그인 이름 -->
-							<br> 
-							<% 
-								if(session.getAttribute("user") != null // null이 아니고
-								&& (session.getAttribute("user")).equals("employee")
-								&& (session.getAttribute("id").equals("admin"))){ // 레벨(session은 object 형변화)이 0보다클경우 
-							%> 	   
-							<div>
-								<a class="btn btn-success btn-block" 
-								   href="<%=request.getContextPath()%>/adminIndex.jsp">관리자 페이지</a>
+						<div class="col-md-1"></div>
+						<div class="col-md-10 table-responsive">
+							<h2 style="text-align: center">상품관리</h2>
 							<%
-								}	
+							if (request.getParameter("errorMsg") != null) {
 							%>
-							
-							<a class="btn btn-secondary btn-block" 
-							   href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
-							<a class="btn btn-danger btn-block"
-							   href="<%=request.getContextPath()%>/removeIdForm.jsp">탈퇴하기</a>
-							</div>   
+							<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+							<%
+								}
+							%>
+							<div class="text-right">
+								<a class="btn btn-outline-dark" href="<%=request.getContextPath()%>/admin/addGoodsForm.jsp">상품추가</a>
+							</div>
+							<br>
+							<table class="table text-center">
+								<thead class="thead-light">
+									<tr>
+										<th>상품번호</th>
+										<th>상품이름</th>
+										<th>상품가격</th>
+										<th>등록날짜</th>
+										<th>수정날짜</th>
+										<th>재고여부</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%
+									for (Goods g : list) {
+									%>
+									<tr>
+										<td><%=g.getGoodsNo()%></td>
+										<td><a class="goods" href="<%=request.getContextPath()%>/admin/GoodsImgOne.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>
+										<td><%=g.getGoodsPrice()%></td>
+										<td><%=g.getUpdateDate()%></td>
+										<td><%=g.getCreateDate()%></td>
+										<td><%=g.getSoldOut()%></td>
+									</tr>
+									<%
+										}
+									%>
+								</tbody>
+							</table>
+							<div class="text-center">
+								<ul class="pagination pagination-sm justify-content-end">
+									<%
+									if (currentPage > 1) {
+									%>
+									<li class="page-item disabled"><a class="page-link"
+										href="<%=request.getContextPath()%>/adminGoodslist.jsp?currentPage=<%=currentPage - 1%>>">이전
+									</a></li>
+									<%
+										}
+									%>
+									<%
+									if (currentPage < lastPage) {
+									%>
+									<li class="page-item"><a class="page-link"
+										href="<%=request.getContextPath()%>/adminGoodslist.jsp?currentPage=<%=currentPage + 1%>>">다음
+									</a></li>
+									<%
+										}
+									%>
+								</ul>
+							</div>
+							<div class="col-md-1"></div>
 						</div>
-						<div class="col-md-2"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<!-- Footer -->
 
 		<footer class="footer">

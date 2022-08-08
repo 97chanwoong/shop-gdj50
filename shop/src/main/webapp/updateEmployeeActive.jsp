@@ -6,7 +6,7 @@
 		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/index.jsp?errorMsg=No permission");
 	}
 	
 	String employeeId = request.getParameter("employeeId");
@@ -21,9 +21,9 @@
 	
 	if(result){
 		System.out.println("active update 성공");
-		response.sendRedirect(request.getContextPath()+"/employeeList.jsp");
+		response.sendRedirect(request.getContextPath()+"/admin/adminIndexlist.jsp");
 	} else {
 		System.out.println("acitve update 실패");
-		response.sendRedirect(request.getContextPath()+"/employeeList.jsp?errorMsg=active update fail");
+		response.sendRedirect(request.getContextPath()+"/admin/adminIndexlist.jsp?errorMsg=active update fail");
 	}
 %>

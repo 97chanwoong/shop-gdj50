@@ -5,31 +5,20 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-}
-
-// 페이징
-int currentPage = 1; // 현재 페이지
-int ROW_PER_PAGE = 10; // 10개씩
-int lastPage = 0; // 마지막 페이지
-
-if (request.getParameter("currentPage") != null) {
-	currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-}
-
-// 메서드를 위한 객체 생성
-EmployeeService employeeService = new EmployeeService();
-
-// 마지막 페이지 메서드
-lastPage = employeeService.lastPage();
-
-// 리스트
-List<Employee> list = new ArrayList<Employee>();
-list = employeeService.getEmployeeList(ROW_PER_PAGE, currentPage);
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	}
+	
+	// 상품번호
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	System.out.println(goodsNo + "<--goodsNo");
+	
+	// 상세페이지 메서드
+	GoodsService goodsService = new GoodsService();
+	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -40,17 +29,17 @@ list = employeeService.getEmployeeList(ROW_PER_PAGE, currentPage);
 <meta name="description" content="Colo Shop Template">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css"
-	href="tmp/styles/bootstrap4/bootstrap.min.css">
-<link href="tmp/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
+	href="../tmp/styles/bootstrap4/bootstrap.min.css">
+<link href="../tmp/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+	href="../tmp/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
 <link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+	href="../tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
 <link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="tmp/styles/main_styles.css">
-<link rel="stylesheet" type="text/css" href="tmp/styles/responsive.css">
+	href="../tmp/plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="../tmp/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="../tmp/styles/responsive.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -150,94 +139,57 @@ list = employeeService.getEmployeeList(ROW_PER_PAGE, currentPage);
 		</header>
 		<!-- Slider -->
 
-
 		<!-- Banner -->
 		<div class="login">
+			<h2 style="text-align: center">상품 상세관리</h2>
 			<div class="banner">
 				<div class="container">
 					<div class="row">
+						<div class="col-md-5">
+							<img
+								src="<%=request.getContextPath()%>/upload/<%=map.get("fileName")%>"
+								alt="제품이미지">
+						</div>
 						<div class="col-md-1"></div>
-						<div class="col-md-10 table-responsive">
-							<h2 style="text-align: center">사원관리</h2>
-							<%
-							if (request.getParameter("errorMsg") != null) {
-							%>
-							<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-							<%
-							}
-							%>
+						<div class="col-md-5 table-responsive">
 							<table class="table text-center">
-								<thead class="thead-light">
 									<tr>
-										<th>사원아이디</th>
-										<th>사원이름</th>
-										<th>정보수정</th>
-										<th>입사날짜</th>
-										<th>권한변경</th>
+										<th>상품번호</th>
+										<td><%=map.get("goodsNo")%></td>
 									</tr>
-								</thead>
-								<tbody>
-									<%
-									for (Employee e : list) {
-									%>
+									<tr>	
+										<th>상품이름</th>
+										<td><%=map.get("goodsName")%></td>
+									</tr>
+									<tr>	
+										<th>상품가격</th>
+										<td><%=map.get("goodsPrice") %></td>
+									</tr>
 									<tr>
-										<td><%=e.getEmployeeId()%></td>
-										<td><%=e.getEmployeeName()%></td>
-										<td><%=e.getUpdateDate()%></td>
-										<td><%=e.getCreateDate()%></td>
-										<td>
-											<form
-												action="<%=request.getContextPath()%>/updateEmployeeActive.jsp"
-												method="post">
-												<input type="hidden" name="employeeId"
-													value="<%=e.getEmployeeId()%>"> <select
-													name="active">
-													<%
-													if (e.getActive().equals("Y")) {
-													%>
-													<option value="Y">Y</option>
-													<option value="N">N</option>
-													<%
-													} else {
-													%>
-													<option value="N">N</option>
-													<option value="Y">Y</option>
-													<%
-													}
-													%>
-												</select>
-												<button type="submit" class="btn btn-outline-dark">변경</button>
-											</form>
-										</td>
+										<th>등록날짜</th>
+										<td><%=map.get("createDate") %></td>
 									</tr>
-									<%
-									}
-									%>
-								</tbody>
+									<tr>
+										<th>수정날짜</th>
+										<td><%=map.get("updateDate")%></td>
+									</tr>
+									<tr>
+										<th>재고여부</th>
+										<td><%=map.get("soldOut")%></td>
+									</tr>	
+									<tr>
+										<th>이미지이름</th>
+										<td><%=map.get("fileName")%></td>
+									</tr>
+									<tr>
+										<th>파일이름</th>
+										<td><%=map.get("originfileName")%></td>
+									</tr>
+									<tr>
+										<th>확장자명</th>
+										<td><%=map.get("contentType")%></td>
+									</tr>
 							</table>
-							<div class="text-center">
-								<ul class="pagination pagination-sm justify-content-end">
-									<%
-									if (currentPage < 1) {
-									%>
-									<li class="page-item disabled"><a class="page-link"
-										href="<%=request.getContextPath()%>/employeeList.jsp?currentPage=<%=currentPage - 1%>>">이전
-									</a></li>
-									<%
-									}
-									%>
-									<%
-									if (currentPage > lastPage) {
-									%>
-									<li class="page-item"><a class="page-link"
-										href="<%=request.getContextPath()%>/employeeList.jsp?currentPage=<%=currentPage + 1%>>">다음
-									</a></li>
-									<%
-									}
-									%>
-								</ul>
-							</div>
-							<div class="col-md-1"></div>
 						</div>
 					</div>
 				</div>

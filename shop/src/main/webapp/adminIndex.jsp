@@ -130,11 +130,11 @@
 
 		<!-- Banner -->
 		<div class="login">
-			<div class="banner">
+			<div class="adminindex">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-2"></div>
-						<div class="col-md-8">
+						<div class="col-md-1"></div>
+						<div class="col-md-10">
 							<h2 style="text-align:center">관리자 페이지</h2>
 							<h3 class="index"><%=session.getAttribute("user")%></h3>
 							<!-- customer / employee -->
@@ -145,32 +145,36 @@
 						<table class="table table-borderless table-hover text-center">
 						<tr>
 							<th>
-								<a href="<%=request.getContextPath()%>/employeeList.jsp">사원관리</a>
+								<a  href="<%=request.getContextPath()%>/admin/adminIndexlist.jsp">사원관리</a>
 							</th>
 						</tr>
 						<tr>
 							<th>
-								<a href="<%=request.getContextPath()%>/employeeList.jsp">상품관리</a>
+								<a  href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp">상품관리</a>
+								<!--  상품목록/등록/수정(품절)/삭제(장바구니, 주문이 없는 경우) -->
 							</th>
 						</tr>
 						<tr>
 							<th>
-								<a href="<%=request.getContextPath()%>/employeeList.jsp">고객관리</a>
+								<a  href="<%=request.getContextPath()%>/admin/adminOrderlist.jsp">주문관리</a>
+								<!--  주문목록/수정 -->
 							</th>
 						</tr>
 						<tr>
 							<th>
-								<a href="<%=request.getContextPath()%>/employeeList.jsp">주문관리</a>
+								<a  href="<%=request.getContextPath()%>/admin/adminCustomerList.jsp">고객관리</a>
+								<!-- 고객목록/강제탈퇴/비밀번호수정(전달구현 X) -->
 							</th>
 						</tr>
 						<tr>
 							<th>
-								<a href="<%=request.getContextPath()%>/employeeList.jsp">공지관리</a>
+								<a  href="<%=request.getContextPath()%>/admin/adminNoticeList.jsp">공지관리</a>
+								<!-- 공지CRUD -->
 							</th>
 						</tr>
 						</table>
 						</div>
-						<div class="col-md-2"></div>
+						<div class="col-md-1"></div>
 					</div>
 				</div>
 			</div>

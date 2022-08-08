@@ -142,6 +142,7 @@ public class EmployeeService {
 			}
 			conn.commit();
 		} catch (Exception e) {
+			e.printStackTrace();
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
@@ -174,7 +175,6 @@ public class EmployeeService {
 		 * (current-1)*rowPerPage 
 		 */
 		int beginRow = (currentPage - 1) * rowPerPage;
-		
 		
 		try {
 			// getConnection메서드 실행
