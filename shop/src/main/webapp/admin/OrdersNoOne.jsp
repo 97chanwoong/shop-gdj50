@@ -12,23 +12,14 @@
 		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
 	}
 	
-	// 페이징
-	int currentPage = 1; // 현재 페이지
-	int ROW_PER_PAGE = 10; // 10개씩
+	// 주문번호
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	System.out.println(ordersNo + "<-- ordersNo");
 	
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-	}
 	
-	// 메서드를 위한 객체 생성
-	EmployeeService employeeService = new EmployeeService();
-	
-	// 마지막 페이지 메서드
-	int lastPage = employeeService.lastPage();
-	
-	// 리스트
-	List<Employee> list = new ArrayList<Employee>();
-	list = employeeService.getEmployeeList(ROW_PER_PAGE, currentPage);
+	// 주문상품 상세 보기 메서드
+	OrdersService ordersService = new OrdersService();
+	Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -48,10 +39,8 @@
 	href="../tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
 <link rel="stylesheet" type="text/css"
 	href="../tmp/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css"
-	href="../tmp/styles/main_styles.css">
-<link rel="stylesheet" type="text/css"
-	href="../tmp/styles/responsive.css">
+<link rel="stylesheet" type="text/css" href="../tmp/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="../tmp/styles/responsive.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -151,94 +140,60 @@
 		</header>
 		<!-- Slider -->
 
-
 		<!-- Banner -->
 		<div class="login">
+			<h2 style="text-align: center">주문 상세보기</h2>
 			<div class="banner">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-1"></div>
-						<div class="col-md-10 table-responsive">
-							<h2 style="text-align: center">사원관리</h2>
-							<%
-							if (request.getParameter("errorMsg") != null) {
-							%>
-							<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-							<%
-							}
-							%>
+						<div class="col-md-5 table-responsive">
 							<table class="table text-center">
-								<thead class="thead-light">
-									<tr>
-										<th>사원아이디</th>
-										<th>사원이름</th>
-										<th>정보수정</th>
-										<th>입사날짜</th>
-										<th>권한변경</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%
-									for (Employee e : list) {
-									%>
-									<tr>
-										<td><%=e.getEmployeeId()%></td>
-										<td><%=e.getEmployeeName()%></td>
-										<td><%=e.getUpdateDate()%></td>
-										<td><%=e.getCreateDate()%></td>
-										<td>
-											<form
-												action="<%=request.getContextPath()%>/updateEmployeeActive.jsp"
-												method="post">
-												<input type="hidden" name="employeeId"
-													value="<%=e.getEmployeeId()%>"> <select
-													name="active">
-													<%
-													if (e.getActive().equals("Y")) {
-													%>
-													<option value="Y">Y</option>
-													<option value="N">N</option>
-													<%
-													} else {
-													%>
-													<option value="N">N</option>
-													<option value="Y">Y</option>
-													<%
-													}
-													%>
-												</select>
-												<button type="submit" class="btn btn-outline-dark">변경</button>
-											</form>
-										</td>
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
+							 <tr>
+							 	<th>주문번호</th>
+							 	<td><%=map.get("ordersNo") %></td>
+							 </tr>
+ 							 <tr>
+							 	<th>상품번호</th>
+							 	<td><%=map.get("goodsNo") %></td>
+							 </tr>
+							 <tr>
+							 	<th>상품이름</th>
+							 	<td><%=map.get("goodsName") %></td>
+							 </tr>
+							 <tr>
+							 	<th>상품가격</th>
+							 	<td><%=map.get("goodsPrice") %></td>
+							 </tr>
+							 <tr>
+							 	<th>수정날짜</th>
+							 	<td><%=map.get("updateDate") %></td>
+							 </tr>
 							</table>
-							<div class="text-center">
-								<ul class="pagination pagination-sm justify-content-end">
-									<%
-									if (currentPage < 1) {
-									%>
-									<li class="page-item disabled"><a class="page-link"
-										href="<%=request.getContextPath()%>/adminIndexlist.jsp?currentPage=<%=currentPage - 1%>>">이전
-									</a></li>
-									<%
-										}
-									%>
-									<%
-									if (currentPage > lastPage) {
-									%>
-									<li class="page-item"><a class="page-link"
-										href="<%=request.getContextPath()%>/adminIndexlist.jsp?currentPage=<%=currentPage + 1%>>">다음
-									</a></li>
-									<%
-										}
-									%>
-								</ul>
-							</div>
-							<div class="col-md-1"></div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5 table-responsive">
+							<table class="table text-center">
+							 <tr>
+							 	<th>고객아이디</th>
+							 	<td><%=map.get("customerId") %></td>
+							 </tr>
+ 							 <tr>
+							 	<th>고객성함</th>
+							 	<td><%=map.get("customerName") %></td>
+							 </tr>
+							 <tr>
+							 	<th>고객연락처</th>
+							 	<td><%=map.get("customerTelephone") %></td>
+							 </tr>
+							 <tr>
+							 	<th>배송주소</th>
+							 	<td><%=map.get("ordersAddress") %></td>
+							 </tr>
+							 <tr>
+							 	<th>구매날짜</th>
+							 	<td><%=map.get("createDate") %></td>
+							 </tr>
+							</table>
 						</div>
 					</div>
 				</div>

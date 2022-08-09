@@ -12,6 +12,8 @@
 		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
 	}
 	
+	String customerId = request.getParameter("customerId");
+	
 	// 페이징
 	int currentPage = 1; // 현재 페이지
 	int ROW_PER_PAGE = 10; // 10개씩
@@ -21,14 +23,14 @@
 	}
 	
 	// 메서드를 위한 객체 생성
-	EmployeeService employeeService = new EmployeeService();
+	OrdersService ordersService = new OrdersService();
 	
 	// 마지막 페이지 메서드
-	int lastPage = employeeService.lastPage();
+	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
 	
 	// 리스트
-	List<Employee> list = new ArrayList<Employee>();
-	list = employeeService.getEmployeeList(ROW_PER_PAGE, currentPage);
+	List<Map<String, Object>> list = new ArrayList<>();
+	list = ordersService.getOrdersListByCustomer(ROW_PER_PAGE, currentPage, customerId);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -157,9 +159,9 @@
 			<div class="banner">
 				<div class="container">
 					<div class="row">
-						<div class="col-md-1"></div>
-						<div class="col-md-10 table-responsive">
-							<h2 style="text-align: center">사원관리</h2>
+						<div class="col-md-12 table-responsive">
+							<h2 style="text-align: center">주문목록</h2>
+							<br>
 							<%
 							if (request.getParameter("errorMsg") != null) {
 							%>
@@ -170,46 +172,31 @@
 							<table class="table text-center">
 								<thead class="thead-light">
 									<tr>
-										<th>사원아이디</th>
-										<th>사원이름</th>
-										<th>정보수정</th>
-										<th>입사날짜</th>
-										<th>권한변경</th>
+										<th>주문번호</th>
+										<th>상품번호</th>
+										<th>상품이름</th>
+										<th>상품수량</th>
+										<th>상품가격</th>
+										<th>배송주소</th>
+										<th>배송현황</th>
+										<th>수정날짜</th>
+										<th>주문날짜</th>
 									</tr>
 								</thead>
 								<tbody>
 									<%
-									for (Employee e : list) {
+									for(Map<String, Object> m : list){
 									%>
 									<tr>
-										<td><%=e.getEmployeeId()%></td>
-										<td><%=e.getEmployeeName()%></td>
-										<td><%=e.getUpdateDate()%></td>
-										<td><%=e.getCreateDate()%></td>
-										<td>
-											<form
-												action="<%=request.getContextPath()%>/updateEmployeeActive.jsp"
-												method="post">
-												<input type="hidden" name="employeeId"
-													value="<%=e.getEmployeeId()%>"> <select
-													name="active">
-													<%
-													if (e.getActive().equals("Y")) {
-													%>
-													<option value="Y">Y</option>
-													<option value="N">N</option>
-													<%
-													} else {
-													%>
-													<option value="N">N</option>
-													<option value="Y">Y</option>
-													<%
-													}
-													%>
-												</select>
-												<button type="submit" class="btn btn-outline-dark">변경</button>
-											</form>
-										</td>
+										<td><a href="<%=request.getContextPath()%>/admin/OrdersNoOne.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
+										<td><%=m.get("goodsNo")%></td>
+										<td><%=m.get("goodsName")%></td>
+										<td><%=m.get("ordersQuantity")%></td>
+										<td><%=m.get("ordersPrice")%></td>
+										<td><%=m.get("ordersAddress")%></td>
+										<td><%=m.get("ordersState")%></td>
+										<td><%=m.get("updateDate")%></td>
+										<td><%=m.get("createDate")%></td>
 									</tr>
 									<%
 									}
@@ -219,26 +206,25 @@
 							<div class="text-center">
 								<ul class="pagination pagination-sm justify-content-end">
 									<%
-									if (currentPage < 1) {
+									if (currentPage > 1) {
 									%>
 									<li class="page-item disabled"><a class="page-link"
-										href="<%=request.getContextPath()%>/adminIndexlist.jsp?currentPage=<%=currentPage - 1%>>">이전
+										href="<%=request.getContextPath()%>/adminOrderslist.jsp?currentPage=<%=currentPage - 1%>>">이전
 									</a></li>
 									<%
 										}
 									%>
 									<%
-									if (currentPage > lastPage) {
+									if (currentPage < lastPage) {
 									%>
 									<li class="page-item"><a class="page-link"
-										href="<%=request.getContextPath()%>/adminIndexlist.jsp?currentPage=<%=currentPage + 1%>>">다음
+										href="<%=request.getContextPath()%>/adminOrderslist.jsp?currentPage=<%=currentPage + 1%>>">다음
 									</a></li>
 									<%
 										}
 									%>
 								</ul>
 							</div>
-							<div class="col-md-1"></div>
 						</div>
 					</div>
 				</div>

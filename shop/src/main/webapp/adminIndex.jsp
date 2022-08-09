@@ -156,7 +156,7 @@
 						</tr>
 						<tr>
 							<th>
-								<a  href="<%=request.getContextPath()%>/admin/adminOrderlist.jsp">주문관리</a>
+								<a  href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp">주문관리</a>
 								<!--  주문목록/수정 -->
 							</th>
 						</tr>

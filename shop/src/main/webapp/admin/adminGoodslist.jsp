@@ -15,7 +15,6 @@
 	// 페이징
 	int currentPage = 1; // 현재 페이지
 	int ROW_PER_PAGE = 10; // 10개씩
-	int lastPage = 0; // 마지막 페이지
 	
 	if (request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
@@ -25,7 +24,7 @@
 	GoodsService goodsService = new GoodsService();
 	
 	// 마지막 페이지 메서드
-	lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
+    int	lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
 	
 	// 리스트
 	List<Goods> list = new ArrayList<Goods>();

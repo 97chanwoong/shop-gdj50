@@ -14,7 +14,7 @@ public class GoodsService {
 	public List<Goods> getGoodsListByPage(int rowPerPage, int currentPage) {
 		List<Goods> list = null;
 		Connection conn = null;
-
+		this.goodsDao = new GoodsDao();
 		int beginRow = (currentPage - 1) * rowPerPage;
 
 		try {
