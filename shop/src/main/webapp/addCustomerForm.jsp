@@ -130,90 +130,82 @@
 						<div class="col-md-6">
 							<h3 style="text-align: center;">고객 회원가입</h3>
 							<!-- id ck form -->
-							<form action="<%=request.getContextPath()%>/idCheckAction.jsp" method="post">
-								<input type="hidden" name="Identity" value="Customer">
-								<table class="table">
-								<tr>
-								 <!-- 아이디 중복검사 -->
-									<th>아이디&nbsp;&nbsp;&nbsp;&nbsp;</th> 
-									<td>
-										<div class="input-group mb-3">
-											<input type="text"
-												placeholder="아이디를 입력하세요" name="signId" id="signId" class="form-control">
-										</div>	
-										<% 
-											if(request.getParameter("errorMsg") != null){		
-										%>
-												<span style="color:red"><%=request.getParameter("errorMsg")%></span>		
-										<%
-											}
-										%>
-									</td>
-								</tr>
-								</table>
-								<div class="form-group">
-								<button type="submit" class="btn btn-secondary btn-block">중복검사</button>
-								</div>
-							</form>	
-							<!-- 고객 가입 form -->
-							<%
-								String signId = ""; // 빈 문자열
-								if(request.getParameter("signId") != null){
-									signId = request.getParameter("signId");
-								}
-							%>	
-							<form id="addCustomerForm" action="<%=request.getContextPath()%>/addCustomerAction.jsp" method="post">					
 							<table class="table">
 								<tr>
-									<th>아이디</th>
+									<!-- 아이디 중복검사 -->
+									<th>아이디&nbsp;&nbsp;&nbsp;&nbsp;</th>
 									<td>
-										<div class="input-guoup mb-3">
-											<input type="text" class="form-control"
-										  name="customerId" id="customerId" readonly="readonly" value="<%=signId%>">
+										<div class="input-group mb-3">
+											<input type="text" placeholder="아이디를 입력하세요" name="idck"
+												id="idck" class="form-control">
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<th>비밀번호</th>
-									<td>
-									<div class="input-guoup mb-3">
-									<input type="password" class="form-control"
-										placeholder="비밀번호를 입력하세요" name="customerPass" id="customerPass">
-									</div>
-									</td>
-								</tr>
-								<tr>
-									<th>이름</th>
-									<td>
-									<div class="input-guoup mb-3">
-									<input type="text" class="form-control"
-										placeholder="이름을 입력하세요" name="customerName" id="customerName">
-									</div>
-									</td>	
-								</tr>
-								<tr>
-									<th>주소</th>
-									<td>
-									<div class="input-guoup mb-3">
-									<input type="text" class="form-control"
-										placeholder="주소를 입력하세요" name="customerAddress" id="customerAddress">
-									</div>
-									</td>	
-								</tr>
-								<tr>
-									<th>전화번호</th>
-									<td>
-									<div class="input-guoup mb-3">
-									<input type="text" class="form-control"
-										placeholder="01012345678" name="customerTelephone" id="customerTelephone">
-									</div>
-									</td>
-								</tr>
-							</table>	
+							</table>
 							<div class="form-group">
-							<button  type="reset" class="btn btn-secondary  btn-block">초기화</button>
-							<button  id="addBtn" type="button" class="btn btn-primary  btn-block">회원가입</button>
+								<button type="button" class="btn btn-secondary btn-block"
+									id="idckBtn">중복검사</button>
 							</div>
+							<!-- 고객 가입 form -->
+							<form id="addCustomerForm"
+								action="<%=request.getContextPath()%>/addCustomerAction.jsp"
+								method="post">
+								<table class="table">
+									<tr>
+										<th>아이디</th>
+										<td>
+											<div class="input-guoup mb-3">
+												<input type="text" class="form-control" name="customerId"
+													id="customerId" readonly="readonly">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>비밀번호</th>
+										<td>
+											<div class="input-guoup mb-3">
+												<input type="password" class="form-control"
+													placeholder="비밀번호를 입력하세요" name="customerPass"
+													id="customerPass">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>이름</th>
+										<td>
+											<div class="input-guoup mb-3">
+												<input type="text" class="form-control"
+													placeholder="이름을 입력하세요" name="customerName"
+													id="customerName">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>주소</th>
+										<td>
+											<div class="input-guoup mb-3">
+												<input type="text" class="form-control"
+													placeholder="주소를 입력하세요" name="customerAddress"
+													id="customerAddress">
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<th>전화번호</th>
+										<td>
+											<div class="input-guoup mb-3">
+												<input type="text" class="form-control"
+													placeholder="010-1234-5678" name="customerTelephone"
+													id="customerTelephone">
+											</div>
+										</td>
+									</tr>
+								</table>
+								<div class="form-group">
+									<button type="reset" class="btn btn-secondary  btn-block">초기화</button>
+									<button id="addBtn" type="button"
+										class="btn btn-primary  btn-block">회원가입</button>
+								</div>
 							</form>
 						</div>
 						<div class="col-md-3"></div>
@@ -264,18 +256,43 @@
 	<script src="js/custom.js"></script>
 </body>
 <script>
+	// 고객 아이디 중복검사
+	$('#idckBtn').click(function() {
+		if ($('#idck').val().length < 4) {
+			alert('아이디는 4자이상입력하세요');
+		} else {
+			// 비동기 호출   
+			$.ajax({
+				url : '/shop/idckController',
+				type : 'post',
+				data : {
+					idck : $('#idck').val()
+				},
+				success : function(json) {
+					if (json == 'y') {
+						$('#customerId').val($('#idck').val());
+					} else {
+						alert('이미 사용중인 아이디입니다');
+						$('#customerId').val('');
+					}
+				},
+				error : function(err) {
+					alert('요청실패');
+					console.log(err);
+				}
+			});
+		}
+	});
 	// 고객 빈칸검사
 	$('#addBtn').click(function(){		
-		if($('#customerId').val() == ''){
-			alert('고객 아이디를 입력하세요');
-		} else if($('#customerPass').val() == ''){
-			alert('고객 패스워드를 입력하세요');
+		if($('#customerPass').val().length < 4){
+			alert('패스워드를 4자이상 입력하세요');
 		} else if($('#customerName').val() == ''){
-			alert('이름을 입력하세요');
+			alert('성함을 입력하세요');
 		} else if($('#customerAddress').val() == ''){
 			alert('주소를 입력하세요');
 		} else if($('#customerTelephone').val() == ''){
-			alert('전화번호를 입력하세요');
+			alert('핸드폰번호를 입력하세요');
 		} else {
 			$('#addCustomerForm').submit();
 		}

@@ -9,34 +9,33 @@ import vo.*;
 public class SignService {
 	private SignDao signDao;
 
-	// return
-	// true : 사용가능한 아이디
-	// false : 사용불가능한 아이디
-	public boolean idCheck(String id) {
-		boolean result = false;
+	public String getIdCheck(String idck) {
 		this.signDao = new SignDao();
 		Connection conn = null;
-
+		String id = null;
+		
 		try {
 			conn = new DBUtil().getConnection();
-			if (signDao.idCheck(conn, id) == null) {
-				result = true;
-			}
-			conn.commit();
+			id = signDao.selectIdCheck(conn, idck);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
-			try {
-				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} finally {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
+			if(conn != null) {
+	            try {
+	               conn.rollback();
+	            } catch (SQLException e1) {
+	               e1.printStackTrace();
+	            }
+	         }
+	      } finally {
+	         if(conn != null) {
+	            try {
+	               conn.close();
+	            } catch (SQLException e) {
+	               e.printStackTrace();
+	            }
+	         }
+	      }
+		return id;
 	}
 }

@@ -148,10 +148,6 @@
 					<div class="row">
 						<div class="col-md-5 table-responsive">
 							<table class="table text-center">
-							 <tr>
-							 	<th>주문번호</th>
-							 	<td><%=map.get("ordersNo") %></td>
-							 </tr>
  							 <tr>
 							 	<th>상품번호</th>
 							 	<td><%=map.get("goodsNo") %></td>
@@ -163,6 +159,10 @@
 							 <tr>
 							 	<th>상품가격</th>
 							 	<td><%=map.get("goodsPrice") %></td>
+							 </tr>
+							 <tr>
+							 	<th>배송현황</th>
+							 	<td><%=map.get("ordersState") %></td>
 							 </tr>
 							 <tr>
 							 	<th>수정날짜</th>

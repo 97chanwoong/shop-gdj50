@@ -138,30 +138,16 @@
 									<td>
 										<div class="input-group mb-3">
 											<input type="text"
-												placeholder="아이디를 입력하세요" name="signId" id="signId" class="form-control">
+												placeholder="아이디를 입력하세요" name="idck" id="idck" class="form-control">
 										</div>	
-										
-										<% 
-											if(request.getParameter("errorMsg") != null){		
-										%>
-												<span style="color:red"><%=request.getParameter("errorMsg")%></span>		
-										<%
-											}
-										%>
 									</td>
 								</tr>
 								</table>
 								<div class="form-group">
-								<button type="submit" class="btn btn-secondary btn-block">중복검사</button>
+								<button type="button" class="btn btn-secondary btn-block" id="idckBtn">중복검사</button>
 								</div>
 							</form>	
 							<!-- 관리자 가입 form -->
-							<%
-								String signId = ""; // 빈 문자열
-								if(request.getParameter("signId") != null){
-									signId = request.getParameter("signId");
-								}
-							%>	
 							<form id="addEmployeeForm" action="<%=request.getContextPath()%>/addEmployeeAction.jsp" method="post">					
 							<table class="table">
 								<tr>
@@ -169,7 +155,7 @@
 									<th>
 										<div class="input-guoup mb-3">
 											<input type="text" class="form-control"
-										  name="employeeId" id="employeeId" readonly="readonly" value="<%=signId%>">
+										  name="employeeId" id="employeeId" readonly="readonly">
 										</div>
 									</th>
 								</tr>
@@ -246,7 +232,35 @@
 	<script src="js/custom.js"></script>
 </body>
 <script>
-	// 고객 빈칸검사
+	// 직원 아이디 중복검사
+	$('#idckBtn').click(function() {
+		if ($('#idck').val().length < 4) {
+			alert('아이디는 4자이상입력하세요');
+		} else {
+			// 비동기 호출   
+			$.ajax({
+				url : '/shop/idckController',
+				type : 'post',
+				data : {
+					idck : $('#idck').val()
+				},
+				success : function(json) {
+					if (json == 'y') {
+						$('#employeeId').val($('#idck').val());
+					} else {
+						alert('이미 사용중인 아이디입니다');
+						$('#employeeId').val('');
+					}
+				},
+				,
+				error : function(err) {
+					alert('요청실패');
+					console.log(err);
+				}
+			});
+		}
+	});
+	// 직원 빈칸검사
 	$('#addBtn').click(function(){		
 		if($('#employeeId').val() == ''){
 			alert('사원 아이디를 입력하세요');
