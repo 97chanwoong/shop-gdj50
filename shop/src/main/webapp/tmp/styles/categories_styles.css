@@ -1372,6 +1372,12 @@ section
 	color: #fe4c50;
 	font-weight: 600;
 }
+.product_soldOut
+{
+	font-size: 16px;
+	color: black;
+	font-weight: 600;
+}
 .product_price span
 {
 	font-size: 12px;

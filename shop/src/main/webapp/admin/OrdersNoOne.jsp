@@ -5,21 +5,20 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
-		return;
-	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-	}
-	
-	// 주문번호
-	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
-	System.out.println(ordersNo + "<-- ordersNo");
-	
-	
-	// 주문상품 상세 보기 메서드
-	OrdersService ordersService = new OrdersService();
-	Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
+if (session.getAttribute("id") == null) {
+	response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+	return;
+} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+	response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+}
+
+// 주문번호
+int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+System.out.println(ordersNo + "<-- ordersNo");
+
+// 주문상품 상세 보기 메서드
+OrdersService ordersService = new OrdersService();
+Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -39,8 +38,10 @@
 	href="../tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
 <link rel="stylesheet" type="text/css"
 	href="../tmp/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css" href="../tmp/styles/main_styles.css">
-<link rel="stylesheet" type="text/css" href="../tmp/styles/responsive.css">
+<link rel="stylesheet" type="text/css"
+	href="../tmp/styles/main_styles.css">
+<link rel="stylesheet" type="text/css"
+	href="../tmp/styles/responsive.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -146,54 +147,59 @@
 			<div class="banner">
 				<div class="container">
 					<div class="row">
+						<div class="col-md-1"></div>
 						<div class="col-md-5 table-responsive">
 							<table class="table text-center">
- 							 <tr>
-							 	<th>상품번호</th>
-							 	<td><%=map.get("goodsNo") %></td>
-							 </tr>
-							 <tr>
-							 	<th>상품이름</th>
-							 	<td><%=map.get("goodsName") %></td>
-							 </tr>
-							 <tr>
-							 	<th>상품가격</th>
-							 	<td><%=map.get("goodsPrice") %></td>
-							 </tr>
-							 <tr>
-							 	<th>배송현황</th>
-							 	<td><%=map.get("ordersState") %></td>
-							 </tr>
-							 <tr>
-							 	<th>수정날짜</th>
-							 	<td><%=map.get("updateDate") %></td>
-							 </tr>
+								<tr>
+									<th>상품번호</th>
+									<td><%=map.get("goodsNo")%></td>
+								</tr>
+								<tr>
+									<th>상품이름</th>
+									<td><%=map.get("goodsName")%></td>
+								</tr>
+								<tr>
+									<th>상품가격</th>
+									<td><%=map.get("goodsPrice")%></td>
+								</tr>
+								<tr>
+									<th>배송현황</th>
+									<td><%=map.get("ordersState")%></td>
+								</tr>
+								<tr>
+									<th>수정날짜</th>
+									<td><%=map.get("updateDate")%></td>
+								</tr>
 							</table>
 						</div>
 						<div class="col-md-1"></div>
 						<div class="col-md-5 table-responsive">
 							<table class="table text-center">
-							 <tr>
-							 	<th>고객아이디</th>
-							 	<td><%=map.get("customerId") %></td>
-							 </tr>
- 							 <tr>
-							 	<th>고객성함</th>
-							 	<td><%=map.get("customerName") %></td>
-							 </tr>
-							 <tr>
-							 	<th>고객연락처</th>
-							 	<td><%=map.get("customerTelephone") %></td>
-							 </tr>
-							 <tr>
-							 	<th>배송주소</th>
-							 	<td><%=map.get("ordersAddress") %></td>
-							 </tr>
-							 <tr>
-							 	<th>구매날짜</th>
-							 	<td><%=map.get("createDate") %></td>
-							 </tr>
+								<tr>
+									<th>고객아이디</th>
+									<td><%=map.get("customerId")%></td>
+								</tr>
+								<tr>
+									<th>고객성함</th>
+									<td><%=map.get("customerName")%></td>
+								</tr>
+								<tr>
+									<th>고객연락처</th>
+									<td><%=map.get("customerTelephone")%></td>
+								</tr>
+								<tr>
+									<th>배송주소</th>
+									<td><%=map.get("ordersAddress")%></td>
+								</tr>
+								<tr>
+									<th>구매날짜</th>
+									<td><%=map.get("createDate")%></td>
+								</tr>
 							</table>
+							<div class="form-group text-right">
+								<a class="btn btn-light"
+									href="<%=request.getContextPath()%>/updateOrdersForm.jsp">수정</a>
+							</div>
 						</div>
 					</div>
 				</div>

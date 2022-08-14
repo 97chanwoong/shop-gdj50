@@ -1,10 +1,86 @@
 package repository;
 
-import java.sql.*;
-import java.util.*;
-import vo.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletRequest;
+
+import vo.Goods;
 
 public class GoodsDao {
+	//고객이 상품리스트를 확인할 때 조회수를 늘려주는 쿼리
+	/*
+	 * public void updateCustomerListView(int goodsNo) {
+	 * 
+	 * }
+	 */
+	// 고객 상품리스트 페이지에서 사용
+
+	public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn, int rowPerPage,
+			int beginRow/* ,int check */) throws Exception {
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		//판매량순
+		String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, IFNULL(t.sumNum, 0) sumNum, gi.filename fileName FROM goods g LEFT JOIN (SELECT goods_no, SUM(orders_quantity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY IFNULL(t.sumNum, 0) DESC LIMIT ?,?";
+		/*
+		 * if(check == 1) { sql = ""; }
+		 */
+		
+		/*
+		 고객이 판매량수 많은것 부터
+       SELECT g.goods_no goodsNo
+             , g.goods_name goodsName
+             , g.goods_price goodsPrice
+             , gi.filename filename
+       FROM
+       goods g LEFT JOIN (SELECT goods_no, SUM(orders_quantity) sumNum
+                      FROM orders
+                      GROUP BY goods_no) t
+                      ON g.goods_no = t.goods_no
+                         INNER JOIN goods_img gi
+                         ON g.goods_no = gi.goods_no
+       ORDER BY IFNULL(t.sumNUm, 0) DESC
+		 */
+		try {
+			
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, beginRow); 
+				stmt.setInt(2, rowPerPage);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String,Object> m = new HashMap<String,Object>();
+				m.put("goodsNo",rs.getInt("goodsNo"));
+				m.put("goodsName", rs.getString("goodsName"));
+				m.put("goodsPrice", rs.getInt("goodsPrice"));
+				m.put("soldOut", rs.getString("soldOut"));
+				m.put("fileName", rs.getString("fileName"));
+				// 디버깅
+				System.out.println(m.get("goodsNo") + " <-- goodsNo selectCustomerGoodsListByPage");
+				System.out.println(m.get("goodsName") + " <-- goodsName selectCustomerGoodsListByPage");
+				System.out.println(m.get("goodsPrice") + " <-- goodsPrice selectCustomerGoodsListByPage");
+				System.out.println(m.get("soldOut") + " <-- soldOut selectCustomerGoodsListByPage");
+				System.out.println(m.get("fileName") + " <-- fileName selectCustomerGoodsListByPage");
+				list.add(m);
+			}
+		} finally {
+			if(rs != null) {
+				rs.close();
+			}
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return list;
+	}
+	
+	
 	public List<Goods> selectGoodsListByPage(Connection conn, int rowPerPage, int beginRow) throws Exception {
 		List<Goods> list = new ArrayList<Goods>();
 		String sql = "SELECT goods_no goodsNo, goods_name goodsName, goods_price goodsPrice, update_date updateDate, create_date createDate, sold_out soldOut FROM goods ORDER BY goods_no DESC limit ?, ?";
@@ -104,7 +180,7 @@ public class GoodsDao {
 	      ON g.goods_no = gi.goods_no
 	      WHERE g.goods_no = ?
 	     
-	      while(rs.next()) {
+	      if(rs.next()) {
 	         map = new HashMap<String, Object>()
 	         map.put("goodsNo", rs.getInt("goodsNo"));
 	      }

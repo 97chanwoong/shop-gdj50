@@ -351,6 +351,7 @@ jQuery(document).ready(function($)
 	        {
 	        	$(this).on('click', function()
 	        	{
+					console.log("sort------>");
 	        		var numSortingText = $(this).text();
 					var numFilter = ':nth-child(-n+' + numSortingText + ')';
 	        		$('.num_sorting_text').text($(this).text());

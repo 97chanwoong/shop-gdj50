@@ -52,6 +52,6 @@
 		session.setAttribute("user", "employee");
  		session.setAttribute("id", loginEmployee.getEmployeeId());
  		session.setAttribute("name", loginEmployee.getEmployeeName());
-		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		response.sendRedirect(request.getContextPath() + "/Main.jsp");
 	}
 %>

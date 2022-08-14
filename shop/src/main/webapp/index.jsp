@@ -151,6 +151,11 @@
 							%>
 							<tr>
 								<th>
+									<a   href="<%=request.getContextPath()%>/customerGoodslist.jsp">상품보러가기</a>
+								</th>
+							</tr>
+							<tr>
+								<th>
 									<a   href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
 								</th>
 							</tr>

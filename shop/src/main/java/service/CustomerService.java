@@ -2,12 +2,16 @@ package service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import repository.CustomerDao;
 import repository.OutIdDao;
 import vo.Customer;
 
 public class CustomerService {
+	private CustomerDao customerDao;
+	
 	// 회원가입 addCustomerAction.jsp 호출
 	public boolean addCustomer(Customer paramCustomer) {
 		Connection conn = null;

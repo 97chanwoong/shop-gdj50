@@ -235,9 +235,9 @@
 	
 	$('#employeeBtn').click(function(){
 		if($('#employeeId').val() == '') {
-			alert('스텝 아이디를 입력하세요');
+			alert('관리자 아이디를 입력하세요');
 		} else if($('#employeePass').val() == '') {
-			alert('스텝 패스워드를 입력하세요');
+			alert('관리자 패스워드를 입력하세요');
 		} else {
 			employeeForm.submit();
 		}
