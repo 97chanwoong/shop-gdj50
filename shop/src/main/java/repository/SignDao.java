@@ -6,8 +6,9 @@ import vo.Customer;
 import vo.Employee;
 
 public class SignDao {
-	// Id체크
+	// id 중복검사 
 	public String selectIdCheck(Connection conn, String idck) throws Exception{
+		// return 변수
 		String id = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -29,6 +30,7 @@ public class SignDao {
 		if(stmt != null) {
 			stmt.close();
 		}
+		// 사용 가능한 아이디는 null
 		return id;
 	}
 }

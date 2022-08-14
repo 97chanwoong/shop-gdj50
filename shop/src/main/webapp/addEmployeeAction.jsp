@@ -20,10 +20,10 @@
 	
 	if(!result){
 		System.out.println("회원가입 실패");
-		response.sendRedirect(request.getContextPath()+"/addEmployeeForm.jsp");
+		response.sendRedirect(request.getContextPath()+"/addEmployeeForm2.jsp");
 		return;
 	}
 	System.out.println("회원가입 성공");
-	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+	response.sendRedirect(request.getContextPath()+"/LoginForm2.jsp");
 
 %>

@@ -7,6 +7,7 @@ import repository.OutIdDao;
 import vo.Employee;
 
 public class EmployeeService {
+	
 	// 회원가입 addEmployeeAction.jsp 호출
 	public boolean addEmployee(Employee paramEmployee) {
 		Connection conn = null;
@@ -44,7 +45,6 @@ public class EmployeeService {
 		try {
 			DBUtil dbutil = new DBUtil();
 			conn = dbutil.getConnection();
-
 			EmployeeDao employeeDao = new EmployeeDao();
 			employee = employeeDao.selectEmployeeLoginByIdAndPw(conn, paramEmployee);
 
@@ -128,28 +128,30 @@ public class EmployeeService {
 	}
 
 	// 사원관리리스트 라스트페이지 구하기
-	public int lastPage() {
+	public int getEmployeeLastPage(int rowPerPage) {
 		int lastPage = 0;
 		Connection conn = null;
 
 		try {
 			conn = new DBUtil().getConnection();
-			conn.setAutoCommit(false);
-
 			EmployeeDao employeeDao = new EmployeeDao();
-			if (employeeDao.lastPage(conn) != 1) {
+			int totalRow = employeeDao.selectEmployeeCount(conn);
+			lastPage = (int) Math.ceil (totalRow / (double)rowPerPage);
+			if(lastPage == 0) {
 				throw new Exception();
 			}
 			conn.commit();
-		} catch (Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
+			// 실패라면 rollback
 			try {
 				conn.rollback();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		} finally {
-			if (conn != null) {
+			// DB 자원해제
+			if(conn != null) {
 				try {
 					conn.close();
 				} catch (Exception e) {

@@ -35,10 +35,10 @@
 	// 재요청
 	if(result == true){
 		System.out.println("탈퇴성공");
-		response.sendRedirect(request.getContextPath() + "/logout.jsp");
+		response.sendRedirect(request.getContextPath() + "/LogOut.jsp");
 	} else {
 		System.out.println("탈퇴실패");
-		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		response.sendRedirect(request.getContextPath() + "/removeIdForm2.jsp");
 	}
 	
 	

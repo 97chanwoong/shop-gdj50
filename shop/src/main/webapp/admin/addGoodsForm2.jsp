@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="repository.*"%>
+<%@ page import="java.util.*"%>
+<%@ page import="service.*"%>
+<%@ page import="vo.*"%>
+<%
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp?errorMsg=No permission");
+	}
+	
+%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -12,18 +25,21 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- font -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
+	;
 </style>
 <!-- Title  -->
 <title>CKEA</title>
 
 <!-- Favicon  -->
-<link rel="icon" href="tmp2/img/core-img/CKEAfavicon.ico">
+<link rel="icon" href="../tmp2/img/core-img/CKEAfavicon.ico">
 
 <!-- Core Style CSS -->
-<link rel="stylesheet" href="tmp2/css/core-style2.css">
-<link rel="stylesheet" href="tmp2/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="../tmp2/css/core-style2.css">
+<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/style.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -57,8 +73,8 @@
 		<div class="mobile-nav">
 			<!-- Navbar Brand -->
 			<div class="amado-navbar-brand">
-				<a href="LoginForm2.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"
-					alt=""></a>
+				<a href="LoginForm2.jsp"><img
+					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Navbar Toggler -->
 			<div class="amado-navbar-toggler">
@@ -74,8 +90,8 @@
 			</div>
 			<!-- Logo -->
 			<div class="logo">
-				<a href="<%=request.getContextPath()%>/Main.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"
-					alt=""></a>
+				<a href="<%=request.getContextPath()%>/Main.jsp"><img
+					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
@@ -90,7 +106,7 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="login-table-area section-padding-100 mb-100">
+		<div class="Goods-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<%
@@ -100,75 +116,48 @@
 					<%
 					}
 					%>
-					<div class="col-12 col-lg-6">
-						<div class="login-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">고객 로그인</h5>
+					<div class="col-2"></div>
+					<div class="col-8">
+						<div class="Goods-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">상품 등록</h5>
 							<br>
-							<form id="customerForm" method="post"
-								action="<%=request.getContextPath()%>/customerLoginAction.jsp">
+							<form action="<%=request.getContextPath()%>/admin/addGoodsAction.jsp" method="post" enctype="multipart/form-data" id="addGoodsform">
+								<label style="font-family: 'Jua', sans-serif;" for="goodsName">상품이름</label>
+								<input style="font-family: 'Jua', sans-serif;" 
+									   type="text" class="form-control" name="goodsName"
+										id="goodsName" >
+								<label style="font-family: 'Jua', sans-serif;" for="goodsPrice">상품가격</label>
+								<input style="font-family: 'Jua', sans-serif;" 
+									   type="text" class="form-control" name="goodsPrice"
+										id="goodsPrice" >		
+								<label style="font-family: 'Jua', sans-serif;" for="imgFile">상품이미지</label>
+								<input style="font-family: 'Jua', sans-serif;" 
+									   type="file" class="form-control" name="imgFile"
+										id="imgFile" >
+								<label style="font-family: 'Jua', sans-serif;" for="soldOut">품절여부</label>
+								<br>	
+									<select name="soldOut" class="form-control" id="soldOut">
+										<option value="defualt">-- 선택 --</option>
+			            				<option value="Y">Y</option>
+				            			<option value="N">N</option>
+				            		</select>
+				            	<br>
+				            	<br>		
 								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="customerId"
-										id="customerId" placeholder="아이디">
-								</div>
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="customerPass"
-										id="customerPass" placeholder="비밀번호">
-								</div>
-								<div class="amoda-btn mt-70">
-									<button type="button" class="btn login-btn w-100"
-										id="customerBtn"
-										style="font-family: 'Jua', sans-serif;">Login</button>
-									<br>
-									<br>
-									<a  href="addCustomerForm2.jsp"
+								<button id="addGoodsBtn" type="button"
 										class="btn amado-btn w-100"
-										style="font-family: 'Jua', sans-serif;">Sing Up</a>
+										style="font-family: 'Jua', sans-serif;">상품등록</button>
 								</div>
-							</form>
+							</form>	
 						</div>
 					</div>
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
-					<div class="col-12 col-lg-6">
-						<div class="login-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">관리자 로그인</h5>
-							<br>
-							<form id="employeeForm" method="post"
-								action="<%=request.getContextPath()%>/employeeLoginAction.jsp">
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="employeeId"
-										id="employeeId" placeholder="아이디">
-								</div>
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="employeePass"
-										id="employeePass" placeholder="비밀번호">
-								</div>
-							</form>
-							<div class="amoda-btn mt-70">
-								<button style="font-family: 'Jua', sans-serif;" type="button" class="btn login-btn w-100"
-									id="employeeBtn">Login</button>
-									<br>
-									<br>
-								<a style="font-family: 'Jua', sans-serif;" href="addEmployeeForm2.jsp" class="btn amado-btn w-100">Sing Up</a>
-							</div>
-						</div>
-					</div>
+					<div class="col-2"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- ##### Main Content Wrapper End ##### -->
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 	<br>
 	<br>
 	<!-- ##### Footer Area Start ##### -->
@@ -218,8 +207,7 @@
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>
-										<li class="nav-item"><a class="nav-link"
-											href="#">Contact</a></li>
+										<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
 									</ul>
 								</div>
 							</nav>
@@ -232,35 +220,29 @@
 	<!-- ##### Footer Area End ##### -->
 
 	<!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-	<script src="tmp2/js/jquery/jquery-2.2.4.min.js"></script>
+	<script src="../tmp2/js/jquery/jquery-2.2.4.min.js"></script>
 	<!-- Popper js -->
-	<script src="tmp2/js/popper.min.js"></script>
+	<script src="../tmp2/js/popper.min.js"></script>
 	<!-- Bootstrap js -->
-	<script src="tmp2/js/bootstrap.min.js"></script>
+	<script src="../tmp2/js/bootstrap.min.js"></script>
 	<!-- Plugins js -->
-	<script src="tmp2/js/plugins.js"></script>
+	<script src="../tmp2/js/plugins.js"></script>
 	<!-- Active js -->
-	<script src="tmp2/js/active.js"></script>
+	<script src="../tmp2/js/active.js"></script>
 </body>
 <script>
-	$('#customerBtn').click(function(){
-		if($('#customerId').val() == '') {
-			alert('고객 아이디를 입력하세요');
-		} else if($('#customerPass').val() == '') {
-			alert('고객 패스워드를 입력하세요');
-		} else {
-			customerForm.submit();
-		}
-	});
-	
-	$('#employeeBtn').click(function(){
-		if($('#employeeId').val() == '') {
-			alert('관리자 아이디를 입력하세요');
-		} else if($('#employeePass').val() == '') {
-			alert('관리자 패스워드를 입력하세요');
-		} else {
-			employeeForm.submit();
-		}
-	});
+		$('#addGoodsBtn').click(function(){
+			if($('#goodsName').val().length == ""){
+				alert('상품이름을 기입해주세요');
+			} else if($('#goodsPrice').val().length == ""){
+				alert('상품가격을 기입해주세요');
+			} else if($('#imgFile').val().length == ""){
+				alert('상품파일을 등록해주세요');
+			} else if($('#soldOut').val() == 'defualt'){
+				alert('품절여부를 선택해주세요');
+			} else {
+				$('#addGoodsform').submit();
+			}
+		});
 </script>
 </html>

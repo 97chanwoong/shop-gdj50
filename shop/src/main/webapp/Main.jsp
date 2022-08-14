@@ -21,7 +21,7 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="tmp2/css/core-style.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="tmp2/style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -85,12 +85,49 @@
             <!-- Cart Menu -->
             <div class="cart-fav-search mb-30">
                 <a href="#" class="search-nav">Search</a>
+             <%
+             	if(session.getAttribute("id") == null){
+             %>  
                 <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="cart-nav">Cart<span>(0)</span></a>
                 <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="fav-nav">MyPage</a>
+            <%
+             	} else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer") ){
+            %>
+            	<a href="<%=request.getContextPath()%>/Main.jsp" class="cart-nav">Cart<span>(0)</span></a>
+                <a href="<%=request.getContextPath()%>/customerIndex.jsp" class="fav-nav">MyPage</a>
+            <%
+             	} 
+            %>
+            <%
+         		if(session.getAttribute("id") != null && session.getAttribute("user").equals("employee")){
+            %>	
+            	<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="fav-nav">AdminPage</a>
+            <%
+         		}
+            %>
             </div>
+			<%
+             	if(session.getAttribute("id") != null){
+            %>
+			<h5 style="font-family: 'Jua', sans-serif;"><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님</h5>
+			<%
+             	}
+			%>
+			<!-- 로그인 아이디 -->
+            
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
-                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="btn amado-btn mb-15">LogIn</a>
+             <%
+             	if(session.getAttribute("id") == null){
+             %>  
+                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="btn amado-btn mb-15">Log In</a>
+            <%
+             	} else if(session.getAttribute("id") != null){
+            %>
+            	<a href="<%=request.getContextPath()%>/LogOut.jsp" class="btn amado-btn mb-15">Log Out</a>
+            <%
+             	}
+            %>
             </div>
 
             <!-- Social Button -->
@@ -256,24 +293,17 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                             <nav class="navbar navbar-expand-lg justify-content-end">
                                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#footerNavContent" aria-controls="footerNavContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
                                 <div class="collapse navbar-collapse" id="footerNavContent">
-                                    <ul class="navbar-nav ml-auto">
-                                        <li class="nav-item active">
-                                            <a class="nav-link" href="index.html">Home</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="shop.html">Shop</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="product-details.html">Product</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="cart.html">Cart</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="checkout.html">Checkout</a>
-                                        </li>
-                                    </ul>
-                                </div>
+									<ul class="navbar-nav ml-auto">
+										<li class="nav-item active"><a class="nav-link"
+											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
+										<li class="nav-item"><a class="nav-link" href="shop.html">Shop</a>
+										</li>
+										<li class="nav-item"><a class="nav-link" href="#">Community</a>
+										</li>
+										<li class="nav-item"><a class="nav-link"
+											href="#">Contact</a></li>
+									</ul>
+								</div>
                             </nav>
                         </div>
                     </div>

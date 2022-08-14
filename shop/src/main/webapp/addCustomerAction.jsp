@@ -13,6 +13,7 @@
 	customer.setCustomerAddress(request.getParameter("customerAddress"));
 	customer.setCustomerTelephone(request.getParameter("customerTelephone"));
 	
+	// 디버깅
 	System.out.println("customer: " + customer);
 	
 	CustomerService customerService = new CustomerService();
@@ -23,9 +24,9 @@
 	
 	if(!result){
 		System.out.println("회원가입 실패");
-		response.sendRedirect(request.getContextPath()+"/addCustomerForm.jsp");
+		response.sendRedirect(request.getContextPath()+"/addCustomerForm2.jsp");
 		return;
 	}
 	System.out.println("회원가입 성공");
-	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
+	response.sendRedirect(request.getContextPath()+"/LoginForm2.jsp");
 %>

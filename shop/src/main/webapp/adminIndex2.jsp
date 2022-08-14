@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
+    pageEncoding="UTF-8"%>
+<%
+	if(session.getAttribute("id") == null){
+	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+	return;
+    } else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+    response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
+    }
+%>    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,7 +19,8 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- font -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
+	;
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -23,7 +31,8 @@
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="tmp2/css/core-style2.css">
 <link rel="stylesheet" href="tmp2/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -57,8 +66,8 @@
 		<div class="mobile-nav">
 			<!-- Navbar Brand -->
 			<div class="amado-navbar-brand">
-				<a href="LoginForm2.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"
-					alt=""></a>
+				<a href="LoginForm2.jsp"><img
+					src="tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Navbar Toggler -->
 			<div class="amado-navbar-toggler">
@@ -74,8 +83,8 @@
 			</div>
 			<!-- Logo -->
 			<div class="logo">
-				<a href="<%=request.getContextPath()%>/Main.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"
-					alt=""></a>
+				<a href="<%=request.getContextPath()%>/Main.jsp"><img
+					src="tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
@@ -93,82 +102,52 @@
 		<div class="login-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
-					<div class="col-12 col-lg-6">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
 						<div class="login-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">고객 로그인</h5>
+							<h1 style="font-family: 'Jua', sans-serif; text-align: center;"><%=session.getAttribute("id")%>님 
+								</h1>
 							<br>
-							<form id="customerForm" method="post"
-								action="<%=request.getContextPath()%>/customerLoginAction.jsp">
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="customerId"
-										id="customerId" placeholder="아이디">
-								</div>
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="customerPass"
-										id="customerPass" placeholder="비밀번호">
-								</div>
-								<div class="amoda-btn mt-70">
-									<button type="button" class="btn login-btn w-100"
-										id="customerBtn"
-										style="font-family: 'Jua', sans-serif;">Login</button>
-									<br>
-									<br>
-									<a  href="addCustomerForm2.jsp"
-										class="btn amado-btn w-100"
-										style="font-family: 'Jua', sans-serif;">Sing Up</a>
-								</div>
-							</form>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp">사원 관리</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp">상품 관리</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/admin/adminOrderlist2.jsp">주문 관리</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/Main.jsp">고객 관리</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/Main.jsp">공지 관리</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/removeIdForm2.jsp">탈퇴 하기</a>
+							</p>
+							<hr>	    
 						</div>
 					</div>
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
-					<div class="col-12 col-lg-6">
-						<div class="login-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">관리자 로그인</h5>
-							<br>
-							<form id="employeeForm" method="post"
-								action="<%=request.getContextPath()%>/employeeLoginAction.jsp">
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="employeeId"
-										id="employeeId" placeholder="아이디">
-								</div>
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="employeePass"
-										id="employeePass" placeholder="비밀번호">
-								</div>
-							</form>
-							<div class="amoda-btn mt-70">
-								<button style="font-family: 'Jua', sans-serif;" type="button" class="btn login-btn w-100"
-									id="employeeBtn">Login</button>
-									<br>
-									<br>
-								<a style="font-family: 'Jua', sans-serif;" href="addEmployeeForm2.jsp" class="btn amado-btn w-100">Sing Up</a>
-							</div>
-						</div>
-					</div>
+					<div class="col-md-2"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- ##### Main Content Wrapper End ##### -->
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 	<br>
 	<br>
 	<!-- ##### Footer Area Start ##### -->
@@ -218,8 +197,7 @@
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>
-										<li class="nav-item"><a class="nav-link"
-											href="#">Contact</a></li>
+										<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
 									</ul>
 								</div>
 							</nav>
@@ -242,25 +220,5 @@
 	<!-- Active js -->
 	<script src="tmp2/js/active.js"></script>
 </body>
-<script>
-	$('#customerBtn').click(function(){
-		if($('#customerId').val() == '') {
-			alert('고객 아이디를 입력하세요');
-		} else if($('#customerPass').val() == '') {
-			alert('고객 패스워드를 입력하세요');
-		} else {
-			customerForm.submit();
-		}
-	});
-	
-	$('#employeeBtn').click(function(){
-		if($('#employeeId').val() == '') {
-			alert('관리자 아이디를 입력하세요');
-		} else if($('#employeePass').val() == '') {
-			alert('관리자 패스워드를 입력하세요');
-		} else {
-			employeeForm.submit();
-		}
-	});
-</script>
+
 </html>

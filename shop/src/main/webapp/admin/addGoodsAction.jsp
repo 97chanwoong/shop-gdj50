@@ -8,10 +8,10 @@
 <%@ page import="java.net.URLEncoder"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "/index.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	
 	String dir = request.getServletContext().getRealPath("/upload");
@@ -69,11 +69,11 @@
 		
 		// 에러메세지
 		String errorMsg = URLEncoder.encode("이미지파일만 업로드가능합니다", "UTF-8");
-		response.sendRedirect(request.getContextPath() + "/addGoodsForm.jsp?errorMsg=" + errorMsg);
+		response.sendRedirect(request.getContextPath() + "/addGoodsForm2.jsp?errorMsg=" + errorMsg);
 		return;
 	}
 	
 	// 재요청
-	response.sendRedirect(request.getContextPath()+"/admin/adminGoodslist.jsp");
+	response.sendRedirect(request.getContextPath()+"/admin/adminGoodslist2.jsp");
 
 %>

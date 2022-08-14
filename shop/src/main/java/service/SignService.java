@@ -10,15 +10,16 @@ public class SignService {
 	private SignDao signDao;
 
 	public String getIdCheck(String idck) {
+		// return 변수
+		String id = null;
 		this.signDao = new SignDao();
 		Connection conn = null;
-		String id = null;
 		
 		try {
 			conn = new DBUtil().getConnection();
 			id = signDao.selectIdCheck(conn, idck);
-		
-		} catch (Exception e) {
+			
+		} catch (Exception e) { // 오류발생
 			e.printStackTrace();
 			if(conn != null) {
 	            try {

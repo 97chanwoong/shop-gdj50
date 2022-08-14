@@ -235,7 +235,7 @@
 	// 직원 아이디 중복검사
 	$('#idckBtn').click(function() {
 		if ($('#idck').val().length < 4) {
-			alert('아이디는 4자이상입력하세요');
+			alert('아이디는 4자이상 입력하세요');
 		} else {
 			// 비동기 호출   
 			$.ajax({
@@ -252,7 +252,6 @@
 						$('#employeeId').val('');
 					}
 				},
-				,
 				error : function(err) {
 					alert('요청실패');
 					console.log(err);

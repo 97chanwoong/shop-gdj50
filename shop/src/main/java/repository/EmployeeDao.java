@@ -93,9 +93,9 @@ public class EmployeeDao {
 		return row;
 	}
 	
-	// EmployeeService.lastPage()가 호출
-	public int lastPage(Connection conn) throws Exception {
-		int lastPage = 0;
+	// 사원리스트 total
+	public int selectEmployeeCount(Connection conn) throws Exception {
+		int totalRow = 0;
 		String sql = "SELECT COUNT(*) count FROM employee";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -103,7 +103,7 @@ public class EmployeeDao {
 			stmt = conn.prepareStatement(sql);
 			rs = stmt.executeQuery();
 			if(rs.next()) {
-				lastPage = rs.getInt("count");
+				totalRow = rs.getInt("count");
 			}
 		} finally {
 			if( rs != null) {
@@ -113,14 +113,14 @@ public class EmployeeDao {
 				stmt.close();
 			}
 		}
-		return lastPage;
+		return totalRow;
 	}
 	
 	// 사원 리스트
 	// EmployeesService.getEmployeeList(int rowPerPage, int currentPage)가 호출
 	public List<Employee> selectEmployeeList(Connection conn, int rowPerPage, int beginRow) throws Exception {
 		List<Employee> list = new ArrayList<Employee>();
-		String sql = "SELECT employee_id employeeId, employee_name employeeName, create_date createDate, update_date updateDate, active FROM employee limit ?,?";
+		String sql = "SELECT employee_id employeeId, employee_name employeeName, create_date createDate, update_date updateDate, active FROM employee ORDER BY create_date limit ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {

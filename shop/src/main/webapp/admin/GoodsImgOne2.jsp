@@ -1,5 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="repository.*"%>
+<%@ page import="java.util.*"%>
+<%@ page import="service.*"%>
+<%@ page import="vo.*"%>
+<%
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
+	
+	// 상품번호
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	System.out.println(goodsNo + "<--goodsNo");
+	
+	// 상세페이지 메서드
+	GoodsService goodsService = new GoodsService();
+	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
+%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -12,18 +32,21 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- font -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
+	;
 </style>
 <!-- Title  -->
 <title>CKEA</title>
 
 <!-- Favicon  -->
-<link rel="icon" href="tmp2/img/core-img/CKEAfavicon.ico">
+<link rel="icon" href="../tmp2/img/core-img/CKEAfavicon.ico">
 
 <!-- Core Style CSS -->
-<link rel="stylesheet" href="tmp2/css/core-style2.css">
-<link rel="stylesheet" href="tmp2/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="../tmp2/css/core-style2.css">
+<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/style.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -57,8 +80,8 @@
 		<div class="mobile-nav">
 			<!-- Navbar Brand -->
 			<div class="amado-navbar-brand">
-				<a href="LoginForm2.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"
-					alt=""></a>
+				<a href="LoginForm2.jsp"><img
+					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Navbar Toggler -->
 			<div class="amado-navbar-toggler">
@@ -74,8 +97,8 @@
 			</div>
 			<!-- Logo -->
 			<div class="logo">
-				<a href="<%=request.getContextPath()%>/Main.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"
-					alt=""></a>
+				<a href="<%=request.getContextPath()%>/Main.jsp"><img
+					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
@@ -90,7 +113,7 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="login-table-area section-padding-100 mb-100">
+		<div class="GoodsOne-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<%
@@ -100,61 +123,72 @@
 					<%
 					}
 					%>
-					<div class="col-12 col-lg-6">
-						<div class="login-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">고객 로그인</h5>
+					<div class="col-12">
+						<div class="GoodsOne-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">상품 상세보기</h5>
 							<br>
-							<form id="customerForm" method="post"
-								action="<%=request.getContextPath()%>/customerLoginAction.jsp">
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="customerId"
-										id="customerId" placeholder="아이디">
-								</div>
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="customerPass"
-										id="customerPass" placeholder="비밀번호">
-								</div>
-								<div class="amoda-btn mt-70">
-									<button type="button" class="btn login-btn w-100"
-										id="customerBtn"
-										style="font-family: 'Jua', sans-serif;">Login</button>
-									<br>
-									<br>
-									<a  href="addCustomerForm2.jsp"
-										class="btn amado-btn w-100"
-										style="font-family: 'Jua', sans-serif;">Sing Up</a>
-								</div>
-							</form>
-						</div>
-					</div>
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
-					<div class="col-12 col-lg-6">
-						<div class="login-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">관리자 로그인</h5>
+							<div style="text-align: center;">
+								<img
+									src="<%=request.getContextPath()%>/upload/<%=map.get("fileName")%>"
+									alt="제품이미지">
+							</div>
 							<br>
-							<form id="employeeForm" method="post"
-								action="<%=request.getContextPath()%>/employeeLoginAction.jsp">
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="employeeId"
-										id="employeeId" placeholder="아이디">
-								</div>
-								<div class="form-group">
-									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="employeePass"
-										id="employeePass" placeholder="비밀번호">
-								</div>
-							</form>
-							<div class="amoda-btn mt-70">
-								<button style="font-family: 'Jua', sans-serif;" type="button" class="btn login-btn w-100"
-									id="employeeBtn">Login</button>
-									<br>
-									<br>
-								<a style="font-family: 'Jua', sans-serif;" href="addEmployeeForm2.jsp" class="btn amado-btn w-100">Sing Up</a>
+							<table class="table table-borderless text-center">
+								<thead class="thead-light"
+									style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<th>상품번호</th>
+										<th>상품이름</th>
+										<th>상품가격</th>
+									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<td><%=map.get("goodsNo")%></td>
+										<td><%=map.get("goodsName")%></td>
+										<td><%=map.get("goodsPrice")%></td>
+									</tr>
+								</tbody>
+								<thead class="thead-light"
+									style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<th>등록날짜</th>
+										<th>수정날짜</th>
+										<th>재고여부</th>
+									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<td><%=map.get("createDate")%></td>
+										<td><%=map.get("updateDate")%></td>
+										<td><%=map.get("soldOut")%></td>
+									</tr>
+								</tbody>
+								<thead class="thead-light"
+									style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<th>이미지이름</th>
+										<th>파일이름</th>
+										<th>확장자명</th>
+									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<td><%=map.get("fileName")%></td>
+										<td><%=map.get("originfileName")%></td>
+										<td><%=map.get("contentType")%></td>
+									</tr>
+								</tbody>
+							</table>
+							<hr>
+							<div class="row">
+							<div class="col-1">
+									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-30">목록</a>
+							</div>
+							<div class="col-10"></div>
+							<div class="col-1">
+							<a href="<%=request.getContextPath()%>/updateSoldOut.jsp" class="btn amado-btn w-30">수정</a>
+							</div>
 							</div>
 						</div>
 					</div>
@@ -162,13 +196,8 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- ##### Main Content Wrapper End ##### -->
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
 	<br>
 	<br>
 	<!-- ##### Footer Area Start ##### -->
@@ -218,8 +247,7 @@
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>
-										<li class="nav-item"><a class="nav-link"
-											href="#">Contact</a></li>
+										<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
 									</ul>
 								</div>
 							</nav>
@@ -232,35 +260,14 @@
 	<!-- ##### Footer Area End ##### -->
 
 	<!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-	<script src="tmp2/js/jquery/jquery-2.2.4.min.js"></script>
+	<script src="../tmp2/js/jquery/jquery-2.2.4.min.js"></script>
 	<!-- Popper js -->
-	<script src="tmp2/js/popper.min.js"></script>
+	<script src="../tmp2/js/popper.min.js"></script>
 	<!-- Bootstrap js -->
-	<script src="tmp2/js/bootstrap.min.js"></script>
+	<script src="../tmp2/js/bootstrap.min.js"></script>
 	<!-- Plugins js -->
-	<script src="tmp2/js/plugins.js"></script>
+	<script src="../tmp2/js/plugins.js"></script>
 	<!-- Active js -->
-	<script src="tmp2/js/active.js"></script>
+	<script src="../tmp2/js/active.js"></script>
 </body>
-<script>
-	$('#customerBtn').click(function(){
-		if($('#customerId').val() == '') {
-			alert('고객 아이디를 입력하세요');
-		} else if($('#customerPass').val() == '') {
-			alert('고객 패스워드를 입력하세요');
-		} else {
-			customerForm.submit();
-		}
-	});
-	
-	$('#employeeBtn').click(function(){
-		if($('#employeeId').val() == '') {
-			alert('관리자 아이디를 입력하세요');
-		} else if($('#employeePass').val() == '') {
-			alert('관리자 패스워드를 입력하세요');
-		} else {
-			employeeForm.submit();
-		}
-	});
-</script>
 </html>
