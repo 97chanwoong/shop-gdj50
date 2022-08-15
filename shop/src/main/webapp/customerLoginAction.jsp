@@ -4,8 +4,8 @@
 <%@ page import="service.*" %>
 <%
 	//재요청 - 접근 막기
-	if(session.getAttribute("loginCustomer") != null){ // 로그인된 사람 막기
-		response.sendRedirect("./loginForm.jsp"); // 페이지 재요청
+	if(session.getAttribute("loginEmployee") != null){ // 로그인된 사람 막기
+		response.sendRedirect("./LoginForm2.jsp"); // 페이지 재요청
 		return;
 	}
 	
@@ -22,7 +22,7 @@
 	
 	// 오류검사
 	if(customerId == null || customerPass == null || customerId.length() < 4 ||customerPass.length() < 4){
-		response.sendRedirect("./loginForm.jsp?errorMsg=Invalid Access");
+		response.sendRedirect("./LoginForm2.jsp?errorMsg=Invalid Access");
 		return; 
 	}
 	

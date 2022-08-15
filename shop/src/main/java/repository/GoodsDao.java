@@ -41,13 +41,12 @@ public class GoodsDao {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		// 판매량순
-		String sql = null;
+		String sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename, g.goods_count cnt FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY cnt DESC LIMIT ?,?";
 		
-		if(check == 0) { sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, gi.filename filename, g.goods_count cnt FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY cnt DESC LIMIT ?,?"; }
-		else if(check == 1) { sql = "";}
+		if(check == 1) { sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date DESC LIMIT ?,?";}
 		else if(check == 2) {sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, IFNULL(t.sumNum, 0) sumNum, gi.filename fileName FROM goods g LEFT JOIN (SELECT goods_no, SUM(orders_quantity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY IFNULL(t.sumNum, 0) DESC LIMIT ?,?";}
-		else if(check == 3) {sql = "";}
-		else if(check == 4) {sql = "";}
+		else if(check == 3) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.goods_price DESC LIMIT ?,?";}
+		else if(check == 4) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.goods_price ASC LIMIT ?,?";}
 		/*
 		 * 고객이 판매량수 많은것 부터 SELECT g.goods_no goodsNo , g.goods_name goodsName ,
 		 * g.goods_price goodsPrice , gi.filename filename FROM goods g LEFT JOIN

@@ -8,8 +8,6 @@
 	if (session.getAttribute("id") == null) {
 		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 		return;
-	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
 	}
 	
 	String customerId = request.getParameter("customerId");
@@ -183,7 +181,17 @@
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp" class="btn amado-btn w-50">목록</a>
+									<%
+										if(session.getAttribute("user").equals("employee")){
+									%>
+										<a href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp" class="btn amado-btn w-50">목록</a>
+									<%
+									} else if(session.getAttribute("user").equals("customer")){
+									%>
+										<a href="<%=request.getContextPath()%>/customerIndex.jsp" class="btn amado-btn w-50">목록</a>
+									<%
+									}
+									%>	
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">

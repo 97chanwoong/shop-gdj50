@@ -5,7 +5,7 @@
 	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 	return;
     } else if(session.getAttribute("id") != null && session.getAttribute("user").equals("employee")) {
-    response.sendRedirect(request.getContextPath() + "adminindex2.jsp?errorMsg=No permission");
+    response.sendRedirect(request.getContextPath() + "Main.jsp?errorMsg=No permission");
     }
 %>	
 <!DOCTYPE html>
@@ -133,7 +133,7 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/Main.jsp">나의 주문 내역</a>
+								    href="<%=request.getContextPath()%>/admin/customerOrderslist2.jsp?customerId=<%=session.getAttribute("id")%>">나의 주문 내역</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">

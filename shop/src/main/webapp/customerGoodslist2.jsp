@@ -197,20 +197,62 @@
 				<!--  Catagories  -->
 				<div class="catagories-menu">
 					<ul>
-						<li><a style="font-family: 'Jua', sans-serif;"
-							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=0">인기순
-							</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;"
-							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=1">최신순
-						</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;"
-							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=2">판매량순</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;"
-							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=3">높은
-								가격순</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;"
-							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=4">낮은
-								가격순</a></li>
+						<li>
+                     <%if(check==0){ %>
+                        <a style="font-family: 'Jua', sans-serif; color: #00498D"
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=0">인기순
+                        </a>
+                     <%} %>
+                     <%if(check!=0){ %>
+                        <a style="font-family: 'Jua', sans-serif; "
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=0">인기순
+                        </a>
+                     <%} %>
+                     </li>
+                  <li>   
+                     <%if(check==1){ %>
+                        <a style="font-family: 'Jua', sans-serif; color: #00498D"
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=1">최신순
+                        </a>
+                     <%} %>
+                     <%if(check!=1){ %>
+                        <a style="font-family: 'Jua', sans-serif; "
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=1">최신순
+                        </a>
+                     <%} %></li>
+                  <li>         
+                     <%if(check==2){ %>
+                        <a style="font-family: 'Jua', sans-serif; color: #00498D"
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=2">판매량순
+                        </a>
+                     <%} %>
+                     <%if(check!=2){ %>
+                        <a style="font-family: 'Jua', sans-serif; "
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=2">판매량순
+                        </a>
+                     <%} %></li>
+                  <li>         
+                     <%if(check==3){ %>
+                        <a style="font-family: 'Jua', sans-serif; color: #00498D"
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=3">높은 가격순
+                        </a>
+                     <%} %>
+                     <%if(check!=3){ %>
+                        <a style="font-family: 'Jua', sans-serif; "
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=3">높은 가격순
+                        </a>
+                     <%} %></li>
+                  <li>         
+                     <%if(check==4){ %>
+                        <a style="font-family: 'Jua', sans-serif; color: #00498D"
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=4">낮은 가격순
+                        </a>
+                     <%} %>
+                     <%if(check!=4){ %>
+                        <a style="font-family: 'Jua', sans-serif;"
+                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=4">낮은 가격순
+                        </a>
+                     <%} %></li>
 					</ul>
 				</div>
 			</div>
@@ -220,10 +262,8 @@
 
 		<div class="amado_product_area section-padding-100">
 			<div class="container-fluid">
-
 				<div class="row">
-
-					<div class="col-12">
+					<div class="col-2">
 						<div
 							class="product-topbar d-xl-flex align-items-end justify-content-between">
 							<!-- Sorting -->
@@ -269,9 +309,6 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-2"></div>
 					<div class="col-8"></div>
 					<div class="col-2">
 						<ul class="pagination justify-content-end">
@@ -283,7 +320,7 @@
                               href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=currentPage - 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">이전</a>
                            </li>
                            <%
-                           }
+                           	}
 
                            // 숫자페이징
                            for (int i = startPage; i <= endPage; i++) {
@@ -294,15 +331,15 @@
                               href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
                            </li>
                            <%
-                           } else {
+                          	 } else {
                            %>
                            <li class="page-item"><a
                               class="page-link"
                               href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
                            </li>
                            <%
-                           }
-                           }
+                          	 	}
+                          	 }
 
                            if (currentPage < lastPage) {
                            %>
@@ -311,7 +348,7 @@
                               href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=currentPage + 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">다음</a>
                            </li>
                            <%
-                           }
+                          	 }
                            %>
 						</ul>
 					</div>
@@ -342,9 +379,8 @@
 								<div class="product-meta-data">
 									<div class="line"></div>
 									<p class="product-price"><%=m.get("goodsPrice")%></p>
-									<a href="product-details.html">
-										<h6><%=m.get("goodsName")%></h6>
-									</a>
+									<h4><%=m.get("goodsName")%></h4>
+									
 								</div>
 								<!-- Ratings & Cart -->
 								<div class="ratings-cart text-right">
