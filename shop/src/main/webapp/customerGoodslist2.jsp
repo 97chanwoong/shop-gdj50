@@ -1,441 +1,425 @@
-<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
 <%@ page import="service.GoodsService"%>
 <%
-// controller : java class <- Servlet
-int rowPerPage = 20;
-if (request.getParameter("rowPerPage") != null) {
-	rowPerPage = Integer.parseInt(request.getParameter("rowPerPage"));
-}
-int currentPage = 1;
-if (request.getParameter("currentPage") != null) {
-	currentPage = Integer.parseInt(request.getParameter("currentPage"));
-}
-
-GoodsService goodsService = new GoodsService();
-
-/* // 리스트 보여지는 형식
-int check = 0;
-if (request.getParameter("check") != null) {
-	check = Integer.parseInt(request.getParameter("check"));
-	System.out.println(check + "리스트 확인 테스트용");
-} */
-
-// 마지막 페이지 메서드
-int lastPage = goodsService.getGoodsLastPage(rowPerPage);
-// list
-List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(rowPerPage, currentPage/* ,check */);
+	// controller : java class <- Servlet
+	int ROW_PER_PAGE = 20;
+	if (request.getParameter("ROW_PER_PAGE") != null) {
+		ROW_PER_PAGE = Integer.parseInt(request.getParameter("ROW_PER_PAGE"));
+	}
+	int currentPage = 1;
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	GoodsService goodsService = new GoodsService();
+	
+	/* // 리스트 보여지는 형식
+	int check = 0;
+	if (request.getParameter("check") != null) {
+		check = Integer.parseInt(request.getParameter("check"));
+		System.out.println(check + "리스트 확인 테스트용");
+	} */
+	
+	// 마지막 페이지 메서드
+	int lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
+	// 숫자페이징
+	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
+	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
+	// endPage 는 lastPage보다 크면 안된다
+	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
+	
+	// list
+	List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(ROW_PER_PAGE, currentPage/* ,check */);
 %>
-<!--  분리하면 servlet /연결기슬 forword(request, response) / jsp -->
-
-<!--  View : 태그 -->
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<title>Colo Shop Categories</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="description" content="Colo Shop Template">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css"
-	href="tmp/styles/bootstrap4/bootstrap.min.css">
-<link href="tmp/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
-	rel="stylesheet" type="text/css">
-<link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
-<link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
-<link rel="stylesheet" type="text/css"
-	href="tmp/plugins/OwlCarousel2-2.2.1/animate.css">
-<link rel="stylesheet" type="text/css"
-	href="tmp/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
-<link rel="stylesheet" type="text/css"
-	href="tmp/styles/categories_styles.css">
-<link rel="stylesheet" type="text/css"
-	href="tmp/styles/categories_responsive.css">
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+</style>
+<!-- Title  -->
+<title>CKEA</title>
+
+<!-- Favicon  -->
+<link rel="icon" href="tmp2/img/core-img/CKEAfavicon.ico">
+
+<!-- Core Style CSS -->
+<link rel="stylesheet" href="tmp2/css/core-style2.css">
+<link rel="stylesheet" href="tmp2/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
+
 <body>
-	<div class="super_container">
+    <!-- Search Wrapper Area Start -->
+    <div class="search-wrapper section-padding-100">
+        <div class="search-close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="search-content">
+                        <form action="#" method="get">
+                            <input type="search" name="search" id="search" placeholder="Type your keyword...">
+                            <button type="submit"><img src="tmp2/img/core-img/search.png" alt=""></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search Wrapper Area End -->
 
-		<!-- Header -->
+    <!-- ##### Main Content Wrapper Start ##### -->
+    <div class="main-content-wrapper d-flex clearfix">
 
-		<header class="header trans_300">
+        <!-- Mobile Nav (max width 767px)-->
+        <div class="mobile-nav">
+            <!-- Navbar Brand -->
+            <div class="amado-navbar-brand">
+                <a href="index.html"><img src="tmp2/img/core-img/logo.png" alt=""></a>
+            </div>
+            <!-- Navbar Toggler -->
+            <div class="amado-navbar-toggler">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
 
-			<!-- Top Navigation -->
+        <!-- Header Area Start -->
+        <header class="header-area clearfix">
+            <!-- Close Icon -->
+            <div class="nav-close">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </div>
+            <!-- Logo -->
+            <div class="logo">
+                <a href="<%=request.getContextPath()%>/Main.jsp"><img src="tmp2/img/core-img/CKEALOGO.png"></a>
+            </div>
+            <!-- Amado Nav -->
+            <nav class="amado-nav">
+                <ul>
+                    <li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
+					<li class="active"><a href="<%=request.getContextPath()%>/customerGoodslist2.jsp">Shop</a></li>
+					<li><a href="#">Community</a></li>
+					<li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+			<br>
+			<br>
+            <!-- Cart Menu -->
+            <div class="cart-fav-search mb-30">
+                <a href="#" class="search-nav">Search</a>
+             <%
+             	if(session.getAttribute("id") == null){
+             %>  
+                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="cart-nav">Cart<span>(0)</span></a>
+                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="fav-nav">MyPage</a>
+            <%
+             	} else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer") ){
+            %>
+            	<a href="<%=request.getContextPath()%>/Main.jsp" class="cart-nav">Cart<span>(0)</span></a>
+                <a href="<%=request.getContextPath()%>/customerIndex.jsp" class="fav-nav">MyPage</a>
+            <%
+             	} 
+            %>
+            <%
+         		if(session.getAttribute("id") != null && session.getAttribute("user").equals("employee")){
+            %>	
+            	<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="fav-nav">AdminPage</a>
+            <%
+         		}
+            %>
+            </div>
+			<%
+             	if(session.getAttribute("id") != null){
+            %>
+			<h5 style="font-family: 'Jua', sans-serif;"><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님</h5>
+			<%
+             	}
+			%>
+			<!-- 로그인 아이디 -->
+            
+            <!-- Button Group -->
+            <div class="amado-btn-group mt-30 mb-100">
+             <%
+             	if(session.getAttribute("id") == null){
+             %>  
+                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="btn amado-btn mb-15">Log In</a>
+            <%
+             	} else if(session.getAttribute("id") != null){
+            %>
+            	<a href="<%=request.getContextPath()%>/LogOut.jsp" class="btn amado-btn mb-15">Log Out</a>
+            <%
+             	}
+            %>
+            </div>
 
-			<div class="top_nav">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-6"></div>
-						<div class="col-md-6 text-right">
-							<div class="top_nav_right">
-								<ul class="top_nav_menu">
+            <!-- Social Button -->
+            <div class="social-info d-flex justify-content-between">
+                <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            </div>
+        </header>
+        <!-- Header Area End -->
 
-									<!-- Currency / Language / My Account -->
+        <div class="shop_sidebar_area">
 
-									<li class="currency"><a href="#"> usd <i
-											class="fa fa-angle-down"></i>
-									</a>
-										<ul class="currency_selection">
-											<li><a href="#">cad</a></li>
-											<li><a href="#">aud</a></li>
-											<li><a href="#">eur</a></li>
-											<li><a href="#">gbp</a></li>
-										</ul></li>
-									<li class="language"><a href="#"> English <i
-											class="fa fa-angle-down"></i>
-									</a>
-										<ul class="language_selection">
-											<li><a href="#">French</a></li>
-											<li><a href="#">Italian</a></li>
-											<li><a href="#">German</a></li>
-											<li><a href="#">Spanish</a></li>
-										</ul></li>
-									<li class="account"><a href="#"> My Account <i
-											class="fa fa-angle-down"></i>
-									</a>
-										<ul class="account_selection">
-											<li><a href="#"><i class="fa fa-sign-in"
-													aria-hidden="true"></i>Sign In</a></li>
-											<li><a href="#"><i class="fa fa-user-plus"
-													aria-hidden="true"></i>Register</a></li>
-										</ul></li>
+            <!-- ##### Single Widget ##### -->
+            <div class="widget catagory mb-50">
+                <!-- Widget Title -->
+                <h6 class="widget-title mb-30">Catagories</h6>
+
+                <!--  Catagories  -->
+                <div class="catagories-menu">
+                    <ul>
+                        <li><a style="font-family: 'Jua', sans-serif;" href="<%=request.getContextPath()%>/customerGoodslist.jsp">인기순</a></li>
+						<li><a style="font-family: 'Jua', sans-serif;" href="#">최신순 </a></li>
+						<li><a style="font-family: 'Jua', sans-serif;" href="">판매량순</a></li>
+						<li><a style="font-family: 'Jua', sans-serif;" href="#">높은가격 순</a></li>
+						<li><a style="font-family: 'Jua', sans-serif;" href="#">낮은 가격순</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="amado_product_area section-padding-100">
+            <div class="container-fluid">
+
+                <div class="row">
+                    
+                    <div class="col-12">
+                        <div class="product-topbar d-xl-flex align-items-end justify-content-between">
+                            <!-- Sorting -->
+                            <div class="product-sorting d-flex">
+                                <div class="view-product d-flex align-items-center">
+                                    <p>View</p>
+                                    <form action="#" method="get">
+                                        <select name="select" id="viewProduct">
+                                            <option value="value">20</option>
+                                            <option value="<%=request.getContextPath()%>/customerGoodslist2.jsp?ROW_PER_PAGE=40">40</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="row">
+								<div class="col-2">
+								</div>
+								<div class="col-8"></div>
+								<div class="col-2">
+								<ul class="pagination justify-content-end">
+									<%
+									if (currentPage > 1) {
+									%>
+									<li class="page-item"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=currentPage - 1%>">이전</a>
+									</li>
+									<%
+									}
+
+									// 숫자페이징
+									for (int i = startPage; i <= endPage; i++) {
+									if (i == currentPage) {
+									%>
+									<li class="page-item active"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=i%>"><%=i%></a>
+									</li>
+									<%
+									} else {
+									%>
+									<li class="page-item"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=i%>"><%=i%></a>
+									</li>
+									<%
+									}
+									}
+
+									if (currentPage < lastPage) {
+									%>
+									<li class="page-item"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=currentPage + 1%>">다음</a>
+									</li>
+									<%
+									}
+									%>
 								</ul>
 							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Main Navigation -->
-
-			<div class="main_nav_container">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-12 text-right">
-							<div class="logo_container">
-								<a href="#">woong<span>shop</span></a>
 							</div>
-							<nav class="navbar">
-								<ul class="navbar_menu">
-									<li><a href="index.html">home</a></li>
-									<li><a href="#">shop</a></li>
-									<li><a href="#">promotion</a></li>
-									<li><a href="#">pages</a></li>
-									<li><a href="#">blog</a></li>
-									<li><a href="contact.html">contact</a></li>
-								</ul>
-								<ul class="navbar_user">
-									<li><a href="#"><i class="fa fa-search"
-											aria-hidden="true"></i></a></li>
-									<li><a href="#"><i class="fa fa-user"
-											aria-hidden="true"></i></a></li>
-									<li class="checkout"><a href="#"> <i
-											class="fa fa-shopping-cart" aria-hidden="true"></i> <span
-											id="checkout_items" class="checkout_items">0</span>
-									</a></li>
-								</ul>
-								<div class="hamburger_container">
-									<i class="fa fa-bars" aria-hidden="true"></i>
-								</div>
-							</nav>
-						</div>
-					</div>
-				</div>
-			</div>
+							<br>
+                <div class="row">
 
-		</header>
+                    <!-- Single Product Area -->
+                   <%
+						for (Map<String, Object> m : list) {
+					%>
+                    <div class="col-12 col-sm-6 col-md-12 col-xl-6">
+                        <div class="single-product-wrapper">
+                            <!-- Product Image -->
+                            <div class="product-img">
+                                <a
+									href="<%=request.getContextPath()%>/GoodslistOne.jsp?goodsNo=<%=m.get("goodsNo")%>"><img
+									src='<%=request.getContextPath()%>/upload/<%=m.get("fileName")%>'>
+								</a>
+                                <!-- <!-- Hover Thumb -->
+                               <!--  <img class="hover-img" src="img/product-img/product2.jpg" alt=""> -->
+                            </div>
 
-		<div class="fs_menu_overlay"></div>
+                            <!-- Product Description -->
+                            <div class="product-description d-flex align-items-center justify-content-between">
+                                <!-- Product Meta Data -->
+                                <div class="product-meta-data">
+                                    <div class="line"></div>
+                                    <p class="product-price"><%=m.get("goodsPrice")%></p>
+                                    <a href="product-details.html">
+                                        <h6><%=m.get("goodsName")%></h6>
+                                    </a>
+                                </div>
+                                <!-- Ratings & Cart -->
+                                <div class="ratings-cart text-right">
+                                    <div class="ratings">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="cart">
+                                        <a href="cart.html" data-toggle="tooltip" data-placement="left" title="Add to Cart"><img src="img/core-img/cart.png" alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<%
+						}
+					%>
+                </div>
 
-		<!-- Hamburger Menu -->
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Pagination -->
+                        <nav aria-label="navigation">
+                            <ul class="pagination justify-content-end mt-50">
+                                <li class="page-item active"><a class="page-link" href="#">01.</a></li>
+                                <li class="page-item"><a class="page-link" href="#">02.</a></li>
+                                <li class="page-item"><a class="page-link" href="#">03.</a></li>
+                                <li class="page-item"><a class="page-link" href="#">04.</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Main Content Wrapper End ##### -->
 
-		<div class="hamburger_menu">
-			<div class="hamburger_close">
-				<i class="fa fa-times" aria-hidden="true"></i>
-			</div>
-			<div class="hamburger_menu_content text-right">
-				<ul class="menu_top_nav">
-					<li class="menu_item has-children"><a href="#"> usd <i
-							class="fa fa-angle-down"></i>
-					</a>
-						<ul class="menu_selection">
-							<li><a href="#">cad</a></li>
-							<li><a href="#">aud</a></li>
-							<li><a href="#">eur</a></li>
-							<li><a href="#">gbp</a></li>
-						</ul></li>
-					<li class="menu_item has-children"><a href="#"> English <i
-							class="fa fa-angle-down"></i>
-					</a>
-						<ul class="menu_selection">
-							<li><a href="#">French</a></li>
-							<li><a href="#">Italian</a></li>
-							<li><a href="#">German</a></li>
-							<li><a href="#">Spanish</a></li>
-						</ul></li>
-					<li class="menu_item has-children"><a href="#"> My Account
-							<i class="fa fa-angle-down"></i>
-					</a>
-						<ul class="menu_selection">
-							<li><a href="#"><i class="fa fa-sign-in"
-									aria-hidden="true"></i>Sign In</a></li>
-							<li><a href="#"><i class="fa fa-user-plus"
-									aria-hidden="true"></i>Register</a></li>
-						</ul></li>
-					<li class="menu_item"><a href="#">home</a></li>
-					<li class="menu_item"><a href="#">shop</a></li>
-					<li class="menu_item"><a href="#">promotion</a></li>
-					<li class="menu_item"><a href="#">pages</a></li>
-					<li class="menu_item"><a href="#">blog</a></li>
-					<li class="menu_item"><a href="#">contact</a></li>
-				</ul>
-			</div>
-		</div>
+    <!-- ##### Newsletter Area Start ##### -->
+    <section class="newsletter-area section-padding-100-0">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Newsletter Text -->
+                <div class="col-12 col-lg-6 col-xl-7">
+                    <div class="newsletter-text mb-100">
+                        <h2>Subscribe for a <span>25% Discount</span></h2>
+                        <p>Nulla ac convallis lorem, eget euismod nisl. Donec in libero sit amet mi vulputate consectetur. Donec auctor interdum purus, ac finibus massa bibendum nec.</p>
+                    </div>
+                </div>
+                <!-- Newsletter Form -->
+                <div class="col-12 col-lg-6 col-xl-5">
+                    <div class="newsletter-form mb-100">
+                        <form action="#" method="post">
+                            <input type="email" name="email" class="nl-email" placeholder="Your E-mail">
+                            <input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Newsletter Area End ##### -->
 
-		<div class="container product_section_container">
-			<div class="row">
-				<div class="col product_section clearfix">
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer_area clearfix">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-lg-4">
+                    <div class="single_widget_area">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="index.html"><img src="img/core-img/logo2.png" alt=""></a>
+                        </div>
+                        <!-- Copywrite Text -->
+                        <p class="copywrite"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> & Re-distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-lg-8">
+                    <div class="single_widget_area">
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <nav class="navbar navbar-expand-lg justify-content-end">
+                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#footerNavContent" aria-controls="footerNavContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+                                <div class="collapse navbar-collapse" id="footerNavContent">
+                                    <ul class="navbar-nav ml-auto">
+                                        <li class="nav-item active">
+                                            <a class="nav-link" href="index.html">Home</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="shop.html">Shop</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="product-details.html">Product</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="cart.html">Cart</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="checkout.html">Checkout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area End ##### -->
 
-					<!-- Breadcrumbs -->
+    <!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
+    <script src="tmp2/js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="tmp2/js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="tmp2/js/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="tmp2/js/plugins.js"></script>
+    <!-- Active js -->
+    <script src="tmp2/js/active.js"></script>
 
-					<div>
-						<br>
-						<hr>
-					</div>
-					<!-- Sidebar -->
-
-					<div class="sidebar">
-						<div class="sidebar_section">
-							<div class="sidebar_title">
-								<h5>WoongShop</h5>
-							</div>
-							<ul class="sidebar_categories">
-								<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">인기순</a></li>
-								<li><a href="#">최신순 </a></li>
-								<li><a href="">판매량순</a></li>
-								<li><a href="#">높은가격 순</a></li>
-								<li><a href="#">낮은 가격순</a></li>
-							</ul>
-						</div>
-					</div>
-
-					<!-- Main Content -->
-					<div class="main_content">
-						<!-- Products -->
-						<div class="products_iso">
-							
-								<div class="product_sorting_container product_sorting_container_top">
-									<ul class="product_sorting">
-										<li>
-											<span class="type_sorting_text">Default Sorting</span>
-											<i class="fa fa-angle-down"></i>
-											<ul class="sorting_type">
-												<li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Default Sorting</span></li>
-												<li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Price</span></li>
-												<li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Product Name</span></li>
-											</ul>
-										</li>
-										<li>
-											<span>Show</span>
-											<span class="num_sorting_text">6</span>
-											<i class="fa fa-angle-down"></i>
-											<ul class="sorting_num">
-												<li class="num_sorting_btn"><span>1</span></li>
-												<li class="num_sorting_btn"><span>12</span></li>
-												<li class="num_sorting_btn"><span>24</span></li>
-											</ul>
-										</li>
-									</ul>
-									<div class="pages d-flex flex-row align-items-center">
-										<div class="page_current">
-											<span>1</span>
-											<ul class="page_selection">
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-											</ul>
-										</div>
-										<div class="page_total"><span>of</span> 3</div>
-										<div id="next_page" class="page_next"><a href="#"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></div>
-									</div>
-
-								</div>
-
-								<br>
-							<div class="row">
-								<!-- Product 1 -->
-								<%
-								int i = 1;
-								for (Map<String, Object> m : list) {
-								%>
-								<div class="product-item men">
-									<div class="product discount product_filter">
-										<div class="product_image">
-											<a href="<%=request.getContextPath()%>/GoodslistOne.jsp?goodsNo=<%=m.get("goodsNo")%>"><img
-												src='<%=request.getContextPath()%>/upload/<%=m.get("fileName")%>'>
-										</a>
-										</div>
-										<div class="product_info">
-											<div class="product_name"><%=m.get("goodsName")%></div>
-											<div class="product_price"><%=m.get("goodsPrice")%></div>
-											<div class="product_soldOut">품절상태 : <%=m.get("soldOut")%></div>
-										</div>
-									</div>
-									<div class="red_button add_to_cart_button">
-										<a href="#">add to cart</a>
-									</div>
-								</div>
-								<%
-								if (i % 4 == 0) {
-								%>
-								<div class=row>
-									<br> <br>
-								</div>
-								<%
-								}
-								i++;
-								}
-								%>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<br>
-		<!-- Benefit -->
-
-		<div class="benefit">
-			<div class="container">
-				<div class="row benefit_row">
-					<div class="col-lg-3 benefit_col">
-						<div class="benefit_item d-flex flex-row align-items-center">
-							<div class="benefit_icon">
-								<i class="fa fa-truck" aria-hidden="true"></i>
-							</div>
-							<div class="benefit_content">
-								<h6>free shipping</h6>
-								<p>Suffered Alteration in Some Form</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 benefit_col">
-						<div class="benefit_item d-flex flex-row align-items-center">
-							<div class="benefit_icon">
-								<i class="fa fa-money" aria-hidden="true"></i>
-							</div>
-							<div class="benefit_content">
-								<h6>cach on delivery</h6>
-								<p>The Internet Tend To Repeat</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 benefit_col">
-						<div class="benefit_item d-flex flex-row align-items-center">
-							<div class="benefit_icon">
-								<i class="fa fa-undo" aria-hidden="true"></i>
-							</div>
-							<div class="benefit_content">
-								<h6>45 days return</h6>
-								<p>Making it Look Like Readable</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 benefit_col">
-						<div class="benefit_item d-flex flex-row align-items-center">
-							<div class="benefit_icon">
-								<i class="fa fa-clock-o" aria-hidden="true"></i>
-							</div>
-							<div class="benefit_content">
-								<h6>opening all week</h6>
-								<p>8AM - 09PM</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Newsletter -->
-
-		<div class="newsletter">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-6">
-						<div
-							class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-							<h4>Newsletter</h4>
-							<p>Subscribe to our newsletter and get 20% off your first
-								purchase</p>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div
-							class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-							<input id="newsletter_email" type="email"
-								placeholder="Your email" required="required"
-								data-error="Valid email is required.">
-							<button id="newsletter_submit" type="submit"
-								class="newsletter_submit_btn trans_300" value="Submit">subscribe</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Footer -->
-		<footer class="footer">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-6">
-						<div
-							class="footer_nav_container d-flex flex-sm-row flex-column align-items-center justify-content-lg-start justify-content-center text-center">
-							<ul class="footer_nav">
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">FAQs</a></li>
-								<li><a href="contact.html">Contact us</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<div
-							class="footer_social d-flex flex-row align-items-center justify-content-lg-end justify-content-center">
-							<ul>
-								<li><a href="#"><i class="fa fa-facebook"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-instagram"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-skype"
-										aria-hidden="true"></i></a></li>
-								<li><a href="#"><i class="fa fa-pinterest"
-										aria-hidden="true"></i></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="footer_nav_container">
-							<div class="cr">
-								©2018 All Rights Reserverd. Template by <a href="#">Colorlib</a>
-								&amp; distributed by <a href="https://themewagon.com">ThemeWagon</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-	</div>
-	<script src="tmp/js/jquery-3.2.1.min.js"></script>
-	<script src="tmp/styles/bootstrap4/popper.js"></script>
-	<script src="tmp/styles/bootstrap4/bootstrap.min.js"></script>
-	<script src="tmp/plugins/Isotope/isotope.pkgd.min.js"></script>
-	<script src="tmp/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
-	<script src="tmp/plugins/easing/easing.js"></script>
-	<script src="./tmp/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-	<script src="./tmp/js/categories_custom.js"></script>
 </body>
+
 </html>

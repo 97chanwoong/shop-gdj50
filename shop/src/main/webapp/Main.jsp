@@ -75,7 +75,7 @@
             <nav class="amado-nav">
                 <ul>
                     <li class="active"><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-					<li><a href="shop.html">Shop</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerGoodslist2.jsp">Shop</a></li>
 					<li><a href="#">Community</a></li>
 					<li><a href="#">Contact</a></li>
                 </ul>

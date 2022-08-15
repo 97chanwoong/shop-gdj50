@@ -121,7 +121,7 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/admin/adminOrderlist2.jsp">주문 관리</a>
+								    href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp">주문 관리</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">

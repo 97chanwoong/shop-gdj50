@@ -136,7 +136,7 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 상세보기</h5>
+							<h5 style="font-family: 'Jua', sans-serif;"><%=customerId%>님의 주문 상세보기</h5>
 							<br>
 							<%
 								if (request.getParameter("errorMsg") != null) {
@@ -183,7 +183,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
+									<a href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">

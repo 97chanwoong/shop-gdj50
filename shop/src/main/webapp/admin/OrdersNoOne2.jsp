@@ -155,10 +155,10 @@
 							<hr>
 							<div class="row">
 							<div class="col-1">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-30">목록</a>
+									<a href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp" class="btn amado-btn w-30">목록</a>
 							</div>
-							<div class="col-10"></div>
-							<div class="col-1">
+							<div class="col-9"></div>
+							<div class="col-2">
 							<a href="<%=request.getContextPath()%>/updateOrdersState.jsp" class="btn amado-btn w-30">수정</a>
 							</div>
 							</div>
