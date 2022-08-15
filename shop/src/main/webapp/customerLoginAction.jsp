@@ -45,7 +45,7 @@
 	// 재요청
 	if(loginCustomer == null){
 		System.out.println("로그인 실패");
-		response.sendRedirect(request.getContextPath() + "/loginForm.jsp?errorMsg=login Fail");
+		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp?errorMsg=login Fail");
 		return;
 	} else {
 		System.out.println("로그인 성공");

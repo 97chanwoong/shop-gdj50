@@ -10,9 +10,42 @@ import vo.*;
 public class GoodsService {
 	private GoodsDao goodsDao;
 	private GoodsImgDao goodsImgDao;
-
 	// 고객상품리스트액션에서 호출되는 메서드
-	public List<Map<String, Object>> getCustomerGoodsListByPage(int rowPerPage, int currentPage/* ,int check */){
+	public int modifyListView(int goodsNo) {
+		int row = 0;
+		Connection conn = null;
+		this.goodsDao = new GoodsDao();
+		
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);
+			row = goodsDao.updateListView(conn, goodsNo);
+			if(row == 0) {
+				throw new Exception();
+			} else {
+				System.out.println("실행성공");
+			}
+			conn.commit();
+		} catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return row;
+	}
+	// 고객상품리스트액션에서 호출되는 메서드
+	public List<Map<String, Object>> getCustomerGoodsListByPage(int rowPerPage, int currentPage ,int check){
 		List<Map<String, Object>> list = new ArrayList<>();
 		// GoodsDao 호출
 		this.goodsDao = new GoodsDao();
@@ -22,7 +55,7 @@ public class GoodsService {
 		
 		try {
 			conn = new DBUtil().getConnection();
-			list = goodsDao.selectCustomerGoodsListByPage(conn, rowPerPage, beginRow/* ,check */);
+			list = goodsDao.selectCustomerGoodsListByPage(conn, rowPerPage, beginRow ,check);
 			if(list != null) {
 				System.out.print("실행성공");
 			} else {

@@ -4,34 +4,34 @@
 <%@ page import="service.GoodsService"%>
 <%
 // controller : java class <- Servlet
-int ROW_PER_PAGE = 20;
-if (request.getParameter("ROW_PER_PAGE") != null) {
-	ROW_PER_PAGE = Integer.parseInt(request.getParameter("ROW_PER_PAGE"));
-}
-int currentPage = 1;
-if (request.getParameter("currentPage") != null) {
-	currentPage = Integer.parseInt(request.getParameter("currentPage"));
-}
-
-GoodsService goodsService = new GoodsService();
-
-/* // 리스트 보여지는 형식
-int check = 0;
-if (request.getParameter("check") != null) {
-	check = Integer.parseInt(request.getParameter("check"));
-	System.out.println(check + "리스트 확인 테스트용");
-} */
-
-// 마지막 페이지 메서드
-int lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
-// 숫자페이징
-int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-// endPage 는 lastPage보다 크면 안된다
-endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
-
-// list
-List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(ROW_PER_PAGE, currentPage/* ,check */);
+	int ROW_PER_PAGE = 20;
+	if (request.getParameter("ROW_PER_PAGE") != null) {
+		ROW_PER_PAGE = Integer.parseInt(request.getParameter("ROW_PER_PAGE"));
+	}
+	int currentPage = 1;
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	GoodsService goodsService = new GoodsService();
+	
+	// 리스트 보여지는 형식
+	int check = 0;
+	if (request.getParameter("check") != null) {
+		check = Integer.parseInt(request.getParameter("check"));
+		System.out.println(check + "리스트 확인 테스트용");
+	} 
+	
+	// 마지막 페이지 메서드
+	int lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
+	// 숫자페이징
+	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
+	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
+	// endPage 는 lastPage보다 크면 안된다
+	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
+	
+	// list
+	List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(ROW_PER_PAGE, currentPage, check);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -198,13 +198,18 @@ List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(ROW_PER
 				<div class="catagories-menu">
 					<ul>
 						<li><a style="font-family: 'Jua', sans-serif;"
-							href="<%=request.getContextPath()%>/customerGoodslist.jsp">인기순</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;" href="#">최신순
+							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=0">인기순
+							</a></li>
+						<li><a style="font-family: 'Jua', sans-serif;"
+							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=1">최신순
 						</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;" href="">판매량순</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;" href="#">높은
+						<li><a style="font-family: 'Jua', sans-serif;"
+							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=2">판매량순</a></li>
+						<li><a style="font-family: 'Jua', sans-serif;"
+							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=3">높은
 								가격순</a></li>
-						<li><a style="font-family: 'Jua', sans-serif;" href="#">낮은
+						<li><a style="font-family: 'Jua', sans-serif;"
+							href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=4">낮은
 								가격순</a></li>
 					</ul>
 				</div>

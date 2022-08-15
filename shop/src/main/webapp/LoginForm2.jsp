@@ -93,19 +93,19 @@
 		<div class="login-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
 					<div class="col-12 col-lg-6">
 						<div class="login-summary">
 							<h5 style="font-family: 'Jua', sans-serif;">고객 로그인</h5>
 							<br>
 							<form id="customerForm" method="post"
 								action="<%=request.getContextPath()%>/customerLoginAction.jsp">
+								<%
+								if (request.getParameter("errorMsg") != null) {
+								%>
+								<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+								<%
+								}
+								%>
 								<div class="form-group">
 									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="customerId"
 										id="customerId" placeholder="아이디">
@@ -127,19 +127,19 @@
 							</form>
 						</div>
 					</div>
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
 					<div class="col-12 col-lg-6">
 						<div class="login-summary">
 							<h5 style="font-family: 'Jua', sans-serif;">관리자 로그인</h5>
 							<br>
 							<form id="employeeForm" method="post"
 								action="<%=request.getContextPath()%>/employeeLoginAction.jsp">
+									<%
+										if (request.getParameter("errorMsg") != null) {
+									%>
+											<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+									<%
+										}
+									%>
 								<div class="form-group">
 									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="employeeId"
 										id="employeeId" placeholder="아이디">
