@@ -271,7 +271,7 @@
 								<div class="view-product d-flex align-items-center">
 									<p>View</p>
 									<select name="select" id="viewProduct"
-										onchange="window.open(value,'blank');">
+										onchange="window.open(value,'_self');">
 										<%
 											if (ROW_PER_PAGE == 20) {
 										%>
