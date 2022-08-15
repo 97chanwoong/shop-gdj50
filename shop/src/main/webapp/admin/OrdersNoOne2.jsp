@@ -6,34 +6,19 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
 	}
 	
-	// 페이징
-	int currentPage = 1; // 현재 페이지
-	int ROW_PER_PAGE = 10; // 10개씩
+	// 주문번호
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	System.out.println(ordersNo + "<-- ordersNo");
 	
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-	}
-	
-	// 메서드를 위한 객체 생성
+	// 주문상품 상세 보기 메서드
 	OrdersService ordersService = new OrdersService();
-	
-	// 마지막 페이지 메서드
-	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
-	
-	// 숫자페이징
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-	// endPage 는 lastPage보다 크면 안된다
-	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
-	
-	// 리스트
-	List<Map<String, Object>> list = ordersService.getOrdersList(ROW_PER_PAGE, currentPage);
+	Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 %>
 
 <!DOCTYPE html>
@@ -132,27 +117,20 @@
 		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 리스트</h5>
+							<h5 style="font-family: 'Jua', sans-serif;">주문 상세보기</h5>
 							<br>
 							<table class="table table-borderless text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<th>주문번호</th>
 										<th>상품번호</th>
 										<th>상품이름</th>
-										<th>고객이름</th>
-										<th>상품수량</th>
 										<th>상품가격</th>
+										<th>고객이름</th>
+										<th>고객아이디</th>
+										<th>고객연락처</th>
 										<th>배송주소</th>
 										<th>배송현황</th>
 										<th>수정날짜</th>
@@ -160,75 +138,28 @@
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
-									
-									<%
-									for(Map<String, Object> m : list){
-									%>
-									
 									<tr>
-										<td><a style="font-size:20px;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
-										<td><%=m.get("goodsNo")%></td>
-										<td><%=m.get("goodsName")%></td>
-										<td><a style="font-size:20px;" href="<%=request.getContextPath()%>/admin/customerOrderslist2.jsp?customerId=<%=m.get("customerId")%>"><%=m.get("customerId")%></a></td>
-										<td><%=m.get("ordersQuantity")%></td>
-										<td><%=m.get("ordersPrice")%></td>
-										<td><%=m.get("ordersAddress")%></td>
-										<td><%=m.get("ordersState")%></td>
-										<td><%=m.get("updateDate")%></td>
-										<td><%=m.get("createDate")%></td>
+										<td><%=map.get("goodsNo")%></td>
+										<td><%=map.get("goodsName")%></td>
+										<td><%=map.get("goodsPrice")%></td>
+										<td><%=map.get("customerName")%></td>
+										<td><%=map.get("customerId")%></td>
+										<td><%=map.get("customerTelephone")%></td>
+										<td><%=map.get("ordersAddress")%></td>
+										<td><%=map.get("ordersState")%></td>
+										<td><%=map.get("updateDate")%></td>
+										<td><%=map.get("createDate")%></td>
 									</tr>
-									<%
-									}
-									%>
 								</tbody>
 							</table>
 							<hr>
 							<div class="row">
-								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
-								</div>
-								<div class="col-8"></div>
-								<div class="col-2">
-								<ul class="pagination justify-content-end">
-									<%
-									if (currentPage > 1) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
-									</li>
-									<%
-									}
-
-									// 숫자페이징
-									for (int i = startPage; i <= endPage; i++) {
-									if (i == currentPage) {
-									%>
-									<li class="page-item active"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									} else {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									}
-									}
-
-									if (currentPage < lastPage) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
-									</li>
-									<%
-									}
-									%>
-								</ul>
+							<div class="col-1">
+									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-30">목록</a>
+							</div>
+							<div class="col-10"></div>
+							<div class="col-1">
+							<a href="<%=request.getContextPath()%>/updateOrdersState.jsp" class="btn amado-btn w-30">수정</a>
 							</div>
 							</div>
 						</div>

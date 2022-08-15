@@ -5,20 +5,20 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-}
-
-// 주문번호
-int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
-System.out.println(ordersNo + "<-- ordersNo");
-
-// 주문상품 상세 보기 메서드
-OrdersService ordersService = new OrdersService();
-Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	}
+	
+	// 주문번호
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	System.out.println(ordersNo + "<-- ordersNo");
+	
+	// 주문상품 상세 보기 메서드
+	OrdersService ordersService = new OrdersService();
+	Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 %>
 <!DOCTYPE html>
 <html lang="ko">

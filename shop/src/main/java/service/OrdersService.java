@@ -40,14 +40,22 @@ public class OrdersService {
 		try {
 			conn = new DBUtil().getConnection();
 			totalRow = ordersDao.selectOrdersCount(conn);
-			lastPage = totalRow / rowPerPage;
-			if(totalRow % rowPerPage != 0) {
-				lastPage += 1;
+			lastPage = (int) Math.ceil (totalRow / (double)rowPerPage);
+			if(lastPage == 0) {
+				throw new Exception();
 			}
-		} catch (Exception e) {
+			conn.commit();
+		} catch(Exception e) {
 			e.printStackTrace();
+			// 실패라면 rollback
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		} finally {
-			if (conn != null) {
+			// DB 자원해제
+			if(conn != null) {
 				try {
 					conn.close();
 				} catch (Exception e) {

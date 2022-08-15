@@ -12,6 +12,8 @@
 		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
 	}
 	
+	String customerId = request.getParameter("customerId");
+	
 	// 페이징
 	int currentPage = 1; // 현재 페이지
 	int ROW_PER_PAGE = 10; // 10개씩
@@ -33,7 +35,7 @@
 	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
 	
 	// 리스트
-	List<Map<String, Object>> list = ordersService.getOrdersList(ROW_PER_PAGE, currentPage);
+	List<Map<String, Object>> list = ordersService.getOrdersListByCustomer(ROW_PER_PAGE, currentPage, customerId);
 %>
 
 <!DOCTYPE html>
@@ -132,17 +134,17 @@
 		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 리스트</h5>
+							<h5 style="font-family: 'Jua', sans-serif;">주문 상세보기</h5>
 							<br>
+							<%
+								if (request.getParameter("errorMsg") != null) {
+							%>
+									<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+							<%
+								}
+							%>
 							<table class="table table-borderless text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
@@ -150,7 +152,6 @@
 										<th>주문번호</th>
 										<th>상품번호</th>
 										<th>상품이름</th>
-										<th>고객이름</th>
 										<th>상품수량</th>
 										<th>상품가격</th>
 										<th>배송주소</th>
@@ -160,16 +161,13 @@
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
-									
 									<%
-									for(Map<String, Object> m : list){
+										for(Map<String, Object> m : list){
 									%>
-									
 									<tr>
 										<td><a style="font-size:20px;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
 										<td><%=m.get("goodsNo")%></td>
 										<td><%=m.get("goodsName")%></td>
-										<td><a style="font-size:20px;" href="<%=request.getContextPath()%>/admin/customerOrderslist2.jsp?customerId=<%=m.get("customerId")%>"><%=m.get("customerId")%></a></td>
 										<td><%=m.get("ordersQuantity")%></td>
 										<td><%=m.get("ordersPrice")%></td>
 										<td><%=m.get("ordersAddress")%></td>
@@ -178,7 +176,7 @@
 										<td><%=m.get("createDate")%></td>
 									</tr>
 									<%
-									}
+										}
 									%>
 								</tbody>
 							</table>
