@@ -15,11 +15,11 @@ import vo.Goods;
 
 public class GoodsDao {
 	//고객이 상품리스트를 확인할 때 조회수를 늘려주는 쿼리
-	/*
-	 * public void updateCustomerListView(int goodsNo) {
-	 * 
-	 * }
-	 */
+	
+//	  public void updateCustomerListView(int goodsNo) {
+//	  
+//	  }
+	 
 	// 고객 상품리스트 페이지에서 사용
 
 	public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn, int rowPerPage,
