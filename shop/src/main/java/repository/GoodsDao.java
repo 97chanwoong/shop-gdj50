@@ -85,7 +85,7 @@ public class GoodsDao {
 		}
 		return list;
 	}
-
+	// 상품 리스트
 	public List<Goods> selectGoodsListByPage(Connection conn, int rowPerPage, int beginRow) throws Exception {
 		List<Goods> list = new ArrayList<Goods>();
 		String sql = "SELECT goods_no goodsNo, goods_name goodsName, goods_price goodsPrice, update_date updateDate, create_date createDate, sold_out soldOut FROM goods ORDER BY goods_no DESC limit ?, ?";
@@ -167,14 +167,32 @@ public class GoodsDao {
 		}
 		return keyId;
 	}
-	// 상품 품절 변경
-	/*
-	 * public int updateGoodsSoldOut(Connection conn, int goodsNo, String soldOut)
-	 * throws Exception { int row = 0;
-	 * 
-	 * }
-	 */
-
+	// 상품 수정
+	public int updateGoodsOne(Connection conn, Goods goods )throws Exception { 
+		int row = 0;
+		String sql = "UPDATE goods SET goods_name = ?, goods_price = ?, sold_out = ?, update_date = NOW() WHERE goods_no = ?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, goods.getGoodsName());
+			stmt.setInt(2, goods.getGoodsPrice());
+			stmt.setString(3, goods.getSoldOut());
+			stmt.setInt(4, goods.getGoodsNo());
+			// 디버깅
+			System.out.println(stmt + "<-- stmt");
+			row = stmt.executeUpdate();
+			if(row == 0) {
+				throw new Exception(); // 예외처리
+			}
+		} finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+	
+	// 상품 상세보기
 	public Map<String, Object> selectGoodsAndImgOne(Connection conn, int goodsNo) throws Exception {
 		Map<String, Object> map = null;
 		String sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.update_date updateDate, g.create_date createDate, g.sold_out soldOut, gi.filename filename, gi.origin_filename originFilename, gi.content_type contentType FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_no = ?";

@@ -9,8 +9,8 @@
 		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-	} 
+		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
+	}
 	// 오더정보 받아오기
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	// 디버깅
@@ -133,11 +133,18 @@
 										class="form-control"> 
 								<br>
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="soldOut" class="form-group">재고 여부
+										for="goodsPrice" class="form-group">상품 가격
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsPrice" id="goodsPrice" type="text"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="soldOut" class="form-group">품절 여부
 								</label> 
 								<br>
 								<select id="soldOut" name="soldOut" >
-										<option value="default">-------재고 여부--------</option>
+										<option value="default">-------품절 여부--------</option>
 										<option value="Y">Y</option>
 										<option value="N">N</option>
 								</select>
@@ -245,13 +252,17 @@
 </body>
 <script>
 	$('#updateBtn').click(function(){
-		if($('#ordersAddress').val().length == "") {
-			alert('배송지를 입력하세요');
-		} else if($('#ordersState').val() == 'default') {
-			alert('배송현황을 선택하세요');
+		if($('#goodsName').val().length == "") {
+			alert('상품 이름을 입력하세요');
+		} else if($('#goodsPrice').val() == "") {
+			alert('상품 가격을 입력하세요');
+		} else if($('#soldOut').val() == 'default') {
+			alert('품절 여부를 선택하세요'); 
+		} else if($('#imgFile').val() == "") {
+			alert('파일을 선택하세요'); 
 		} else {
-			updateOrdersForm.submit();
-		}
+			updateGoodsForm.submit();
+		}	
 	});
 </script>
 </html>
