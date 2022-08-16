@@ -3,39 +3,34 @@
 <%@ page import="repository.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="service.*"%>
-<%@ page import="vo.*"%>
+<%@ page import="vo.*"%>	
 <%
 	if (session.getAttribute("id") == null) {
 		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
-	}
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	} 
+	// 오더정보 받아오기
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	String goodsName = request.getParameter("goodsName");
+	int ordersQuantity = Integer.parseInt(request.getParameter("ordersQuantity"));
+	int ordersPrice = Integer.parseInt(request.getParameter("ordersPrice"));
+	String customerName = request.getParameter("customerName");
+	String customerTelephone = request.getParameter("customerTelephone");
+	String customerId = request.getParameter("customerId");
+	String createDate = request.getParameter("createDate");
+	// 디버깅
+	System.out.println(ordersNo + "<-- ordersNo");
+	System.out.println(goodsName + "<-- goodsName");
+	System.out.println(ordersQuantity + "<-- ordersQuantity");
+	System.out.println(ordersPrice+ "<-- ordersPrice");
+	System.out.println(customerName + "<-- customerName");
+	System.out.println(customerTelephone + "<-- customerTelephone");
+	System.out.println(customerId + "<-- customerId");
+	System.out.println(createDate + "<-- createDate");
 	
-	// 페이징
-	int currentPage = 1; // 현재 페이지
-	int ROW_PER_PAGE = 10; // 10개씩
-	
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-	}
-	
-	// 메서드를 위한 객체 생성
-	OrdersService ordersService = new OrdersService();
-	
-	// 마지막 페이지 메서드
-	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
-	
-	// 숫자페이징
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-	// endPage 는 lastPage보다 크면 안된다
-	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
-	
-	// 리스트
-	List<Map<String, Object>> list = ordersService.getOrdersList(ROW_PER_PAGE, currentPage);
-%>
-
+%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -59,10 +54,8 @@
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
 <link rel="stylesheet" href="../tmp2/css/core-style5.css">
-
 <link rel="stylesheet" href="../tmp2/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -79,7 +72,7 @@
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="tmp2/img/core-img/search.png" alt="">
+								<img src="../tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -132,105 +125,97 @@
 		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
-					<div class="col-12">
+					<div class="col-12 col-sm-6">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 리스트</h5>
+							<h5 style="font-family: 'Jua', sans-serif;">주문 수정(상품정보)</h5>
+							<br> 
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="goodsName" class="form-group">상품 이름
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsName" id="goodsName" readonly="readonly" value="<%=goodsName%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="ordersPrice" class="form-group">상품 가격
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsPrice" id="goodsPrice" readonly="readonly" value="<%=ordersPrice%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="ordersQuantity" class="form-group">상품 수량
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="ordersQuantity" id="ordersQuantity" readonly="readonly" value="<%=ordersQuantity%>"
+										class="form-control"> 
+								<br>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="Order-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">주문 수정(고객정보)</h5>
+							<br> 
+							<form id="updateOrdersForm"
+								action="<%=request.getContextPath()%>/admin/updateOrdersOneAction.jsp"
+								method="post">
+								<input type="hidden" id="ordersNo" name="ordersNo" value="<%=ordersNo%>">
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="customerName" class="form-group">고객 이름
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="customerName" id="customerName" readonly="readonly" value="<%=customerName%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="customerId" class="form-group">고객 아이디
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="customerId" id="customerId" readonly="readonly" value="<%=customerId%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="customerTelephone" class="form-group" >고객 연락처
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="customerTelephone" id="customerTelephone" readonly="readonly" value="<%=customerTelephone%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="ordersAddress" class="form-group">배송 주소
+								</label> 
+								
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										type="text"
+										name="ordersAddress" id="ordersAddress"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:35px;"
+										for="ordersState">배송 현황
+								</label>
+								<br>
+								<select id="ordersState" name="ordersState" >
+										<option value="default">------- 주문상황--------</option>
+										<option value="결제대기">결제 대기</option>
+										<option value="주문완료">주문 완료</option>
+										<option value="배송준비중">배송 준비중</option>
+										<option value="배송중">배송 중</option>
+										<option value="배송완료">배송 완료</option>
+								</select>
 							<br>
-							<table class="table table-hover text-center">
-								<thead class="thead-light"
-									style="font-family: 'Jua', sans-serif;">
-									<tr>
-										<th>주문번호</th>
-										<th>상품번호</th>
-										<th>상품이름</th>
-										<th>고객이름</th>
-										<th>상품수량</th>
-										<th>상품가격</th>
-										<th>배송주소</th>
-										<th>배송현황</th>
-										<th>수정날짜</th>
-										<th>주문날짜</th>
-									</tr>
-								</thead>
-								<tbody style="font-family: 'Jua', sans-serif;">
-									
-									<%
-									for(Map<String, Object> m : list){
-									%>
-									
-									<tr>
-										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
-										<td><%=m.get("goodsNo")%></td>
-										<td><%=m.get("goodsName")%></td>
-										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/customerOrderslist2.jsp?customerId=<%=m.get("customerId")%>"><%=m.get("customerId")%></a></td>
-										<td><%=m.get("ordersQuantity")%></td>
-										<td><%=m.get("ordersPrice")%></td>
-										<td><%=m.get("ordersAddress")%></td>
-										<td><%=m.get("ordersState")%></td>
-										<td><%=m.get("updateDate")%></td>
-										<td><%=m.get("createDate")%></td>
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-							<hr>
-							<div class="row">
-								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
-								</div>
-								<div class="col-8"></div>
-								<div class="col-2">
-								<ul class="pagination justify-content-end">
-									<%
-									if (currentPage > 1) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
-									</li>
-									<%
-									}
-
-									// 숫자페이징
-									for (int i = startPage; i <= endPage; i++) {
-									if (i == currentPage) {
-									%>
-									<li class="page-item active"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									} else {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									}
-									}
-
-									if (currentPage < lastPage) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
-									</li>
-									<%
-									}
-									%>
-								</ul>
+							<br>
+							<div class="form-group">
+								<button type="reset"
+								        class="btn amado-btn w-100"
+								        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
 							</div>
-							</div>
+							<br>
+							<div class="form-group">	
+								<button id="updateBtn" type="button"
+										class="btn login-btn w-100"
+										style="font-family: 'Jua', sans-serif; font-size:30px;">주문 수정</button> 
+							</div>			       
+							</form>
 						</div>
 					</div>
 				</div>
@@ -311,4 +296,15 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
+<script>
+	$('#updateBtn').click(function(){
+		if($('#ordersAddress').val().length == "") {
+			alert('배송지를 입력하세요');
+		} else if($('#ordersState').val() == 'default') {
+			alert('배송현황을 선택하세요');
+		} else {
+			updateOrdersForm.submit();
+		}
+	});
+</script>
 </html>

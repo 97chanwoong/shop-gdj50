@@ -134,7 +134,7 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;"><%=customerId%>님의 주문 상세보기</h5>
+							<h5 style="font-family: 'Jua', sans-serif;"><%=customerId%>님의 주문 목록</h5>
 							<br>
 							<%
 								if (request.getParameter("errorMsg") != null) {
@@ -143,7 +143,7 @@
 							<%
 								}
 							%>
-							<table class="table table-borderless text-center">
+							<table class="table table-hover text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
@@ -163,7 +163,7 @@
 										for(Map<String, Object> m : list){
 									%>
 									<tr>
-										<td><a style="font-size:20px;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
+										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
 										<td><%=m.get("goodsNo")%></td>
 										<td><%=m.get("goodsName")%></td>
 										<td><%=m.get("ordersQuantity")%></td>

@@ -142,7 +142,7 @@
 						<div class="Employee-summary">
 							<h5 style="font-family: 'Jua', sans-serif;">사원 명단</h5>
 							<br>
-							<table class="table table-borderless text-center">
+							<table class="table table-hover text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>

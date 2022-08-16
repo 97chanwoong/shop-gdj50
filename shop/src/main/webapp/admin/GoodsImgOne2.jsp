@@ -5,20 +5,20 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
-		return;
-	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
-	}
-	
-	// 상품번호
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-	System.out.println(goodsNo + "<--goodsNo");
-	
-	// 상세페이지 메서드
-	GoodsService goodsService = new GoodsService();
-	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
+if (session.getAttribute("id") == null) {
+	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+	return;
+} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+	response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+}
+
+// 상품번호
+int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+System.out.println(goodsNo + "<--goodsNo");
+
+// 상세페이지 메서드
+GoodsService goodsService = new GoodsService();
+Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 %>
 
 <!DOCTYPE html>
@@ -133,6 +133,11 @@
 									alt="제품이미지">
 							</div>
 							<br>
+							<div style="text-align: right;">
+									<a href="<%=request.getContextPath()%>/admin/updateGoodsOne.jsp?goodsNo=<%=map.get("goodsNo")%>"
+										class="btn amado-btn w-30">수정</a>
+							</div>
+							<br>
 							<table class="table table-borderless text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
@@ -182,13 +187,11 @@
 							</table>
 							<hr>
 							<div class="row">
-							<div class="col-1">
-									<a href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp" class="btn amado-btn w-30">목록</a>
-							</div>
-							<div class="col-10"></div>
-							<div class="col-1">
-							<a href="<%=request.getContextPath()%>/updateSoldOut.jsp" class="btn amado-btn w-30">수정</a>
-							</div>
+								<div class="col-1">
+									<a
+										href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp"
+										class="btn amado-btn w-30">목록</a>
+								</div>
 							</div>
 						</div>
 					</div>

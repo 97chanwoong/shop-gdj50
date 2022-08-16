@@ -3,39 +3,22 @@
 <%@ page import="repository.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="service.*"%>
-<%@ page import="vo.*"%>
+<%@ page import="vo.*"%>	
 <%
 	if (session.getAttribute("id") == null) {
 		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
-	}
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	} 
+	// 오더정보 받아오기
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	// 디버깅
+	System.out.println(goodsNo + "<-- goodsNo");
 	
-	// 페이징
-	int currentPage = 1; // 현재 페이지
-	int ROW_PER_PAGE = 10; // 10개씩
+	Map<String, Object> goods = new GoodsService().getGoodsAndImgOne(goodsNo);
 	
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-	}
-	
-	// 메서드를 위한 객체 생성
-	GoodsService goodsService = new GoodsService();
-	
-	// 마지막 페이지 메서드
-    int	lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
-	
-	// 숫자페이징
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-	// endPage 는 lastPage보다 크면 안된다
-	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
-	
-	// 리스트
-	List<Goods> list = goodsService.getGoodsListByPage(ROW_PER_PAGE, currentPage);
-%>
-
+%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -47,7 +30,8 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- font -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
+	;
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -59,8 +43,7 @@
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
 <link rel="stylesheet" href="../tmp2/css/core-style4.css">
 <link rel="stylesheet" href="../tmp2/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -77,7 +60,7 @@
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="tmp2/img/core-img/search.png" alt="">
+								<img src="../tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -127,104 +110,59 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Goods-table-area section-padding-100 mb-100">
+		<div class="GoodsOne-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
 					<div class="col-12">
-						<div class="Goods-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">상품 리스트</h5>
-							<br>
-							<div style="text-align:right;">
-								<a href="<%=request.getContextPath()%>/admin/addGoodsForm2.jsp" class="btn amado-btn w-20">상품추가</a>
-							</div>
-							<br>
-							<table class="table table-hover text-center">
-								<thead class="thead-light"
-									style="font-family: 'Jua', sans-serif;">
-									<tr>
-										<th>상품번호</th>
-										<th>상품이름</th>
-										<th>상품가격</th>
-										<th>등록날짜</th>
-										<th>수정날짜</th>
-										<th>품절여부</th>
-									</tr>
-								</thead>
-								<tbody style="font-family: 'Jua', sans-serif;">
-									
-									<%
-									for (Goods g : list) {
-									%>
-									
-									<tr>
-										<td><%=g.getGoodsNo()%></td>
-										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/GoodsImgOne2.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>
-										<td><%=g.getGoodsPrice()%></td>
-										<td><%=g.getUpdateDate()%></td>
-										<td><%=g.getCreateDate()%></td>
-										<td><%=g.getSoldOut() %></td>
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-							<hr>
-							<div class="row">
-								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
+						<div class="GoodsOne-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">상품 수정</h5>
+							<br> 
+								<form action="<%=request.getContextPath()%>/admin/updateGoodsOneAction.jsp" method="post" id="updateGoodsForm" enctype="multipart/form-data">
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="goodsNo" class="form-group">상품 번호
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsNo" id="goodsNo" readonly="readonly" value="<%=goods.get("goodsNo")%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="goodsName" class="form-group">상품 이름
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsName" id="goodsName" type="text"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="soldOut" class="form-group">재고 여부
+								</label> 
+								<br>
+								<select id="soldOut" name="soldOut" >
+										<option value="default">-------재고 여부--------</option>
+										<option value="Y">Y</option>
+										<option value="N">N</option>
+								</select>
+								<br>
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="imgFile" class="form-group">파일
+								</label>
+								<br> 
+								<input  name="imgFile" id="imgFile" type="file"
+										class="form-control"> 
+								<br>
+								<br>
+								<div class="form-group">
+									<button type="reset"
+								        class="btn amado-btn w-100"
+								        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
 								</div>
-								<div class="col-8"></div>
-								<div class="col-2">
-								<ul class="pagination justify-content-end">
-									<%
-									if (currentPage > 1) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp?currentPage=<%=currentPage - 1%>">이전</a>
-									</li>
-									<%
-									}
-
-									// 숫자페이징
-									for (int i = startPage; i <= endPage; i++) {
-									if (i == currentPage) {
-									%>
-									<li class="page-item active"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									} else {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									}
-									}
-
-									if (currentPage < lastPage) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp?currentPage=<%=currentPage + 1%>">다음</a>
-									</li>
-									<%
-									}
-									%>
-								</ul>
-							</div>
-							</div>
+								<br>
+								<div class="form-group">	
+									<button id="updateBtn" type="button"
+										class="btn login-btn w-100"
+										style="font-family: 'Jua', sans-serif; font-size:30px;">상품 수정</button> 
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -305,4 +243,15 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
+<script>
+	$('#updateBtn').click(function(){
+		if($('#ordersAddress').val().length == "") {
+			alert('배송지를 입력하세요');
+		} else if($('#ordersState').val() == 'default') {
+			alert('배송현황을 선택하세요');
+		} else {
+			updateOrdersForm.submit();
+		}
+	});
+</script>
 </html>

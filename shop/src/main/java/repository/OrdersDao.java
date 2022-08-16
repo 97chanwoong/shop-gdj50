@@ -15,13 +15,14 @@ public class OrdersDao {
 		 */
 		String sql = "SELECT\r\n"
 				+ "o.orders_no ordersNo,\r\n"
+				+ "o.orders_price ordersPrice,\r\n"
 				+ "o.orders_address ordersAddress,\r\n"
+				+ "o.orders_quantity ordersQuantity,\r\n"
 				+ "o.orders_state ordersState,\r\n"
 				+ "o.update_date updateDate,\r\n"
 				+ "o.create_date createDate,\r\n"
 				+ "g.goods_name goodsName,\r\n"
 				+ "g.goods_price goodsPrice,\r\n"
-				+ "g.goods_no goodsNo,\r\n"
 				+ "c.customer_id customerId,\r\n"
 				+ "c.customer_name customerName,\r\n"
 				+ "c.customer_telephone customerTelephone\r\n"
@@ -38,16 +39,18 @@ public class OrdersDao {
 			if(rs.next()) {
 				map = new HashMap<String, Object>();
 				map.put("ordersNo", rs.getInt("ordersNo"));
+				map.put("ordersPrice", rs.getInt("ordersPrice"));
+				map.put("ordersQuantity", rs.getInt("ordersQuantity"));
 				map.put("ordersState", rs.getString("ordersState"));
+				map.put("ordersAddress", rs.getString("ordersAddress"));
 				map.put("updateDate", rs.getString("updateDate"));
 				map.put("createDate", rs.getString("createDate"));
 				map.put("goodsName", rs.getString("goodsName"));
 				map.put("goodsPrice", rs.getInt("goodsPrice"));
-				map.put("goodsNo", rs.getInt("goodsNo"));
 				map.put("customerId", rs.getString("customerId"));
 				map.put("customerName", rs.getString("customerName"));
 				map.put("customerTelephone", rs.getString("customerTelephone"));
-				map.put("ordersAddress", rs.getString("ordersAddress"));
+				
 			}
 			
 		} finally {
@@ -195,4 +198,60 @@ public class OrdersDao {
 		}
 		return list;
 	}
+	
+	
+	// 주문 내역 수정하기 
+	public int insertOrdersOne(Connection conn, Map<String, Object> map ) throws Exception {
+		int row = 0;
+		String sql = "UPDATE orders SET orders_address = ? , orders_state = ?, update_date = NOW() WHERE orders_no = ?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, (String) map.get("ordersAddress"));
+			stmt.setString(2, (String) map.get("ordersState"));
+			stmt.setInt(3, (int) map.get("ordersNo"));
+			row = stmt.executeUpdate();
+		} finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+	 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
