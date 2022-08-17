@@ -43,7 +43,7 @@ Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/css/core-style5.css">
 <link rel="stylesheet" href="../tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -113,7 +113,7 @@ Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 		</header>
 		<!-- Header Area End -->
 
-		<div class="GoodsOne-table-area section-padding-100 mb-100">
+		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<%
@@ -124,7 +124,7 @@ Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 					}
 					%>
 					<div class="col-12">
-						<div class="GoodsOne-summary">
+						<div class="Order-summary">
 							<h5 style="font-family: 'Jua', sans-serif;">상품 상세보기</h5>
 							<br>
 							<div style="text-align: center;">

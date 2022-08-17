@@ -57,7 +57,7 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/css/core-style5.css">
 <link rel="stylesheet" href="../tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -127,7 +127,7 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Goods-table-area section-padding-100 mb-100">
+		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<%
@@ -138,7 +138,7 @@
 					}
 					%>
 					<div class="col-12">
-						<div class="Goods-summary">
+						<div class="Order-summary">
 							<h5 style="font-family: 'Jua', sans-serif;">상품 리스트</h5>
 							<br>
 							<div style="text-align:right;">
@@ -158,11 +158,9 @@
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
-									
 									<%
 									for (Goods g : list) {
 									%>
-									
 									<tr>
 										<td><%=g.getGoodsNo()%></td>
 										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/GoodsImgOne2.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>

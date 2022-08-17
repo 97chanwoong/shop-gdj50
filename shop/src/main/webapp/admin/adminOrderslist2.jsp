@@ -160,7 +160,6 @@
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
-									
 									<%
 									for(Map<String, Object> m : list){
 									%>

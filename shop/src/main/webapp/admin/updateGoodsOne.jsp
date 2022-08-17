@@ -17,6 +17,7 @@
 	System.out.println(goodsNo + "<-- goodsNo");
 	
 	Map<String, Object> goods = new GoodsService().getGoodsAndImgOne(goodsNo);
+	System.out.println(goods.get("fileName")+"<---fileName");
 	
 %>	
 <!DOCTYPE html>
@@ -41,8 +42,7 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
-<link rel="stylesheet" href="../tmp2/style.css">
+<link rel="stylesheet" href="../tmp2/css/core-style5.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -110,14 +110,16 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="GoodsOne-table-area section-padding-100 mb-100">
+		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<div class="GoodsOne-summary">
+						<div class="Order-summary">
 							<h5 style="font-family: 'Jua', sans-serif;">상품 수정</h5>
 							<br> 
 								<form action="<%=request.getContextPath()%>/admin/updateGoodsOneAction.jsp" method="post" id="updateGoodsForm" enctype="multipart/form-data">
+								<input type="hidden" name="goodsNO"  value="<%=goods.get("goodsNo")%>">
+								<input type="hidden" name="preimg"  value="<%=goods.get("fileName")%>">
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
 										for="goodsNo" class="form-group">상품 번호
 								</label> 

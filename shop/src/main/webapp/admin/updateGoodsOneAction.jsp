@@ -27,6 +27,13 @@
 	//													객체  서버경로 파일크기  인코딩             파일이름
 	MultipartRequest mRequest = new MultipartRequest(request, dir,  max,  "utf-8",  new DefaultFileRenamePolicy());
 	
+	// 삭제파일
+	int goodsNo = Integer.parseInt(mRequest.getParameter("goodsNo"));
+	String preImg = mRequest.getParameter("preImg");
+	// 디버깅
+	System.out.println(goodsNo + "<-- goodsNo");
+	System.out.println(preImg + "<-- preImg");
+	
 	// 데이터 셋팅할 객체 생성
 	Goods goods = new Goods();
 	goods.setGoodsNo(Integer.parseInt(mRequest.getParameter("goodsNo")));
@@ -62,7 +69,7 @@
 		return;
 	}
 	
-	//addGoods에 보낼 파라미터 GoodsImg 객체  
+	// GoodsImg 객체생성
 	GoodsImg goodsImg = new GoodsImg();
 	goodsImg.setGoodsNo(Integer.parseInt(mRequest.getParameter("goodsNo")));
 	goodsImg.setFileName(fileName);
@@ -74,6 +81,13 @@
 	int row = goodsService.getGoodsOne(goods, goodsImg);
 	
 	if(row == 1){
+		File f = new File(dir+"/"+preImg);
+		if(f.exists()) {
+			f.delete();
+			System.out.println("예전 사진 삭제 성공");
+		} else {
+			System.out.println("예전 사진 삭제 실패");
+		}
 		System.out.println("상품 수정 성공");
 		response.sendRedirect(request.getContextPath() + "/admin/adminGoodslist2.jsp");
 	} else {
