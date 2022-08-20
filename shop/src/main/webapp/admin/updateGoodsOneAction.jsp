@@ -28,10 +28,8 @@
 	MultipartRequest mRequest = new MultipartRequest(request, dir,  max,  "utf-8",  new DefaultFileRenamePolicy());
 	
 	// 삭제파일
-	int goodsNo = Integer.parseInt(mRequest.getParameter("goodsNo"));
 	String preImg = mRequest.getParameter("preImg");
 	// 디버깅
-	System.out.println(goodsNo + "<-- goodsNo");
 	System.out.println(preImg + "<-- preImg");
 	
 	// 데이터 셋팅할 객체 생성

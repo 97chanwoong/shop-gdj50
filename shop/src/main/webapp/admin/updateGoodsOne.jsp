@@ -118,8 +118,7 @@
 							<h5 style="font-family: 'Jua', sans-serif;">상품 수정</h5>
 							<br> 
 								<form action="<%=request.getContextPath()%>/admin/updateGoodsOneAction.jsp" method="post" id="updateGoodsForm" enctype="multipart/form-data">
-								<input type="hidden" name="goodsNO"  value="<%=goods.get("goodsNo")%>">
-								<input type="hidden" name="preimg"  value="<%=goods.get("fileName")%>">
+								<input type="hidden" name="preImg"  value="<%=goods.get("fileName")%>">
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
 										for="goodsNo" class="form-group">상품 번호
 								</label> 
