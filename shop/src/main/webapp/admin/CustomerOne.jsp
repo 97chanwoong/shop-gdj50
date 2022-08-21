@@ -3,39 +3,20 @@
 <%@ page import="repository.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="service.*"%>
-<%@ page import="vo.*"%>
+<%@ page import="vo.*"%>	
 <%
 	if (session.getAttribute("id") == null) {
 		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
 		return;
-	}
-	
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	} 
+	// 고객 아이디 받아오기
 	String customerId = request.getParameter("customerId");
-	
-	// 페이징
-	int currentPage = 1; // 현재 페이지
-	int ROW_PER_PAGE = 10; // 10개씩
-	
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-	}
-	
-	// 메서드를 위한 객체 생성
-	OrdersService ordersService = new OrdersService();
-	
-	// 마지막 페이지 메서드
-	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
-	
-	// 숫자페이징
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-	// endPage 는 lastPage보다 크면 안된다
-	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
-	
-	// 리스트
-	List<Map<String, Object>> list = ordersService.getOrdersListByCustomer(ROW_PER_PAGE, currentPage, customerId);
-%>
-
+	// 공지사항 상세보기 메서드실행
+	CustomerService customerService = new CustomerService();
+	Map<String,Object> map = customerService.getCustomerOne(customerId);
+%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -58,11 +39,9 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style5.css">
-
+<link rel="stylesheet" href="../tmp2/css/core-style6.css">
 <link rel="stylesheet" href="../tmp2/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -79,7 +58,7 @@
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="tmp2/img/core-img/search.png" alt="">
+								<img src="../tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -129,113 +108,57 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Order-table-area section-padding-100 mb-100">
+		<div class="Customer-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;"><%=customerId%>님의 주문 목록</h5>
+						<div class="Customer-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">고객 상세보기</h5>
 							<br>
-							<%
-								if (request.getParameter("errorMsg") != null) {
-							%>
-									<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-							<%
-								}
-							%>
-							<table class="table table-hover text-center">
+							<div style="text-align: right;">
+								<button class="btn amado-btn w-30" onclick="updateCustomerPassBtn()">비밀번호 변경</button>
+							</div>
+							<br>
+							 <table class="table table-bordered text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<th>주문번호</th>
-										<th>상품번호</th>
-										<th>상품이름</th>
-										<th>상품수량</th>
-										<th>상품가격</th>
-										<th>배송주소</th>
-										<th>배송현황</th>
-										<th>수정날짜</th>
-										<th>주문날짜</th>
+										<th>고객 아이디</th>
+										<td style="font-size:18px;"><%=map.get("customerId")%></td>
 									</tr>
-								</thead>
-								<tbody style="font-family: 'Jua', sans-serif;">
-									<%
-										for(Map<String, Object> m : list){
-									%>
 									<tr>
-										<td style="font-size:18px;"><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
-										<td style="font-size:18px;"><%=m.get("goodsNo")%></td>
-										<td style="font-size:18px;"><%=m.get("goodsName")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersPrice")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersAddress")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersState")%></td>
-										<td style="font-size:18px;"><%=m.get("updateDate")%></td>
-										<td style="font-size:18px;"><%=m.get("createDate")%></td>
+										<th>고객 이름</th>
+										<td style="font-size:18px;"><%=map.get("customerName")%></td>
 									</tr>
-									<%
-										}
-									%>
-								</tbody>
+									<tr>
+										<th>고객 주소</th>
+										<td style="font-size:18px;"><%=map.get("customerAddress")%></td>
+									</tr>
+									<tr>
+										<th>고객 전화번호</th>
+										<td style="font-size:18px;"><%=map.get("customerTelephone")%></td>
+									</tr>
+									<tr>
+										<th>수정 날짜</th>
+										<td style="font-size:18px;"><%=map.get("updateDate")%></td>
+									</tr>
+									<tr>
+										<th>가입 날짜</th>
+										<td style="font-size:18px;"><%=map.get("createDate")%></td>
+									</tr>	
+								</thead>
 							</table>
 							<hr>
 							<div class="row">
-								<div class="col-2">
-									<%
-										if(session.getAttribute("user").equals("employee")){
-									%>
-										<a href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp" class="btn amado-btn w-50">목록</a>
-									<%
-									} else if(session.getAttribute("user").equals("customer")){
-									%>
-										<a href="<%=request.getContextPath()%>/customerIndex.jsp" class="btn amado-btn w-50">목록</a>
-									<%
-									}
-									%>	
+								<div class="col-1">
+									<a
+										href="<%=request.getContextPath()%>/admin/adminCustomerlist.jsp"
+										class="btn amado-btn w-30">목록</a>
 								</div>
-								<div class="col-8"></div>
-								<div class="col-2">
-								<ul class="pagination justify-content-end">
-									<%
-									if (currentPage > 1) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
-									</li>
-									<%
-									}
-
-									// 숫자페이징
-									for (int i = startPage; i <= endPage; i++) {
-									if (i == currentPage) {
-									%>
-									<li class="page-item active"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									} else {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									}
-									}
-
-									if (currentPage < lastPage) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
-									</li>
-									<%
-									}
-									%>
-								</ul>
-							</div>
+								<div class="col-10"></div>
+								<div class="col-1">
+								<button class="btn amado-btn w-30" onclick="removeCustomerBtn()">탈퇴</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -317,4 +240,19 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
+<script>
+function updateCustomerPassBtn() {
+	 var result = confirm("회원의 비밀번호를 변경하시겠습니까?");
+	  if (result == true) {
+		  location.href="<%=request.getContextPath()%>/admin/updateAdminCustomerPass.jsp?customerId=<%=map.get("customerId")%>";
+			}
+		}
+
+function removeCustomerBtn() {
+ var result = confirm("회원을 탈퇴시키겠습니까?");
+  if (result == true) {
+	  location.href="<%=request.getContextPath()%>/admin/removeCustomerAction.jsp?customerId=<%=map.get("customerId")%>";
+		}
+	}
+</script>
 </html>

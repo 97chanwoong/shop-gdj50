@@ -5,20 +5,24 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
-}
-
-// 상품번호
-int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-System.out.println(goodsNo + "<--goodsNo");
-
-// 상세페이지 메서드
-GoodsService goodsService = new GoodsService();
-Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
+	
+	// 상품번호
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	System.out.println(goodsNo + "<--goodsNo");
+	
+	// 상세페이지 메서드
+	GoodsService goodsService = new GoodsService();
+	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
+	
+	//리뷰 가져오기
+	ReviewService reviewService = new ReviewService();
+	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
 %>
 
 <!DOCTYPE html>
@@ -134,8 +138,9 @@ Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 							</div>
 							<br>
 							<div style="text-align: right;">
-									<a href="<%=request.getContextPath()%>/admin/updateGoodsOne.jsp?goodsNo=<%=map.get("goodsNo")%>"
-										class="btn amado-btn w-30">수정</a>
+								<a
+									href="<%=request.getContextPath()%>/admin/updateGoodsOne.jsp?goodsNo=<%=map.get("goodsNo")%>"
+									class="btn amado-btn w-30">수정</a>
 							</div>
 							<br>
 							<table class="table table-borderless text-center">
@@ -185,6 +190,34 @@ Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 									</tr>
 								</tbody>
 							</table>
+							<hr>
+							<div style="margin-top: 3%">
+								<h2 style="font-family: 'Jua', sans-serif;">Review</h2>
+								<table class="table table-striped text-center">
+									<thead style="font-family: 'Jua', sans-serif;">
+										<tr>
+											<th>고객 아이디</th>
+											<th>내용</th>
+											<th>수정날짜</th>
+											<th>작성날짜</th>
+										</tr>
+									</thead>
+									<tbody style="font-family: 'Jua', sans-serif;">
+										<%
+										for (Map<String, Object> m : list) {
+										%>
+										<tr>
+											<td style="font-size:20px;"><%=m.get("customerId")%></td>
+											<td style="font-size:20px;"><%=m.get("reviewContents")%></td>
+											<td style="font-size:20px;"><%=m.get("updateDate")%></td>
+											<td style="font-size:20px;"><%=m.get("createDate")%></td>
+										</tr>
+										<%
+										}
+										%>
+									</tbody>
+								</table>
+							</div>
 							<hr>
 							<div class="row">
 								<div class="col-1">

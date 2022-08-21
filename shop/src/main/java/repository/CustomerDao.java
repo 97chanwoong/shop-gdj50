@@ -145,7 +145,7 @@ public class CustomerDao {
 		return loginCustomer;
 	}
 
-	// 관리자 -> 회원 임시 비밀번호 정보 수정
+	// 관리자 -> 회원 임시 비밀번호  변경 & 회원 비밀번호 변경
 	public int updateCustomerPass(Connection conn, Customer customer) throws Exception {
 		int row = 0;
 		PreparedStatement stmt = null;
@@ -166,7 +166,7 @@ public class CustomerDao {
 	}
 	
 	// 관리자 -> 회원 강제 탈퇴
-		public int deleteCustomerOne(Connection conn, String customerId) throws Exception {
+		public int deleteAdminCustomer(Connection conn, String customerId) throws Exception {
 			int row = 0;
 			String sql ="DELETE FROM customer WHERE customer_id= ?";
 			PreparedStatement stmt = null;

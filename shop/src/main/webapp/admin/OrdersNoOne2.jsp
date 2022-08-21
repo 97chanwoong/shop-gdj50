@@ -145,16 +145,16 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<td><%=map.get("goodsName")%></td>
-										<td><%=map.get("ordersPrice")%></td>
-										<td><%=map.get("ordersQuantity")%></td>
-										<td><%=map.get("customerName")%></td>
-										<td><%=map.get("customerId")%></td>
-										<td><%=map.get("customerTelephone")%></td>
-										<td><%=map.get("ordersAddress")%></td>
-										<td><%=map.get("ordersState")%></td>
-										<td><%=map.get("updateDate")%></td>
-										<td><%=map.get("createDate")%></td>
+										<td style="font-size:18px;"><%=map.get("goodsName")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersPrice")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersQuantity")%></td>
+										<td style="font-size:18px;"><%=map.get("customerName")%></td>
+										<td style="font-size:18px;"><%=map.get("customerId")%></td>
+										<td style="font-size:18px;"><%=map.get("customerTelephone")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersAddress")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersState")%></td>
+										<td style="font-size:18px;"><%=map.get("updateDate")%></td>
+										<td style="font-size:18px;"><%=map.get("createDate")%></td>
 									</tr>
 								</tbody>
 							</table>

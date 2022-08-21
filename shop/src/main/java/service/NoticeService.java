@@ -10,7 +10,7 @@ public class NoticeService {
 	// 공지사항 추가
 	public int addNotice(Notice notice) {
 		int row = 0;
-		// DB연결
+		// 초기화
 		Connection conn = null;
 		// Dao 객체
 		NoticeDao noticeDao = new NoticeDao();
@@ -38,7 +38,7 @@ public class NoticeService {
 	// 공지사항 수정
 	public int modifyNotice(Notice notice) {
 		int row = 0;
-		// DB연결
+		// 초기화
 		Connection conn = null;
 		// Dao 객체
 		NoticeDao noticeDao = new NoticeDao();
@@ -66,7 +66,7 @@ public class NoticeService {
 	// 공지사항 삭제
 	public int removeNotice(int noticeNo) {
 		int row = 0;
-		// DB연결
+		// 초기화
 		Connection conn = null;
 		// Dao 객체
 		NoticeDao noticeDao = new NoticeDao();
@@ -94,7 +94,7 @@ public class NoticeService {
 	// 공지사항 리스트
 	public List<Notice> getNoticeList(int rowPerPage, int currentPage) {
 		List<Notice> list = new ArrayList<Notice>();
-		// DB연결
+		// 초기화
 		Connection conn = null;
 		// Dao 객체
 		NoticeDao noticeDao = new NoticeDao();
@@ -125,9 +125,9 @@ public class NoticeService {
 	// 공지사항 상세보기
 	public Map<String,Object> getNoticeOne(int noticeNo) {
 		Map<String,Object> map = null;
-		// DB driver
+		// 초기화
 		Connection conn = null;
-		// Dao 객체
+		// NoticeDao 객체
 		NoticeDao noticeDao = new NoticeDao();
 		try {
 			conn = new DBUtil().getConnection();
@@ -150,7 +150,7 @@ public class NoticeService {
 	// 공지사항 LastPage
 	public int getNoticeLastPage(int rowPerPage) {
 		int lastPage = 0;
-		// DB연결
+		// 초기화
 		Connection conn = null;
 		// Dao 객체
 		NoticeDao noticeDao = new NoticeDao();
