@@ -392,7 +392,7 @@
 											class="fa fa-star" aria-hidden="true"></i>
 									</div> -->
 									<div class="cart">
-										<a href="cart.html" data-toggle="tooltip"
+										<a href="CustomerCart.jsp" data-toggle="tooltip"
 											data-placement="left" title="Add to Cart"><img
 											src="tmp2/img/core-img/cart.png" alt=""></a>
 									</div>

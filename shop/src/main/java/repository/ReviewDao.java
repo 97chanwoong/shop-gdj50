@@ -20,7 +20,7 @@ public class ReviewDao {
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("ordesNo", rs.getInt("ordersNo"));
+				m.put("ordersNo", rs.getInt("ordersNo"));
 				m.put("reviewContents", rs.getString("reviewContents"));
 				m.put("updateDate", rs.getString("updateDate"));
 				m.put("createDate", rs.getString("createDate"));
@@ -37,10 +37,23 @@ public class ReviewDao {
 		}
 		return list;
 	}
-	
+
 	// 리뷰 강제 삭제
-	public int deleteAdminReview(Connection conn, int orderNo) throws Exception {
+	public int deleteAdminReview(Connection conn, int ordersNo) throws Exception {
 		int row = 0;
-		
+		String sql = "DELETE FROM review WHERE orders_no = ?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, ordersNo);
+			// 디버깅
+			System.out.println(stmt + "ordersNo");
+			row = stmt.executeUpdate();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
 	}
 }

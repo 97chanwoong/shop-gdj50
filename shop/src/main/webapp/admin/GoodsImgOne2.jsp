@@ -23,6 +23,8 @@
 	//리뷰 가져오기
 	ReviewService reviewService = new ReviewService();
 	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
+	// ordersNo값 list에서 빼오기
+	int ordersNo = Integer.parseInt(list.get(0).get("ordersNo").toString());
 %>
 
 <!DOCTYPE html>
@@ -200,6 +202,7 @@
 											<th>내용</th>
 											<th>수정날짜</th>
 											<th>작성날짜</th>
+											<th>삭제</th>
 										</tr>
 									</thead>
 									<tbody style="font-family: 'Jua', sans-serif;">
@@ -207,10 +210,12 @@
 										for (Map<String, Object> m : list) {
 										%>
 										<tr>
-											<td style="font-size:20px;"><%=m.get("customerId")%></td>
-											<td style="font-size:20px;"><%=m.get("reviewContents")%></td>
-											<td style="font-size:20px;"><%=m.get("updateDate")%></td>
-											<td style="font-size:20px;"><%=m.get("createDate")%></td>
+											<td style="font-size: 20px;"><%=m.get("customerId")%></td>
+											<td style="font-size: 20px;"><%=m.get("reviewContents")%></td>
+											<td style="font-size: 20px;"><%=m.get("updateDate")%></td>
+											<td style="font-size: 20px;"><%=m.get("createDate")%></td>
+											<td><button class="btn amado-btn"
+													onclick="removeReviewBtn()">삭제</button></td>
 										</tr>
 										<%
 										}
@@ -306,4 +311,12 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
+<script>
+function removeReviewBtn() {
+	 var result = confirm("리뷰를 삭제하시겠습니까?");
+	  if (result == true) {
+		  location.href="<%=request.getContextPath()%>/admin/removeAdminReviewAction.jsp?ordersNo=<%=ordersNo%>&&goodsNo=<%=map.get("goodsNo")%>";
+			}
+		}
+</script>
 </html>

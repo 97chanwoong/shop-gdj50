@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import repository.NoticeDao;
 import repository.ReviewDao;
 
 
@@ -38,5 +39,33 @@ public class ReviewService {
 			}
 		}
 		return list;
+	}
+	
+	// 리뷰 강제삭제
+	public int removeAdminReview(int ordersNo) {
+		int row = 0;
+		// 초기화
+		Connection conn = null;
+		// Dao 객체
+		reviewDao = new ReviewDao();
+		try {
+			conn = new DBUtil().getConnection();
+			System.out.println(conn + "<-- removeNotice conn");
+			row = reviewDao.deleteAdminReview(conn, ordersNo);
+			if (row == 0) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return row;
 	}
 }

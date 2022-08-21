@@ -10,7 +10,7 @@ public class NoticeDao {
 	public int insertNotice(Connection conn, Notice notice) throws Exception {
 		// 리턴할 변수 선언
 		int row = 0;
-		// DB자원
+		// DB
 		String sql = "INSERT INTO notice (notice_title, notice_content, update_date, create_date) VALUES (?, ?, NOW(), NOW())";
 		PreparedStatement stmt = null;
 		try {
@@ -32,7 +32,7 @@ public class NoticeDao {
 	public int updateNotice(Connection conn, Notice notice) throws Exception {
 		// 리턴할 변수 선언
 		int row = 0;
-		// DB자원
+		// DB
 		String sql = "UPDATE notice SET notice_title = ?, notice_content = ?, update_date = NOW() WHERE  notice_no = ?";
 		PreparedStatement stmt = null;
 		try {
@@ -55,7 +55,7 @@ public class NoticeDao {
 	public int deleteNotice(Connection conn, int noticeNo) throws Exception {
 		// 리턴할 변수 선언
 		int row = 0;
-		// DB자원
+		// DB
 		String sql = "DELETE FROM notice WHERE notice_no = ?";
 		PreparedStatement stmt = null;
 		try {
@@ -76,7 +76,7 @@ public class NoticeDao {
 	public int selectNoticeCount(Connection conn) throws Exception {
 		// 리턴할 변수 선언
 		int totalRow = 0;
-		// DB 자원
+		// DB
 		String sql = "SELECT COUNT(*) count FROM notice";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -101,7 +101,7 @@ public class NoticeDao {
 	public List<Notice> selectNoticeList(Connection conn, int rowPerPage, int beginRow) throws Exception {
 		// List 객체 생성
 		List<Notice> list = new ArrayList<Notice>();
-		// DB 자원
+		// DB
 		String sql = "SELECT  notice_no noticeNo,  notice_title noticeTitle, create_date createDate FROM notice ORDER BY create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -134,7 +134,7 @@ public class NoticeDao {
 	public Map<String,Object> selectNoticeOne(Connection conn, int noticeNo) throws Exception {
 		// Map 객체 생성
 		Map<String,Object> map = null;
-		// DB 자원
+		// DB
 		String sql = "SELECT notice_no noticeNo, notice_title noticeTitle, notice_content noticeContent, update_date updateDate, create_date createDate FROM notice WHERE notice_no = ?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
