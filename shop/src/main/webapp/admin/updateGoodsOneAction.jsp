@@ -93,18 +93,4 @@
 		response.sendRedirect(request.getContextPath() + "/admin/updateGoodsOne.jsp?goodsNo="+goods.getGoodsNo());
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 %>

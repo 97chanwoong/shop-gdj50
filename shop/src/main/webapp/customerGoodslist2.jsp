@@ -360,7 +360,7 @@
 					<%
 					for (Map<String, Object> m : list) {
 					%>
-					<div class="col-12 col-sm-6 col-md-12 col-xl-6">
+					<div class="col-12 col-sm-6 col-md-12 col-xl-3">
 						<div class="single-product-wrapper">
 							<!-- Product Image -->
 							<div class="product-img">
@@ -384,17 +384,17 @@
 								</div>
 								<!-- Ratings & Cart -->
 								<div class="ratings-cart text-right">
-									<div class="ratings">
+									<!-- <div class="ratings">
 										<i class="fa fa-star" aria-hidden="true"></i> <i
 											class="fa fa-star" aria-hidden="true"></i> <i
 											class="fa fa-star" aria-hidden="true"></i> <i
 											class="fa fa-star" aria-hidden="true"></i> <i
 											class="fa fa-star" aria-hidden="true"></i>
-									</div>
+									</div> -->
 									<div class="cart">
 										<a href="cart.html" data-toggle="tooltip"
 											data-placement="left" title="Add to Cart"><img
-											src="img/core-img/cart.png" alt=""></a>
+											src="tmp2/img/core-img/cart.png" alt=""></a>
 									</div>
 								</div>
 							</div>

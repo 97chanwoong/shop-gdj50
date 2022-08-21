@@ -1,13 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ page import="repository.*"%>
+<%@ page import="java.util.*"%>
+<%@ page import="service.*"%>
+<%@ page import="vo.*"%>	
 <%
-	if(session.getAttribute("id") == null){
-	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
-	return;
-    } else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-    response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
-    }
-%>    
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	} 
+	// noticeNo 값 받아오기
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+	// 디버깅
+	System.out.println(noticeNo + "<-- noticeNo");
+	
+%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -26,13 +35,13 @@
 <title>CKEA</title>
 
 <!-- Favicon  -->
-<link rel="icon" href="tmp2/img/core-img/CKEAfavicon.ico">
+<link rel="icon" href="../tmp2/img/core-img/CKEAfavicon.ico">
 
 <!-- Core Style CSS -->
-<link rel="stylesheet" href="tmp2/css/core-style2.css">
-<link rel="stylesheet" href="tmp2/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="../tmp2/css/core-style2.css">
+<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -49,7 +58,7 @@
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="tmp2/img/core-img/search.png" alt="">
+								<img src="../tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -67,7 +76,7 @@
 			<!-- Navbar Brand -->
 			<div class="amado-navbar-brand">
 				<a href="LoginForm2.jsp"><img
-					src="tmp2/img/core-img/CKEALOGO.png" alt=""></a>
+					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Navbar Toggler -->
 			<div class="amado-navbar-toggler">
@@ -84,7 +93,7 @@
 			<!-- Logo -->
 			<div class="logo">
 				<a href="<%=request.getContextPath()%>/Main.jsp"><img
-					src="tmp2/img/core-img/CKEALOGO.png" alt=""></a>
+					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
@@ -99,49 +108,55 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="login-table-area section-padding-100 mb-100">
+		<div class="Notice-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-md-2"></div>
-					<div class="col-md-8">
-						<div class="login-summary">
-							<h1 style="font-family: 'Jua', sans-serif; text-align: center;"><%=session.getAttribute("id")%>님 
-								</h1>
+					<div class="col-12">
+						<div class="Notice-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">공지 수정</h5>
+							<br> 
+							<form id="updateNoticeForm"
+								action="<%=request.getContextPath()%>/admin/updateNoticeOneAction.jsp"
+								method="post">
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="noticeNo" class="form-group">번호
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="noticeNo" id="noticeNo" readonly="readonly" value="<%=noticeNo%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="noticeTitle" class="form-group">제목
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="noticeTitle" id="noticeTitle"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="noticeContent" class="form-group" >내용
+								</label> 
+								<textarea style="font-family: 'Jua', sans-serif; font-size:25px;"
+										rows="5" cols="50"
+										name="noticeContent" id="noticeContent"
+										class="form-control"> 
+								</textarea>		
+								<br>
+								<br>
+								<div class="form-group">
+									<button type="reset"
+									        class="btn amado-btn w-100"
+									        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
+								</div>
+								<br>
+								<div class="form-group">	
+									<button id="updateBtn" type="button"
+											class="btn login-btn w-100"
+											style="font-family: 'Jua', sans-serif; font-size:30px;">공지 수정</button> 
+								</div>			       
+							</form>
 							<br>
-							<hr>
-							<p style="font-family: 'Jua', sans-serif; text-align: center;">
-								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp">사원 관리</a>
-							</p>
-							<hr>
-							<p style="font-family: 'Jua', sans-serif; text-align: center;">
-								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/admin/adminGoodslist2.jsp">상품 관리</a>
-							</p>
-							<hr>
-							<p style="font-family: 'Jua', sans-serif; text-align: center;">
-								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp">주문 관리</a>
-							</p>
-							<hr>
-							<p style="font-family: 'Jua', sans-serif; text-align: center;">
-								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/Main.jsp">고객 관리</a>
-							</p>
-							<hr>
-							<p style="font-family: 'Jua', sans-serif; text-align: center;">
-								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/admin/adminNoticelist.jsp">공지 관리</a>
-							</p>
-							<hr>
-							<p style="font-family: 'Jua', sans-serif; text-align: center;">
-								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/removeIdForm2.jsp">탈퇴 하기</a>
-							</p>
-							<hr>	    
 						</div>
 					</div>
-					<div class="col-md-2"></div>
 				</div>
 			</div>
 		</div>
@@ -210,15 +225,25 @@
 	<!-- ##### Footer Area End ##### -->
 
 	<!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-	<script src="tmp2/js/jquery/jquery-2.2.4.min.js"></script>
+	<script src="../tmp2/js/jquery/jquery-2.2.4.min.js"></script>
 	<!-- Popper js -->
-	<script src="tmp2/js/popper.min.js"></script>
+	<script src="../tmp2/js/popper.min.js"></script>
 	<!-- Bootstrap js -->
-	<script src="tmp2/js/bootstrap.min.js"></script>
+	<script src="../tmp2/js/bootstrap.min.js"></script>
 	<!-- Plugins js -->
-	<script src="tmp2/js/plugins.js"></script>
+	<script src="../tmp2/js/plugins.js"></script>
 	<!-- Active js -->
-	<script src="tmp2/js/active.js"></script>
+	<script src="../tmp2/js/active.js"></script>
 </body>
-
+<script>
+	$('#updateBtn').click(function(){
+		if($('#noticeTitle').val().length == "") {
+			alert('제목을 입력하세요');
+		} else if($('#noticeContent').val().length == "" ) {
+			alert('내용을 입력하세요');
+		} else {
+			updateNoticeForm.submit();
+		}
+	});
+</script>
 </html>

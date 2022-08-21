@@ -33,7 +33,7 @@ public class NoticeDao {
 		// 리턴할 변수 선언
 		int row = 0;
 		// DB자원
-		String sql = "UPDATE notice SET notice_title = ?, notice_content = ? WHERE  notice_no = ?";
+		String sql = "UPDATE notice SET notice_title = ?, notice_content = ?, update_date = NOW() WHERE  notice_no = ?";
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);
@@ -131,9 +131,9 @@ public class NoticeDao {
 	}
 
 	// 공지사항 상세보기
-	public Notice selectNoticeOne(Connection conn, int noticeNo) throws Exception {
+	public Map<String,Object> selectNoticeOne(Connection conn, int noticeNo) throws Exception {
 		// 리턴할 객체 생성
-		Notice notice = new Notice();
+		Map<String,Object> map = null;
 		// DB 자원
 		String sql = "SELECT notice_no noticeNo, notice_title noticeTitle, notice_content noticeContent, update_date updateDate, create_date createDate FROM notice WHERE notice_no = ?";
 		PreparedStatement stmt = null;
@@ -145,18 +145,19 @@ public class NoticeDao {
 			System.out.println(stmt + "<-- selectNoticeOne stmt");
 			rs = stmt.executeQuery();
 			if (rs.next()) {
-				notice.setNoticeNo(rs.getInt("noiceNo"));
-				notice.setNoticeTitle(rs.getString("noticeTitle"));
-				notice.setNoticeContent(rs.getString("noticeContent"));
-				notice.setUpdateDate(rs.getString("updateDate"));
-				notice.setCreateDate(rs.getString("createDate"));
+				map = new HashMap<>();
+				map.put("noticeNo", rs.getString("noticeNo"));
+				map.put("noticeTitle", rs.getString("noticeTitle"));
+				map.put("noticeContent", rs.getString("noticeContent"));
+				map.put("updateDate", rs.getString("updateDate"));
+				map.put("createDate", rs.getString("createDate"));
 			}
 		} finally {
 			if (stmt != null) {
 				stmt.close();
 			}
 		}
-		return notice;
+		return map;
 	}
 
 }

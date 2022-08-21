@@ -123,8 +123,8 @@ public class NoticeService {
 	}
 	
 	// 공지사항 상세보기
-	public Notice getNoticeOne(int noticeNo) throws SQLException {
-		Notice notice = null;
+	public Map<String,Object> getNoticeOne(int noticeNo) {
+		Map<String,Object> map = null;
 		// DB driver
 		Connection conn = null;
 		// Dao 객체
@@ -132,14 +132,19 @@ public class NoticeService {
 		try {
 			conn = new DBUtil().getConnection();
 			System.out.println("getNoticeOne- DB Driver 연결");
-			notice = noticeDao.selectNoticeOne(conn, noticeNo);
+			map = noticeDao.selectNoticeOne(conn, noticeNo);
 		} catch (Exception e) {
-			// DB 자원 해제
+			e.printStackTrace();
+		} finally {
 			if (conn != null) {
-				conn.close();
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		return notice;
+		return map;
 	}
 
 	// 공지사항 LastPage
