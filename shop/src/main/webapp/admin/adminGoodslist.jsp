@@ -6,11 +6,11 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
-	
-	String customerId = request.getParameter("customerId");
 	
 	// 페이징
 	int currentPage = 1; // 현재 페이지
@@ -21,10 +21,10 @@
 	}
 	
 	// 메서드를 위한 객체 생성
-	OrdersService ordersService = new OrdersService();
+	GoodsService goodsService = new GoodsService();
 	
 	// 마지막 페이지 메서드
-	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
+    int	lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
 	
 	// 숫자페이징
 	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
@@ -33,7 +33,7 @@
 	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
 	
 	// 리스트
-	List<Map<String, Object>> list = ordersService.getOrdersListByCustomer(ROW_PER_PAGE, currentPage, customerId);
+	List<Goods> list = goodsService.getGoodsListByPage(ROW_PER_PAGE, currentPage);
 %>
 
 <!DOCTYPE html>
@@ -47,8 +47,7 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- font -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
-	;
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -59,7 +58,6 @@
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
 <link rel="stylesheet" href="../tmp2/css/core-style5.css">
-
 <link rel="stylesheet" href="../tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -132,66 +130,54 @@
 		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
+					<%
+					if (request.getParameter("errorMsg") != null) {
+					%>
+					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+					<%
+					}
+					%>
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;"><%=customerId%>님의 주문 목록</h5>
+							<h5 style="font-family: 'Jua', sans-serif;">상품 리스트</h5>
 							<br>
-							<%
-								if (request.getParameter("errorMsg") != null) {
-							%>
-									<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-							<%
-								}
-							%>
+							<div style="text-align:right;">
+								<a href="<%=request.getContextPath()%>/admin/adminAddGoodsForm.jsp" class="btn amado-btn w-20">상품추가</a>
+							</div>
+							<br>
 							<table class="table table-hover text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<th>주문번호</th>
 										<th>상품번호</th>
 										<th>상품이름</th>
-										<th>상품수량</th>
 										<th>상품가격</th>
-										<th>배송주소</th>
-										<th>배송현황</th>
+										<th>등록날짜</th>
 										<th>수정날짜</th>
-										<th>주문날짜</th>
+										<th>품절여부</th>
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
 									<%
-										for(Map<String, Object> m : list){
+									for (Goods g : list) {
 									%>
 									<tr>
-										<td style="font-size:18px;"><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
-										<td style="font-size:18px;"><%=m.get("goodsNo")%></td>
-										<td style="font-size:18px;"><%=m.get("goodsName")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersPrice")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersAddress")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersState")%></td>
-										<td style="font-size:18px;"><%=m.get("updateDate")%></td>
-										<td style="font-size:18px;"><%=m.get("createDate")%></td>
+										<td><%=g.getGoodsNo()%></td>
+										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/adminGoodsOne.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>
+										<td><%=g.getGoodsPrice()%></td>
+										<td><%=g.getUpdateDate()%></td>
+										<td><%=g.getCreateDate()%></td>
+										<td><%=g.getSoldOut() %></td>
 									</tr>
 									<%
-										}
+									}
 									%>
 								</tbody>
 							</table>
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<%
-										if(session.getAttribute("user").equals("employee")){
-									%>
-										<a href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp" class="btn amado-btn w-50">목록</a>
-									<%
-									} else if(session.getAttribute("user").equals("customer")){
-									%>
-										<a href="<%=request.getContextPath()%>/customerIndex.jsp" class="btn amado-btn w-50">목록</a>
-									<%
-									}
-									%>	
+									<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">
@@ -201,7 +187,7 @@
 									%>
 									<li class="page-item"><a
 										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
+										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
 									</li>
 									<%
 									}
@@ -212,14 +198,14 @@
 									%>
 									<li class="page-item active"><a
 										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
+										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=i%>"><%=i%></a>
 									</li>
 									<%
 									} else {
 									%>
 									<li class="page-item"><a
 										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
+										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=i%>"><%=i%></a>
 									</li>
 									<%
 									}
@@ -229,7 +215,7 @@
 									%>
 									<li class="page-item"><a
 										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
+										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
 									</li>
 									<%
 									}

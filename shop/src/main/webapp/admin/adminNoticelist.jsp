@@ -6,7 +6,7 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
 		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
@@ -142,7 +142,7 @@
 							<h5 style="font-family: 'Jua', sans-serif;">공지사항 리스트</h5>
 							<br>
 							<div style="text-align:right;">
-								<a href="<%=request.getContextPath()%>/admin/addNoticeForm.jsp" class="btn amado-btn w-20">공지 추가</a>
+								<a href="<%=request.getContextPath()%>/admin/adminAddNoticeForm.jsp" class="btn amado-btn w-20">공지 추가</a>
 							</div>
 							<br>
 							<table class="table table-hover text-center">
@@ -160,7 +160,7 @@
 									%>
 									<tr>
 										<td><%=n.getNoticeNo()%></td>
-										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/NoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></td>
+										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/adminNoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></td>
 										<td><%=n.getCreateDate()%></td>
 									</tr>
 									<%
@@ -171,7 +171,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
+									<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">

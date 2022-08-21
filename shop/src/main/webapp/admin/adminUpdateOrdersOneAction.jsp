@@ -4,6 +4,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
 	// 인코딩
 	request.setCharacterEncoding("utf-8");
 	// 객체 생성
@@ -19,9 +25,9 @@
 	// 재요청
 	if(row == 1){
 		System.out.println("주문 내역 수정 성공");
-		response.sendRedirect(request.getContextPath()+"/admin/adminOrderslist2.jsp");
+		response.sendRedirect(request.getContextPath()+"/admin/adminOrderslist.jsp");
 	} else {
 		System.out.println("주문 내역 수정 실패");
-		response.sendRedirect(request.getContextPath()+"/admin/updateOrdersOne.jsp?ordersNo=ordersNo");
+		response.sendRedirect(request.getContextPath()+"/admin/adminUpdateOrdersOne.jsp?ordersNo=ordersNo");
 	}
 %>

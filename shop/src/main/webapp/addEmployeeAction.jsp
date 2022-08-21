@@ -2,6 +2,7 @@
 <%@page import="vo.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	// 인코딩
 	request.setCharacterEncoding("utf-8");
 	
 	//인스턴스
@@ -20,10 +21,10 @@
 	
 	if(!result){
 		System.out.println("회원가입 실패");
-		response.sendRedirect(request.getContextPath()+"/addEmployeeForm2.jsp");
+		response.sendRedirect(request.getContextPath()+"/addEmployeeForm.jsp");
 		return;
 	}
 	System.out.println("회원가입 성공");
-	response.sendRedirect(request.getContextPath()+"/LoginForm2.jsp");
+	response.sendRedirect(request.getContextPath()+"/LoginForm.jsp");
 
 %>

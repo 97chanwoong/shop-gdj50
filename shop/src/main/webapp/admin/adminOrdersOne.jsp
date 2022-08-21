@@ -3,20 +3,24 @@
 <%@ page import="repository.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="service.*"%>
-<%@ page import="vo.*"%>	
+<%@ page import="vo.*"%>
 <%
-	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
-		return;
-	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-	} 
-	// 오더정보 받아오기
-	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
-	// 공지사항 상세보기 메서드실행
-	NoticeService noticeService = new NoticeService();
-	Map<String,Object> map = noticeService.getNoticeOne(noticeNo);
-%>	
+if (session.getAttribute("id") == null) {
+	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+	return;
+} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+	response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+}
+
+// 주문번호
+int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+System.out.println(ordersNo + "<-- ordersNo");
+
+// 주문상품 상세 보기 메서드
+OrdersService ordersService = new OrdersService();
+Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -39,9 +43,11 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/css/core-style5.css">
+
 <link rel="stylesheet" href="../tmp2/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -58,7 +64,7 @@
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="../tmp2/img/core-img/search.png" alt="">
+								<img src="tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -108,54 +114,56 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Notice-table-area section-padding-100 mb-100">
+		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<div class="Notice-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">공지 상세보기</h5>
+						<div class="Order-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">주문 상세보기</h5>
 							<br>
 							<div style="text-align: right;">
 								<a
-									href="<%=request.getContextPath()%>/admin/updateNoticeOne.jsp?noticeNo=<%=map.get("noticeNo")%>"
+									href="<%=request.getContextPath()%>/admin/adminUpdateOrdersOne.jsp?ordersNo=<%=map.get("ordersNo")%>&ordersQuantity=<%=map.get("ordersQuantity")%>&goodsName=<%=map.get("goodsName")%>&ordersPrice=<%=map.get("ordersPrice")%>&customerTelephone=<%=map.get("customerTelephone")%>&customerName=<%=map.get("customerName")%>&customerId=<%=map.get("customerId")%>&createDate=<%=map.get("createDate")%>"
 									class="btn amado-btn w-30">수정</a>
 							</div>
 							<br>
-							 <table class="table table-bordered text-center">
+							<table class="table table-borderless text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<th>번호</th>
-										<td style="font-size:18px;"><%=map.get("noticeNo")%></td>
-									</tr>
-									<tr>
+										<th>상품이름</th>
+										<th>상품가격</th>
+										<th>상품수량</th>
+										<th>고객이름</th>
+										<th>고객아이디</th>
+										<th>고객연락처</th>
+										<th>배송주소</th>
+										<th>배송현황</th>
 										<th>수정날짜</th>
-										<td style="font-size:18px;"><%=map.get("updateDate")%></td>
+										<th>주문날짜</th>
 									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<th>작성날짜</th>
+										<td style="font-size:18px;"><%=map.get("goodsName")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersPrice")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersQuantity")%></td>
+										<td style="font-size:18px;"><%=map.get("customerName")%></td>
+										<td style="font-size:18px;"><%=map.get("customerId")%></td>
+										<td style="font-size:18px;"><%=map.get("customerTelephone")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersAddress")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersState")%></td>
+										<td style="font-size:18px;"><%=map.get("updateDate")%></td>
 										<td style="font-size:18px;"><%=map.get("createDate")%></td>
 									</tr>
-									<tr>
-										<th>제목</th>
-										<td style="font-size:18px;"><%=map.get("noticeTitle")%></td>
-									</tr>
-									<tr>
-										<th>내용</th>
-										<td style="font-size:18px;"><%=map.get("noticeContent")%></td>
-									</tr>	
-								</thead>
+								</tbody>
 							</table>
 							<hr>
 							<div class="row">
 								<div class="col-1">
 									<a
-										href="<%=request.getContextPath()%>/admin/adminNoticelist.jsp"
+										href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp"
 										class="btn amado-btn w-30">목록</a>
-								</div>
-								<div class="col-10"></div>
-								<div class="col-1">
-								<button class="btn amado-btn w-30" onclick="deleteNoticeBtn()">삭제</button>
 								</div>
 							</div>
 						</div>
@@ -238,12 +246,4 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
-<script>
-function deleteNoticeBtn() {
- var result = confirm("공지사항을 삭제하시겠습니까?");
-  if (result == true) {
-	  location.href="<%=request.getContextPath()%>/admin/deleteNoticeOneAction.jsp?noticeNo=<%=map.get("noticeNo")%>";
-		}
-	}
-</script>
 </html>

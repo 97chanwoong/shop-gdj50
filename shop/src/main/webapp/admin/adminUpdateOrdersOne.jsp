@@ -6,15 +6,30 @@
 <%@ page import="vo.*"%>	
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-	} 
-	// noticeNo 값 받아오기
-	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
+
+	// 오더정보 받아오기
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	String goodsName = request.getParameter("goodsName");
+	int ordersQuantity = Integer.parseInt(request.getParameter("ordersQuantity"));
+	int ordersPrice = Integer.parseInt(request.getParameter("ordersPrice"));
+	String customerName = request.getParameter("customerName");
+	String customerTelephone = request.getParameter("customerTelephone");
+	String customerId = request.getParameter("customerId");
+	String createDate = request.getParameter("createDate");
 	// 디버깅
-	System.out.println(noticeNo + "<-- noticeNo");
+	System.out.println(ordersNo + "<-- ordersNo");
+	System.out.println(goodsName + "<-- goodsName");
+	System.out.println(ordersQuantity + "<-- ordersQuantity");
+	System.out.println(ordersPrice+ "<-- ordersPrice");
+	System.out.println(customerName + "<-- customerName");
+	System.out.println(customerTelephone + "<-- customerTelephone");
+	System.out.println(customerId + "<-- customerId");
+	System.out.println(createDate + "<-- createDate");
 	
 %>	
 <!DOCTYPE html>
@@ -39,7 +54,7 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/css/core-style5.css">
 <link rel="stylesheet" href="../tmp2/style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -108,53 +123,100 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Notice-table-area section-padding-100 mb-100">
+		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-12">
-						<div class="Notice-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">공지 수정</h5>
+					<div class="col-12 col-sm-6">
+						<div class="Order-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">주문 수정(상품정보)</h5>
 							<br> 
-							<form id="updateNoticeForm"
-								action="<%=request.getContextPath()%>/admin/updateNoticeOneAction.jsp"
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="goodsName" class="form-group">상품 이름
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsName" id="goodsName" readonly="readonly" value="<%=goodsName%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="ordersPrice" class="form-group">상품 가격
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="goodsPrice" id="goodsPrice" readonly="readonly" value="<%=ordersPrice%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="ordersQuantity" class="form-group">상품 수량
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="ordersQuantity" id="ordersQuantity" readonly="readonly" value="<%=ordersQuantity%>"
+										class="form-control"> 
+								<br>
+						</div>
+					</div>
+					<div class="col-12 col-sm-6">
+						<div class="Order-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">주문 수정(고객정보)</h5>
+							<br> 
+							<form id="updateOrdersForm"
+								action="<%=request.getContextPath()%>/admin/adminUpdateOrdersOneAction.jsp"
 								method="post">
+								<input type="hidden" id="ordersNo" name="ordersNo" value="<%=ordersNo%>">
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="noticeNo" class="form-group">번호
+										for="customerName" class="form-group">고객 이름
 								</label> 
 								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="noticeNo" id="noticeNo" readonly="readonly" value="<%=noticeNo%>"
+										name="customerName" id="customerName" readonly="readonly" value="<%=customerName%>"
 										class="form-control"> 
 								<br>
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="noticeTitle" class="form-group">제목
+										for="customerId" class="form-group">고객 아이디
 								</label> 
 								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="noticeTitle" id="noticeTitle"
+										name="customerId" id="customerId" readonly="readonly" value="<%=customerId%>"
 										class="form-control"> 
 								<br>
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="noticeContent" class="form-group" >내용
+										for="customerTelephone" class="form-group" >고객 연락처
 								</label> 
-								<textarea style="font-family: 'Jua', sans-serif; font-size:25px;"
-										rows="5" cols="50"
-										name="noticeContent" id="noticeContent"
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="customerTelephone" id="customerTelephone" readonly="readonly" value="<%=customerTelephone%>"
 										class="form-control"> 
-								</textarea>		
 								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="ordersAddress" class="form-group">배송 주소
+								</label> 
+								
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										type="text"
+										name="ordersAddress" id="ordersAddress"
+										class="form-control"> 
 								<br>
-								<div class="form-group">
-									<button type="reset"
-									        class="btn amado-btn w-100"
-									        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
-								</div>
+								<label style="font-family: 'Jua', sans-serif; font-size:35px;"
+										for="ordersState">배송 현황
+								</label>
 								<br>
-								<div class="form-group">	
-									<button id="updateBtn" type="button"
-											class="btn login-btn w-100"
-											style="font-family: 'Jua', sans-serif; font-size:30px;">공지 수정</button> 
-								</div>			       
-							</form>
+								<select id="ordersState" name="ordersState" >
+										<option value="default">------- 주문상황--------</option>
+										<option value="결제대기">결제 대기</option>
+										<option value="주문완료">주문 완료</option>
+										<option value="배송준비중">배송 준비중</option>
+										<option value="배송중">배송 중</option>
+										<option value="배송완료">배송 완료</option>
+								</select>
 							<br>
+							<br>
+							<div class="form-group">
+								<button type="reset"
+								        class="btn amado-btn w-100"
+								        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
+							</div>
+							<br>
+							<div class="form-group">	
+								<button id="updateBtn" type="button"
+										class="btn login-btn w-100"
+										style="font-family: 'Jua', sans-serif; font-size:30px;">주문 수정</button> 
+							</div>			       
+							</form>
 						</div>
 					</div>
 				</div>
@@ -237,12 +299,12 @@
 </body>
 <script>
 	$('#updateBtn').click(function(){
-		if($('#noticeTitle').val().length == "") {
-			alert('제목을 입력하세요');
-		} else if($('#noticeContent').val().length == "" ) {
-			alert('내용을 입력하세요');
+		if($('#ordersAddress').val().length == "") {
+			alert('배송지를 입력하세요');
+		} else if($('#ordersState').val() == 'default') {
+			alert('배송현황을 선택하세요');
 		} else {
-			updateNoticeForm.submit();
+			updateOrdersForm.submit();
 		}
 	});
 </script>

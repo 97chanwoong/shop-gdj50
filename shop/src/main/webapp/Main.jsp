@@ -75,7 +75,7 @@
             <nav class="amado-nav">
                 <ul>
                     <li class="active"><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-					<li><a href="<%=request.getContextPath()%>/customerGoodslist2.jsp">Shop</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
 					<li><a href="#">Community</a></li>
 					<li><a href="#">Contact</a></li>
                 </ul>
@@ -88,8 +88,8 @@
              <%
              	if(session.getAttribute("id") == null){
              %>  
-                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="cart-nav">Cart<span>(0)</span></a>
-                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="fav-nav">MyPage</a>
+                <a href="<%=request.getContextPath()%>/LoginForm.jsp" class="cart-nav">Cart<span>(0)</span></a>
+                <a href="<%=request.getContextPath()%>/LoginForm.jsp" class="fav-nav">MyPage</a>
             <%
              	} else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer") ){
             %>
@@ -101,7 +101,7 @@
             <%
          		if(session.getAttribute("id") != null && session.getAttribute("user").equals("employee")){
             %>	
-            	<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="fav-nav">AdminPage</a>
+            	<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="fav-nav">AdminPage</a>
             <%
          		}
             %>
@@ -120,7 +120,7 @@
              <%
              	if(session.getAttribute("id") == null){
              %>  
-                <a href="<%=request.getContextPath()%>/LoginForm2.jsp" class="btn amado-btn mb-15">Log In</a>
+                <a href="<%=request.getContextPath()%>/LoginForm.jsp" class="btn amado-btn mb-15">Log In</a>
             <%
              	} else if(session.getAttribute("id") != null){
             %>

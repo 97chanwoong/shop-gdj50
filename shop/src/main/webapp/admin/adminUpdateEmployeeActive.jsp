@@ -3,10 +3,10 @@
 <%@page import="service.*"%>
 <% 
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "/index.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	
 	String employeeId = request.getParameter("employeeId");

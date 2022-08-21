@@ -6,34 +6,25 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	
-	// 페이징
-	int currentPage = 1; // 현재 페이지
-	int ROW_PER_PAGE = 10; // 10개씩
+	// 상품번호
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	System.out.println(goodsNo + "<--goodsNo");
 	
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
-	}
+	// 상세페이지 메서드
+	GoodsService goodsService = new GoodsService();
+	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 	
-	// 메서드를 위한 객체 생성
-	OrdersService ordersService = new OrdersService();
-	
-	// 마지막 페이지 메서드
-	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
-	
-	// 숫자페이징
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-	// endPage 는 lastPage보다 크면 안된다
-	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
-	
-	// 리스트
-	List<Map<String, Object>> list = ordersService.getOrdersList(ROW_PER_PAGE, currentPage);
+	//리뷰 가져오기
+	ReviewService reviewService = new ReviewService();
+	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
+	// ordersNo값 list에서 빼오기
+	int ordersNo = Integer.parseInt(list.get(0).get("ordersNo").toString());
 %>
 
 <!DOCTYPE html>
@@ -59,7 +50,6 @@
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
 <link rel="stylesheet" href="../tmp2/css/core-style5.css">
-
 <link rel="stylesheet" href="../tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -141,94 +131,105 @@
 					%>
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 리스트</h5>
+							<h5 style="font-family: 'Jua', sans-serif;">상품 상세보기</h5>
 							<br>
-							<table class="table table-hover text-center">
+							<div style="text-align: center;">
+								<img
+									src="<%=request.getContextPath()%>/upload/<%=map.get("fileName")%>"
+									alt="제품이미지">
+							</div>
+							<br>
+							<div style="text-align: right;">
+								<a
+									href="<%=request.getContextPath()%>/admin/adminUpdateGoodsOne.jsp?goodsNo=<%=map.get("goodsNo")%>"
+									class="btn amado-btn w-30">수정</a>
+							</div>
+							<br>
+							<table class="table table-borderless text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
-										<th>주문번호</th>
 										<th>상품번호</th>
 										<th>상품이름</th>
-										<th>고객아이디</th>
-										<th>상품수량</th>
 										<th>상품가격</th>
-										<th>배송주소</th>
-										<th>배송현황</th>
-										<th>수정날짜</th>
-										<th>주문날짜</th>
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
-									<%
-									for(Map<String, Object> m : list){
-									%>
-									
 									<tr>
-										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/OrdersNoOne2.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
-										<td><%=m.get("goodsNo")%></td>
-										<td><%=m.get("goodsName")%></td>
-										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/customerOrderslist2.jsp?customerId=<%=m.get("customerId")%>"><%=m.get("customerId")%></a></td>
-										<td><%=m.get("ordersQuantity")%></td>
-										<td><%=m.get("ordersPrice")%></td>
-										<td><%=m.get("ordersAddress")%></td>
-										<td><%=m.get("ordersState")%></td>
-										<td><%=m.get("updateDate")%></td>
-										<td><%=m.get("createDate")%></td>
+										<td><%=map.get("goodsNo")%></td>
+										<td><%=map.get("goodsName")%></td>
+										<td><%=map.get("goodsPrice")%></td>
 									</tr>
-									<%
-									}
-									%>
+								</tbody>
+								<thead class="thead-light"
+									style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<th>등록날짜</th>
+										<th>수정날짜</th>
+										<th>재고여부</th>
+									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<td><%=map.get("createDate")%></td>
+										<td><%=map.get("updateDate")%></td>
+										<td><%=map.get("soldOut")%></td>
+									</tr>
+								</tbody>
+								<thead class="thead-light"
+									style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<th>이미지이름</th>
+										<th>파일이름</th>
+										<th>확장자명</th>
+									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<td><%=map.get("fileName")%></td>
+										<td><%=map.get("originfileName")%></td>
+										<td><%=map.get("contentType")%></td>
+									</tr>
 								</tbody>
 							</table>
 							<hr>
-							<div class="row">
-								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
-								</div>
-								<div class="col-8"></div>
-								<div class="col-2">
-								<ul class="pagination justify-content-end">
-									<%
-									if (currentPage > 1) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
-									</li>
-									<%
-									}
-
-									// 숫자페이징
-									for (int i = startPage; i <= endPage; i++) {
-									if (i == currentPage) {
-									%>
-									<li class="page-item active"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									} else {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									}
-									}
-
-									if (currentPage < lastPage) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminEmployeelist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
-									</li>
-									<%
-									}
-									%>
-								</ul>
+							<div style="margin-top: 3%">
+								<h2 style="font-family: 'Jua', sans-serif;">Review</h2>
+								<table class="table table-striped text-center">
+									<thead style="font-family: 'Jua', sans-serif;">
+										<tr>
+											<th>고객 아이디</th>
+											<th>내용</th>
+											<th>수정날짜</th>
+											<th>작성날짜</th>
+											<th>삭제</th>
+										</tr>
+									</thead>
+									<tbody style="font-family: 'Jua', sans-serif;">
+										<%
+										for (Map<String, Object> m : list) {
+										%>
+										<tr>
+											<td style="font-size: 20px;"><%=m.get("customerId")%></td>
+											<td style="font-size: 20px;"><%=m.get("reviewContents")%></td>
+											<td style="font-size: 20px;"><%=m.get("updateDate")%></td>
+											<td style="font-size: 20px;"><%=m.get("createDate")%></td>
+											<td><button class="btn amado-btn"
+													onclick="removeReviewBtn()">삭제</button></td>
+										</tr>
+										<%
+										}
+										%>
+									</tbody>
+								</table>
 							</div>
+							<hr>
+							<div class="row">
+								<div class="col-1">
+									<a
+										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp"
+										class="btn amado-btn w-30">목록</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -310,4 +311,12 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
+<script>
+function removeReviewBtn() {
+	 var result = confirm("리뷰를 삭제하시겠습니까?");
+	  if (result == true) {
+		  location.href="<%=request.getContextPath()%>/admin/adminRemoveReviewOneAction.jsp?ordersNo=<%=ordersNo%>&&goodsNo=<%=map.get("goodsNo")%>";
+			}
+		}
+</script>
 </html>

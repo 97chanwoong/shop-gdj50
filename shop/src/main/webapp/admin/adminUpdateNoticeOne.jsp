@@ -3,24 +3,20 @@
 <%@ page import="repository.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="service.*"%>
-<%@ page import="vo.*"%>
+<%@ page import="vo.*"%>	
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-}
-
-// 주문번호
-int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
-System.out.println(ordersNo + "<-- ordersNo");
-
-// 주문상품 상세 보기 메서드
-OrdersService ordersService = new OrdersService();
-Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
-%>
-
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
+	// noticeNo 값 받아오기
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+	// 디버깅
+	System.out.println(noticeNo + "<-- noticeNo");
+	
+%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,11 +39,9 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style5.css">
-
+<link rel="stylesheet" href="../tmp2/css/core-style4.css">
 <link rel="stylesheet" href="../tmp2/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -64,7 +58,7 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="tmp2/img/core-img/search.png" alt="">
+								<img src="../tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -114,58 +108,53 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Order-table-area section-padding-100 mb-100">
+		<div class="Notice-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 상세보기</h5>
-							<br>
-							<div style="text-align: right;">
-								<a
-									href="<%=request.getContextPath()%>/admin/updateOrdersOne.jsp?ordersNo=<%=map.get("ordersNo")%>&ordersQuantity=<%=map.get("ordersQuantity")%>&goodsName=<%=map.get("goodsName")%>&ordersPrice=<%=map.get("ordersPrice")%>&customerTelephone=<%=map.get("customerTelephone")%>&customerName=<%=map.get("customerName")%>&customerId=<%=map.get("customerId")%>&createDate=<%=map.get("createDate")%>"
-									class="btn amado-btn w-30">수정</a>
-							</div>
-							<br>
-							<table class="table table-borderless text-center">
-								<thead class="thead-light"
-									style="font-family: 'Jua', sans-serif;">
-									<tr>
-										<th>상품이름</th>
-										<th>상품가격</th>
-										<th>상품수량</th>
-										<th>고객이름</th>
-										<th>고객아이디</th>
-										<th>고객연락처</th>
-										<th>배송주소</th>
-										<th>배송현황</th>
-										<th>수정날짜</th>
-										<th>주문날짜</th>
-									</tr>
-								</thead>
-								<tbody style="font-family: 'Jua', sans-serif;">
-									<tr>
-										<td style="font-size:18px;"><%=map.get("goodsName")%></td>
-										<td style="font-size:18px;"><%=map.get("ordersPrice")%></td>
-										<td style="font-size:18px;"><%=map.get("ordersQuantity")%></td>
-										<td style="font-size:18px;"><%=map.get("customerName")%></td>
-										<td style="font-size:18px;"><%=map.get("customerId")%></td>
-										<td style="font-size:18px;"><%=map.get("customerTelephone")%></td>
-										<td style="font-size:18px;"><%=map.get("ordersAddress")%></td>
-										<td style="font-size:18px;"><%=map.get("ordersState")%></td>
-										<td style="font-size:18px;"><%=map.get("updateDate")%></td>
-										<td style="font-size:18px;"><%=map.get("createDate")%></td>
-									</tr>
-								</tbody>
-							</table>
-							<hr>
-							<div class="row">
-								<div class="col-1">
-									<a
-										href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp"
-										class="btn amado-btn w-30">목록</a>
+						<div class="Notice-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">공지 수정</h5>
+							<br> 
+							<form id="updateNoticeForm"
+								action="<%=request.getContextPath()%>/admin/adminUpdateNoticeOneAction.jsp"
+								method="post">
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="noticeNo" class="form-group">번호
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="noticeNo" id="noticeNo" readonly="readonly" value="<%=noticeNo%>"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="noticeTitle" class="form-group">제목
+								</label> 
+								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
+										name="noticeTitle" id="noticeTitle"
+										class="form-control"> 
+								<br>
+								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
+										for="noticeContent" class="form-group" >내용
+								</label> 
+								<textarea style="font-family: 'Jua', sans-serif; font-size:25px;"
+										rows="5" cols="50"
+										name="noticeContent" id="noticeContent"
+										class="form-control"> 
+								</textarea>		
+								<br>
+								<br>
+								<div class="form-group">
+									<button type="reset"
+									        class="btn amado-btn w-100"
+									        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
 								</div>
-							</div>
+								<br>
+								<div class="form-group">	
+									<button id="updateBtn" type="button"
+											class="btn login-btn w-100"
+											style="font-family: 'Jua', sans-serif; font-size:30px;">공지 수정</button> 
+								</div>			       
+							</form>
+							<br>
 						</div>
 					</div>
 				</div>
@@ -246,4 +235,15 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
+<script>
+	$('#updateBtn').click(function(){
+		if($('#noticeTitle').val().length == "") {
+			alert('제목을 입력하세요');
+		} else if($('#noticeContent').val().length == "" ) {
+			alert('내용을 입력하세요');
+		} else {
+			updateNoticeForm.submit();
+		}
+	});
+</script>
 </html>

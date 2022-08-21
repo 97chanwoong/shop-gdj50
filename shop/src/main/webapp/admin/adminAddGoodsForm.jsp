@@ -3,34 +3,16 @@
 <%@ page import="repository.*"%>
 <%@ page import="java.util.*"%>
 <%@ page import="service.*"%>
-<%@ page import="vo.*"%>	
+<%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-	} 
-	// 오더정보 받아오기
-	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
-	String goodsName = request.getParameter("goodsName");
-	int ordersQuantity = Integer.parseInt(request.getParameter("ordersQuantity"));
-	int ordersPrice = Integer.parseInt(request.getParameter("ordersPrice"));
-	String customerName = request.getParameter("customerName");
-	String customerTelephone = request.getParameter("customerTelephone");
-	String customerId = request.getParameter("customerId");
-	String createDate = request.getParameter("createDate");
-	// 디버깅
-	System.out.println(ordersNo + "<-- ordersNo");
-	System.out.println(goodsName + "<-- goodsName");
-	System.out.println(ordersQuantity + "<-- ordersQuantity");
-	System.out.println(ordersPrice+ "<-- ordersPrice");
-	System.out.println(customerName + "<-- customerName");
-	System.out.println(customerTelephone + "<-- customerTelephone");
-	System.out.println(customerId + "<-- customerId");
-	System.out.println(createDate + "<-- createDate");
-	
-%>	
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -55,7 +37,8 @@
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
 <link rel="stylesheet" href="../tmp2/css/core-style5.css">
 <link rel="stylesheet" href="../tmp2/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
@@ -72,7 +55,7 @@
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="../tmp2/img/core-img/search.png" alt="">
+								<img src="tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -125,99 +108,49 @@
 		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-12 col-sm-6">
+					<%
+					if (request.getParameter("errorMsg") != null) {
+					%>
+					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+					<%
+					}
+					%>
+					<div class="col-2"></div>
+					<div class="col-8">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 수정(상품정보)</h5>
-							<br> 
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="goodsName" class="form-group">상품 이름
-								</label> 
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="goodsName" id="goodsName" readonly="readonly" value="<%=goodsName%>"
-										class="form-control"> 
-								<br>
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="ordersPrice" class="form-group">상품 가격
-								</label> 
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="goodsPrice" id="goodsPrice" readonly="readonly" value="<%=ordersPrice%>"
-										class="form-control"> 
-								<br>
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="ordersQuantity" class="form-group">상품 수량
-								</label> 
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="ordersQuantity" id="ordersQuantity" readonly="readonly" value="<%=ordersQuantity%>"
-										class="form-control"> 
-								<br>
+							<h5 style="font-family: 'Jua', sans-serif;">상품 등록</h5>
+							<br>
+							<form action="<%=request.getContextPath()%>/admin/adminAddGoodsAction.jsp" method="post" enctype="multipart/form-data" id="addGoodsform">
+								<label style="font-family: 'Jua', sans-serif;" for="goodsName">상품이름</label>
+								<input style="font-family: 'Jua', sans-serif;" 
+									   type="text" class="form-control" name="goodsName"
+										id="goodsName" >
+								<label style="font-family: 'Jua', sans-serif;" for="goodsPrice">상품가격</label>
+								<input style="font-family: 'Jua', sans-serif;" 
+									   type="text" class="form-control" name="goodsPrice"
+										id="goodsPrice" >		
+								<label style="font-family: 'Jua', sans-serif;" for="imgFile">상품이미지</label>
+								<input style="font-family: 'Jua', sans-serif;" 
+									   type="file" class="form-control" name="imgFile"
+										id="imgFile" >
+								<label style="font-family: 'Jua', sans-serif;" for="soldOut">품절여부</label>
+								<br>	
+									<select name="soldOut" class="form-control" id="soldOut">
+										<option value="defualt">-- 선택 --</option>
+			            				<option value="Y">Y</option>
+				            			<option value="N">N</option>
+				            		</select>
+				            	<br>
+				            	<br>		
+								<div class="form-group">
+								<button id="addGoodsBtn" type="button"
+										class="btn amado-btn w-100"
+										style="font-family: 'Jua', sans-serif;">상품등록</button>
+								</div>
+							</form>	
 						</div>
 					</div>
-					<div class="col-12 col-sm-6">
-						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">주문 수정(고객정보)</h5>
-							<br> 
-							<form id="updateOrdersForm"
-								action="<%=request.getContextPath()%>/admin/updateOrdersOneAction.jsp"
-								method="post">
-								<input type="hidden" id="ordersNo" name="ordersNo" value="<%=ordersNo%>">
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="customerName" class="form-group">고객 이름
-								</label> 
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="customerName" id="customerName" readonly="readonly" value="<%=customerName%>"
-										class="form-control"> 
-								<br>
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="customerId" class="form-group">고객 아이디
-								</label> 
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="customerId" id="customerId" readonly="readonly" value="<%=customerId%>"
-										class="form-control"> 
-								<br>
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="customerTelephone" class="form-group" >고객 연락처
-								</label> 
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										name="customerTelephone" id="customerTelephone" readonly="readonly" value="<%=customerTelephone%>"
-										class="form-control"> 
-								<br>
-								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
-										for="ordersAddress" class="form-group">배송 주소
-								</label> 
-								
-								<input style="font-family: 'Jua', sans-serif; font-size:25px;"
-										type="text"
-										name="ordersAddress" id="ordersAddress"
-										class="form-control"> 
-								<br>
-								<label style="font-family: 'Jua', sans-serif; font-size:35px;"
-										for="ordersState">배송 현황
-								</label>
-								<br>
-								<select id="ordersState" name="ordersState" >
-										<option value="default">------- 주문상황--------</option>
-										<option value="결제대기">결제 대기</option>
-										<option value="주문완료">주문 완료</option>
-										<option value="배송준비중">배송 준비중</option>
-										<option value="배송중">배송 중</option>
-										<option value="배송완료">배송 완료</option>
-								</select>
-							<br>
-							<br>
-							<div class="form-group">
-								<button type="reset"
-								        class="btn amado-btn w-100"
-								        style="font-family: 'Jua', sans-serif; font-size:30px;" >초기화</button>	
-							</div>
-							<br>
-							<div class="form-group">	
-								<button id="updateBtn" type="button"
-										class="btn login-btn w-100"
-										style="font-family: 'Jua', sans-serif; font-size:30px;">주문 수정</button> 
-							</div>			       
-							</form>
-						</div>
-					</div>
+					<div class="col-2"></div>
 				</div>
 			</div>
 		</div>
@@ -297,14 +230,18 @@
 	<script src="../tmp2/js/active.js"></script>
 </body>
 <script>
-	$('#updateBtn').click(function(){
-		if($('#ordersAddress').val().length == "") {
-			alert('배송지를 입력하세요');
-		} else if($('#ordersState').val() == 'default') {
-			alert('배송현황을 선택하세요');
-		} else {
-			updateOrdersForm.submit();
-		}
-	});
+		$('#addGoodsBtn').click(function(){
+			if($('#goodsName').val().length == ""){
+				alert('상품이름을 기입해주세요');
+			} else if($('#goodsPrice').val().length == ""){
+				alert('상품가격을 기입해주세요');
+			} else if($('#imgFile').val().length == ""){
+				alert('상품파일을 등록해주세요');
+			} else if($('#soldOut').val() == 'defualt'){
+				alert('품절여부를 선택해주세요');
+			} else {
+				$('#addGoodsform').submit();
+			}
+		});
 </script>
 </html>

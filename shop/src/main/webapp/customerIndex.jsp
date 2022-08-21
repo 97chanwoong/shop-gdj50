@@ -138,7 +138,7 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/removeIdForm2.jsp">회원 탈퇴 하기</a>
+								    href="<%=request.getContextPath()%>/removeIdForm.jsp">회원 탈퇴 하기</a>
 							</p>
 							<hr>	    
 						</div>

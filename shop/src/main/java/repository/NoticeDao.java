@@ -146,7 +146,7 @@ public class NoticeDao {
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				map = new HashMap<>();
-				map.put("noticeNo", rs.getString("noticeNo"));
+				map.put("noticeNo", rs.getInt("noticeNo"));
 				map.put("noticeTitle", rs.getString("noticeTitle"));
 				map.put("noticeContent", rs.getString("noticeContent"));
 				map.put("updateDate", rs.getString("updateDate"));

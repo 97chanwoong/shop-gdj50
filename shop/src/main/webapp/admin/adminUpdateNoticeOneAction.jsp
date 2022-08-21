@@ -4,6 +4,12 @@
 <%@page import="java.util.HashMap"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
 	// 인코딩
 	request.setCharacterEncoding("utf-8");
 	// 파라미터 값 받아오기
@@ -31,6 +37,6 @@
 		response.sendRedirect(request.getContextPath()+"/admin/adminNoticelist.jsp");
 	} else {
 		System.out.println("공지사항 수정 실패");
-		response.sendRedirect(request.getContextPath()+"/admin/updateNoticeOne.jsp?noticeNo=noticeNo");
+		response.sendRedirect(request.getContextPath()+"/admin/adminUpdateNoticeOne.jsp?noticeNo=noticeNo");
 	}
 %>

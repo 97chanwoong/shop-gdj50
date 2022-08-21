@@ -6,12 +6,34 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/loginForm.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "/index.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	
+	// 페이징
+	int currentPage = 1; // 현재 페이지
+	int ROW_PER_PAGE = 10; // 10개씩
+	
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
+	}
+	
+	// 메서드를 위한 객체 생성
+	OrdersService ordersService = new OrdersService();
+	
+	// 마지막 페이지 메서드
+	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
+	
+	// 숫자페이징
+	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
+	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
+	// endPage 는 lastPage보다 크면 안된다
+	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
+	
+	// 리스트
+	List<Map<String, Object>> list = ordersService.getOrdersList(ROW_PER_PAGE, currentPage);
 %>
 
 <!DOCTYPE html>
@@ -36,7 +58,8 @@
 
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="../tmp2/css/core-style5.css">
+
 <link rel="stylesheet" href="../tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -106,7 +129,7 @@
 		</header>
 		<!-- Header Area End -->
 
-		<div class="Goods-table-area section-padding-100 mb-100">
+		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
 					<%
@@ -116,42 +139,99 @@
 					<%
 					}
 					%>
-					<div class="col-2"></div>
-					<div class="col-8">
-						<div class="Goods-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">상품 등록</h5>
+					<div class="col-12">
+						<div class="Order-summary">
+							<h5 style="font-family: 'Jua', sans-serif;">주문 리스트</h5>
 							<br>
-							<form action="<%=request.getContextPath()%>/admin/addGoodsAction.jsp" method="post" enctype="multipart/form-data" id="addGoodsform">
-								<label style="font-family: 'Jua', sans-serif;" for="goodsName">상품이름</label>
-								<input style="font-family: 'Jua', sans-serif;" 
-									   type="text" class="form-control" name="goodsName"
-										id="goodsName" >
-								<label style="font-family: 'Jua', sans-serif;" for="goodsPrice">상품가격</label>
-								<input style="font-family: 'Jua', sans-serif;" 
-									   type="text" class="form-control" name="goodsPrice"
-										id="goodsPrice" >		
-								<label style="font-family: 'Jua', sans-serif;" for="imgFile">상품이미지</label>
-								<input style="font-family: 'Jua', sans-serif;" 
-									   type="file" class="form-control" name="imgFile"
-										id="imgFile" >
-								<label style="font-family: 'Jua', sans-serif;" for="soldOut">품절여부</label>
-								<br>	
-									<select name="soldOut" class="form-control" id="soldOut">
-										<option value="defualt">-- 선택 --</option>
-			            				<option value="Y">Y</option>
-				            			<option value="N">N</option>
-				            		</select>
-				            	<br>
-				            	<br>		
-								<div class="form-group">
-								<button id="addGoodsBtn" type="button"
-										class="btn amado-btn w-100"
-										style="font-family: 'Jua', sans-serif;">상품등록</button>
+							<table class="table table-hover text-center">
+								<thead class="thead-light"
+									style="font-family: 'Jua', sans-serif;">
+									<tr>
+										<th>주문번호</th>
+										<th>상품번호</th>
+										<th>상품이름</th>
+										<th>고객아이디</th>
+										<th>상품수량</th>
+										<th>상품가격</th>
+										<th>배송주소</th>
+										<th>배송현황</th>
+										<th>수정날짜</th>
+										<th>주문날짜</th>
+									</tr>
+								</thead>
+								<tbody style="font-family: 'Jua', sans-serif;">
+									<%
+									for(Map<String, Object> m : list){
+									%>
+									
+									<tr>
+										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/adminOrdersOne.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
+										<td><%=m.get("goodsNo")%></td>
+										<td><%=m.get("goodsName")%></td>
+										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/customerOrderslist.jsp?customerId=<%=m.get("customerId")%>"><%=m.get("customerId")%></a></td>
+										<td><%=m.get("ordersQuantity")%></td>
+										<td><%=m.get("ordersPrice")%></td>
+										<td><%=m.get("ordersAddress")%></td>
+										<td><%=m.get("ordersState")%></td>
+										<td><%=m.get("updateDate")%></td>
+										<td><%=m.get("createDate")%></td>
+									</tr>
+									<%
+									}
+									%>
+								</tbody>
+							</table>
+							<hr>
+							<div class="row">
+								<div class="col-2">
+									<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
-							</form>	
+								<div class="col-8"></div>
+								<div class="col-2">
+								<ul class="pagination justify-content-end">
+									<%
+									if (currentPage > 1) {
+									%>
+									<li class="page-item"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
+									</li>
+									<%
+									}
+
+									// 숫자페이징
+									for (int i = startPage; i <= endPage; i++) {
+									if (i == currentPage) {
+									%>
+									<li class="page-item active"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp?currentPage=<%=i%>"><%=i%></a>
+									</li>
+									<%
+									} else {
+									%>
+									<li class="page-item"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp?currentPage=<%=i%>"><%=i%></a>
+									</li>
+									<%
+									}
+									}
+
+									if (currentPage < lastPage) {
+									%>
+									<li class="page-item"><a
+										class="page-link"
+										href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
+									</li>
+									<%
+									}
+									%>
+								</ul>
+							</div>
+							</div>
 						</div>
 					</div>
-					<div class="col-2"></div>
 				</div>
 			</div>
 		</div>
@@ -230,19 +310,4 @@
 	<!-- Active js -->
 	<script src="../tmp2/js/active.js"></script>
 </body>
-<script>
-		$('#addGoodsBtn').click(function(){
-			if($('#goodsName').val().length == ""){
-				alert('상품이름을 기입해주세요');
-			} else if($('#goodsPrice').val().length == ""){
-				alert('상품가격을 기입해주세요');
-			} else if($('#imgFile').val().length == ""){
-				alert('상품파일을 등록해주세요');
-			} else if($('#soldOut').val() == 'defualt'){
-				alert('품절여부를 선택해주세요');
-			} else {
-				$('#addGoodsform').submit();
-			}
-		});
-</script>
 </html>

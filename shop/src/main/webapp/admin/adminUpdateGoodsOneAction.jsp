@@ -8,10 +8,10 @@
 <%@page import="vo.Goods"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	//인코딩
 	request.setCharacterEncoding("utf-8");
@@ -63,7 +63,7 @@
 		}
 		System.out.println("이미지 파일만 업로드 가능");
 		//String errorMsg = URLEncoder.encode("이미지 파일만 업로드 가능", "utf-8");
-		response.sendRedirect(request.getContextPath() + "/admin/updateGoodsOne.jsp");
+		response.sendRedirect(request.getContextPath() + "/admin/adminUpdateGoodsOne.jsp");
 		return;
 	}
 	
@@ -87,10 +87,10 @@
 			System.out.println("예전 사진 삭제 실패");
 		}
 		System.out.println("상품 수정 성공");
-		response.sendRedirect(request.getContextPath() + "/admin/adminGoodslist2.jsp");
+		response.sendRedirect(request.getContextPath() + "/admin/adminUpdateGoodsOne.jsp?goodsNo="+goods.getGoodsNo());
 	} else {
 		System.out.println("상품 수정 실패");
-		response.sendRedirect(request.getContextPath() + "/admin/updateGoodsOne.jsp?goodsNo="+goods.getGoodsNo());
+		response.sendRedirect(request.getContextPath() + "/admin/adminUpdateGoodsOne.jsp?goodsNo="+goods.getGoodsNo());
 	}
 	
 %>

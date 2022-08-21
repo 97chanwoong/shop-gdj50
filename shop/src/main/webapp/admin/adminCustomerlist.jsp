@@ -6,7 +6,7 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
 		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
@@ -157,8 +157,8 @@
 									for (Customer c : list) {
 									%>
 									<tr>
-										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/customerOrderslist2.jsp?customerId=<%=c.getCustomerId()%>"><%=c.getCustomerId()%></a></td>
-										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/CustomerOne.jsp?customerId=<%=c.getCustomerId()%>"><%=c.getCustomerName()%></a></td>
+										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/customerOrderslist.jsp?customerId=<%=c.getCustomerId()%>"><%=c.getCustomerId()%></a></td>
+										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/adminCustomerOne.jsp?customerId=<%=c.getCustomerId()%>"><%=c.getCustomerName()%></a></td>
 										<td><%=c.getCustomerAddress()%></td>
 										<td><%=c.getCustomerTelephone()%></td>
 										<td><%=c.getCreateDate()%></td>
@@ -171,7 +171,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
+									<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">

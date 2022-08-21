@@ -131,7 +131,6 @@ public class NoticeService {
 		NoticeDao noticeDao = new NoticeDao();
 		try {
 			conn = new DBUtil().getConnection();
-			System.out.println("getNoticeOne- DB Driver 연결");
 			map = noticeDao.selectNoticeOne(conn, noticeNo);
 		} catch (Exception e) {
 			e.printStackTrace();

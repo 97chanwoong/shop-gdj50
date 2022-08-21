@@ -6,10 +6,10 @@
 <%@ page import="vo.*"%>
 <%
 	if (session.getAttribute("id") == null) {
-		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
 		return;
 	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-		response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	
 	// 페이징
@@ -166,7 +166,7 @@
 										<td><%=e.getCreateDate()%></td>
 										<td>
 											<form
-												action="<%=request.getContextPath()%>/admin/updateEmployeeActive.jsp"
+												action="<%=request.getContextPath()%>/admin/adminUpdateEmployeeActive.jsp"
 												method="post">
 												<input type="hidden" name="employeeId"
 													value="<%=e.getEmployeeId()%>"> <select
@@ -197,7 +197,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/adminIndex2.jsp" class="btn amado-btn w-50">목록</a>
+									<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">
