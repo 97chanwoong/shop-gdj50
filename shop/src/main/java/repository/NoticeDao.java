@@ -132,7 +132,7 @@ public class NoticeDao {
 
 	// 공지사항 상세보기
 	public Map<String,Object> selectNoticeOne(Connection conn, int noticeNo) throws Exception {
-		// 리턴할 객체 생성
+		// Map 객체 생성
 		Map<String,Object> map = null;
 		// DB 자원
 		String sql = "SELECT notice_no noticeNo, notice_title noticeTitle, notice_content noticeContent, update_date updateDate, create_date createDate FROM notice WHERE notice_no = ?";
