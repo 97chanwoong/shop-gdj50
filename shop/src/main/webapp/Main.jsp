@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page import="service.*"%>
+<%
+	//오늘 방문자수, 총 방문자수
+	CounterService counterService = new CounterService();
+	int totalCounter = counterService.getTotalCount();
+	int todayCounter = counterService.getTodayCount();
+	int currentCount = (Integer)(application.getAttribute("currentCounter"));
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -106,6 +113,11 @@
          		}
             %>
             </div>
+             <div class="mt-30 mb-50">
+	           오늘 방문자 수 : <%=todayCounter%><br>
+			   총 방문자 수 :  <%=totalCounter%><br>
+			   현재 접속자 수 : <%=currentCount%><br>
+			</div>
 			<%
              	if(session.getAttribute("id") != null){
             %>
@@ -114,7 +126,6 @@
              	}
 			%>
 			<!-- 로그인 아이디 -->
-            
             <!-- Button Group -->
             <div class="amado-btn-group mt-30 mb-100">
              <%
@@ -296,7 +307,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 									<ul class="navbar-nav ml-auto">
 										<li class="nav-item active"><a class="nav-link"
 											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-										<li class="nav-item"><a class="nav-link" href="shop.html">Shop</a>
+										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>

@@ -90,7 +90,7 @@
 			<nav class="amado-nav">
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-					<li><a href="shop.html">Shop</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
 					<li><a href="#">Community</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
@@ -122,6 +122,11 @@
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
 								    href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp">주문 관리</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/admin/adminMonthOrders.jsp">월별 통계</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
@@ -193,7 +198,7 @@
 									<ul class="navbar-nav ml-auto">
 										<li class="nav-item active"><a class="nav-link"
 											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-										<li class="nav-item"><a class="nav-link" href="shop.html">Shop</a>
+										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>

@@ -120,7 +120,7 @@
 			<nav class="amado-nav">
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-					<li><a href="shop.html">Shop</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
 					<li><a href="#">Community</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
@@ -163,7 +163,17 @@
 										for(Map<String, Object> m : list){
 									%>
 									<tr>
+									<%
+										if(session.getAttribute("user").equals("employee")){
+									%>
 										<td style="font-size:18px;"><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/adminOrdersOne.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
+									<%
+										} else if(session.getAttribute("user").equals("customer")){
+									%>	
+										<td style="font-size:18px;"><%=m.get("ordersNo")%></td>
+									<%
+										}
+									%>
 										<td style="font-size:18px;"><%=m.get("goodsNo")%></td>
 										<td style="font-size:18px;"><%=m.get("goodsName")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
@@ -290,7 +300,7 @@
 									<ul class="navbar-nav ml-auto">
 										<li class="nav-item active"><a class="nav-link"
 											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-										<li class="nav-item"><a class="nav-link" href="shop.html">Shop</a>
+										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>

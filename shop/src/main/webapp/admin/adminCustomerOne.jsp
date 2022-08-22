@@ -100,7 +100,7 @@ Map<String, Object> map = customerService.getCustomerOne(customerId);
 			<nav class="amado-nav">
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-					<li><a href="shop.html">Shop</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
 					<li><a href="#">Community</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
@@ -211,7 +211,7 @@ Map<String, Object> map = customerService.getCustomerOne(customerId);
 									<ul class="navbar-nav ml-auto">
 										<li class="nav-item active"><a class="nav-link"
 											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
-										<li class="nav-item"><a class="nav-link" href="shop.html">Shop</a>
+										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Community</a>
 										</li>

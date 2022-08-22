@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
-<%@ page import="service.GoodsService"%>
+<%@ page import="service.*"%>
 <%
 // controller : java class <- Servlet
 	int ROW_PER_PAGE = 20;
@@ -32,6 +32,12 @@
 	
 	// list
 	List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(ROW_PER_PAGE, currentPage, check);
+	
+	//오늘 방문자수, 총 방문자수
+	CounterService counterService = new CounterService();
+	int totalCounter = counterService.getTotalCount();
+	int todayCounter = counterService.getTodayCount();
+	int currentCount = (Integer)(application.getAttribute("currentCounter"));
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -150,30 +156,35 @@
 				}
 				%>
 			</div>
+			<div class="mt-30 mb-50">
+				오늘 방문자 수 : <%=todayCounter%><br>
+				총 방문자 수 :  <%=totalCounter%><br>
+				현재 접속자 수 : <%=currentCount%><br>
+			</div>
 			<%
-			if (session.getAttribute("id") != null) {
+				if (session.getAttribute("id") != null) {
 			%>
-			<h5 style="font-family: 'Jua', sans-serif;"><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님
-			</h5>
+				<h5 style="font-family: 'Jua', sans-serif;"><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님
+				</h5>
 			<%
-			}
+				}
 			%>
 			<!-- 로그인 아이디 -->
 
 			<!-- Button Group -->
 			<div class="amado-btn-group mt-30 mb-100">
 				<%
-				if (session.getAttribute("id") == null) {
+					if (session.getAttribute("id") == null) {
 				%>
-				<a href="<%=request.getContextPath()%>/LoginForm.jsp"
-					class="btn amado-btn mb-15">Log In</a>
+					<a href="<%=request.getContextPath()%>/LoginForm.jsp"
+						class="btn amado-btn mb-15">Log In</a>
 				<%
-				} else if (session.getAttribute("id") != null) {
+					} else if (session.getAttribute("id") != null) {
 				%>
-				<a href="<%=request.getContextPath()%>/LogOut.jsp"
-					class="btn amado-btn mb-15">Log Out</a>
+					<a href="<%=request.getContextPath()%>/LogOut.jsp"
+						class="btn amado-btn mb-15">Log Out</a>
 				<%
-				}
+					}
 				%>
 			</div>
 
@@ -256,10 +267,8 @@
 					</ul>
 				</div>
 			</div>
-
-
 		</div>
-
+		
 		<div class="amado_product_area section-padding-100">
 			<div class="container-fluid">
 				<div class="row">
@@ -312,24 +321,24 @@
 					<div class="col-8"></div>
 					<div class="col-2">
 						<ul class="pagination justify-content-end">
-							                        <%
-                           if (currentPage > 1) {
+						   <%
+                           		if (currentPage > 1) {
                            %>
-                           <li class="page-item"><a
-                              class="page-link"
-                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=currentPage - 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">이전</a>
-                           </li>
+	                           <li class="page-item"><a
+	                              class="page-link"
+	                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=currentPage - 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">이전</a>
+	                           </li>
                            <%
-                           	}
+                           		}
 
-                           // 숫자페이징
-                           for (int i = startPage; i <= endPage; i++) {
-                           if (i == currentPage) {
+	                           // 숫자페이징
+	                           for (int i = startPage; i <= endPage; i++) {
+	                           if (i == currentPage) {
                            %>
-                           <li class="page-item active"><a
-                              class="page-link"
-                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
-                           </li>
+	                           <li class="page-item active"><a
+	                              class="page-link"
+	                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
+	                           </li>
                            <%
                           	 } else {
                            %>
