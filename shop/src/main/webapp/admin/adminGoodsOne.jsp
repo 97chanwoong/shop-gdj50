@@ -24,7 +24,13 @@
 	ReviewService reviewService = new ReviewService();
 	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
 	// ordersNo값 list에서 빼오기
-	int ordersNo = Integer.parseInt(list.get(0).get("ordersNo").toString());
+	int ordersNo = 0;
+	for (Map<String, Object> m : list) {
+		if (list != null) {
+	
+			ordersNo = Integer.parseInt(list.get(0).get("ordersNo").toString());
+		}
+	}
 %>
 
 <!DOCTYPE html>
@@ -193,7 +199,8 @@
 								</tbody>
 							</table>
 							<hr>
-							<div style="margin-top: 3%">
+
+							<div class="form-gruop">
 								<h2 style="font-family: 'Jua', sans-serif;">Review</h2>
 								<table class="table table-striped text-center">
 									<thead style="font-family: 'Jua', sans-serif;">
@@ -316,7 +323,7 @@ function removeReviewBtn() {
 	 var result = confirm("리뷰를 삭제하시겠습니까?");
 	  if (result == true) {
 		  location.href="<%=request.getContextPath()%>/admin/adminRemoveReviewOneAction.jsp?ordersNo=<%=ordersNo%>&&goodsNo=<%=map.get("goodsNo")%>";
-			}
 		}
+	}
 </script>
 </html>

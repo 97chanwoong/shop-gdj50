@@ -5,9 +5,26 @@ public class Customer {
 	private String customerPass;
 	private String customerName;
 	private String customerAddress;
+	private String customerDeAddress;
 	private String customerTelephone;
 	private String updateDate;
 	private String createDate;
+	public Customer() {
+		super();
+	}
+	public Customer(String customerId, String customerPass, String customerName, String customerAddress,
+			String customerDeAddress, String customerTelephone, String updateDate, String createDate) {
+		super();
+		this.customerId = customerId;
+		this.customerPass = customerPass;
+		this.customerName = customerName;
+		this.customerAddress = customerAddress;
+		this.customerDeAddress = customerDeAddress;
+		this.customerTelephone = customerTelephone;
+		this.updateDate = updateDate;
+		this.createDate = createDate;
+	}
+	
 	public String getCustomerId() {
 		return customerId;
 	}
@@ -32,6 +49,12 @@ public class Customer {
 	public void setCustomerAddress(String customerAddress) {
 		this.customerAddress = customerAddress;
 	}
+	public String getCustomerDeAddress() {
+		return customerDeAddress;
+	}
+	public void setCustomerDeAddress(String customerDeAddress) {
+		this.customerDeAddress = customerDeAddress;
+	}
 	public String getCustomerTelephone() {
 		return customerTelephone;
 	}
@@ -53,8 +76,10 @@ public class Customer {
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerPass=" + customerPass + ", customerName="
-				+ customerName + ", customerAddress=" + customerAddress + ", customerTelephone=" + customerTelephone
-				+ ", updateDate=" + updateDate + ", createDate=" + createDate + "]";
+				+ customerName + ", customerAddress=" + customerAddress + ", customerDeAddress=" + customerDeAddress
+				+ ", customerTelephone=" + customerTelephone + ", updateDate=" + updateDate + ", createDate="
+				+ createDate + "]";
 	}
+	
 	
 }

@@ -1,3 +1,4 @@
+<%@page import="vo.Orders"%>
 <%@page import="service.OrdersService"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -12,22 +13,25 @@
 	}
 	// 인코딩
 	request.setCharacterEncoding("utf-8");
-	// 객체 생성
-	Map<String, Object> map = new HashMap<>();
-	// 파라미터 값 받아오기
-	map.put("ordersNo", Integer.parseInt(request.getParameter("ordersNo")));
-	map.put("ordersAddress", request.getParameter("ordersAddress"));
-	map.put("ordersState", request.getParameter("ordersState"));
-	// 메서드 생성 및 실행
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	
+	// 오더객체에 값 넣어주기
+	Orders orders = new Orders();
+	orders.setOrdersNo(Integer.parseInt(request.getParameter("ordersNo")));
+	orders.setOrdersAddress(request.getParameter("ordersAddress"));
+	orders.setOrdersDeAddress(request.getParameter("ordersDeAddress"));
+	orders.setOrdersState(request.getParameter("ordersState"));
+	
+	// 메서드 객체 생성 및 실행
 	OrdersService ordersService = new OrdersService();
-	int row = ordersService.getOrdersOne(map);
+	int row = ordersService.modifyOrdersOne(orders);
 	
 	// 재요청
 	if(row == 1){
 		System.out.println("주문 내역 수정 성공");
-		response.sendRedirect(request.getContextPath()+"/admin/adminOrderslist.jsp");
+		response.sendRedirect(request.getContextPath()+"/admin/adminOrdersOne.jsp?ordersNo=" + ordersNo);
 	} else {
 		System.out.println("주문 내역 수정 실패");
-		response.sendRedirect(request.getContextPath()+"/admin/adminUpdateOrdersOne.jsp?ordersNo=ordersNo");
+		response.sendRedirect(request.getContextPath()+"/admin/adminOrdersOne.jsp?ordersNo="  + ordersNo + "&errorMsg=Orders Update Fail" );
 	}
 %>

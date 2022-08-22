@@ -7,9 +7,27 @@ public class Orders {
 	private int ordersQuantity;
 	private int ordersPrice;
 	private String ordersAddress;
+	private String ordersDeAddress;
 	private String ordersState;
 	private String updateDate;
 	private String createDate;
+	public Orders() {
+		super();
+	}
+	public Orders(int ordersNo, int goodsNo, String customerId, int ordersQuantity, int ordersPrice,
+			String ordersAddress, String ordersDeAddress, String ordersState, String updateDate, String createDate) {
+		super();
+		this.ordersNo = ordersNo;
+		this.goodsNo = goodsNo;
+		this.customerId = customerId;
+		this.ordersQuantity = ordersQuantity;
+		this.ordersPrice = ordersPrice;
+		this.ordersAddress = ordersAddress;
+		this.ordersDeAddress = ordersDeAddress;
+		this.ordersState = ordersState;
+		this.updateDate = updateDate;
+		this.createDate = createDate;
+	}
 	public int getOrdersNo() {
 		return ordersNo;
 	}
@@ -46,6 +64,12 @@ public class Orders {
 	public void setOrdersAddress(String ordersAddress) {
 		this.ordersAddress = ordersAddress;
 	}
+	public String getOrdersDeAddress() {
+		return ordersDeAddress;
+	}
+	public void setOrdersDeAddress(String ordersDeAddress) {
+		this.ordersDeAddress = ordersDeAddress;
+	}
 	public String getOrdersState() {
 		return ordersState;
 	}
@@ -63,6 +87,13 @@ public class Orders {
 	}
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+	@Override
+	public String toString() {
+		return "Orders [ordersNo=" + ordersNo + ", goodsNo=" + goodsNo + ", customerId=" + customerId
+				+ ", ordersQuantity=" + ordersQuantity + ", ordersPrice=" + ordersPrice + ", ordersAddress="
+				+ ordersAddress + ", ordersDeAddress=" + ordersDeAddress + ", ordersState=" + ordersState
+				+ ", updateDate=" + updateDate + ", createDate=" + createDate + "]";
 	}
 	
 }

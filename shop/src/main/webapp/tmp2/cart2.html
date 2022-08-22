@@ -130,8 +130,8 @@
                                             <div class="qty-btn d-flex">
                                                 <p>Qty</p>
                                                 <div class="quantity">
-                                                    <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="1">
-                                                </div>
+                                                    <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="1" >
+                                            </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -143,7 +143,7 @@
                                             <h5>Minimal Plant Pot</h5>
                                         </td>
                                         <td class="price">
-                                            <span><input type="text" id="goodsPrice2" value="10"> <!-- 상품금액 --></span>
+                                            <span><input type="text" id="goodsPrice2" value="10"></span>
                                         </td>
                                         <td class="qty">
                                             <div class="qty-btn d-flex">
@@ -181,12 +181,12 @@
                         <div class="cart-summary">
                             <h5>Cart Total</h5>
                             <ul class="summary-table">
-                                <li><span>subtotal:</span> <span><input type="text" id="sum" value=""></span></li>
+                                <li><span>subtotal:</span> <span><input type="text" id="sum" value="360"></span></li>
                                 <li><span>delivery:</span> <span>Free</span></li>
-                                <li><span>total:</span> <span><input type="text" id="sum2" value=""></span></li>
+                                <li><span>total:</span> <span><input type="text" id="sum2" value="3604"></span></li>
                             </ul>
                             <div class="cart-btn mt-100">
-                                <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
+                                <a href="cart.html?" class="btn amado-btn w-100">Checkout</a>
                             </div>
                         </div>
                     </div>
@@ -298,6 +298,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
       sum = $("#qty").val()*$("#goodsPrice").val()+$("#qty2").val()*$("#goodsPrice2").val()+$("#qty3").val()*$("#goodsPrice3").val();
       document.getElementById('sum').value = sum;
       document.getElementById('sum2').value = sum;
+      location.href="./cartServcie.html?";   
    });
    $("#qty2").change(function() {
        console.log($("#qty").val());

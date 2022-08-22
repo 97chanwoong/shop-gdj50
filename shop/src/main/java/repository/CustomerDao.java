@@ -10,7 +10,7 @@ public class CustomerDao {
 	public List<Customer> selectCustomerList(Connection conn, int rowPerPage, int beginRow) throws Exception {
 		// 고객 리스트를 담을 ArrayList객체 생성
 		List<Customer> list = new ArrayList<>();
-		String sql = "SELECT customer_id customerId, customer_name customerName, customer_address customerAddress, customer_telephone customerTelephone, update_date updateDate, create_date createDate FROM customer ORDER BY create_date DESC LIMIT ?,?";
+		String sql = "SELECT customer_id customerId, customer_name customerName, customer_address customerAddress, customer_deaddress customerDeAddress ,customer_telephone customerTelephone, update_date updateDate, create_date createDate FROM customer ORDER BY create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -25,6 +25,7 @@ public class CustomerDao {
 				customer.setCustomerId(rs.getString("customerId"));
 				customer.setCustomerName(rs.getString("customerName"));
 				customer.setCustomerAddress(rs.getString("customerAddress"));
+				customer.setCustomerDeAddress(rs.getString("customerDeAddress"));
 				customer.setCustomerTelephone(rs.getString("customerTelephone"));
 				customer.setUpdateDate(rs.getString("updateDate"));
 				customer.setCreateDate(rs.getString("createDate"));
@@ -43,7 +44,7 @@ public class CustomerDao {
 		// Map 객체 생성
 		Map<String, Object> map = null;
 		// DB 자원
-		String sql = "SELECT customer_id customerId, customer_name customerName, customer_address customerAddress, customer_telephone customerTelephone, update_date updateDate, create_date createDate FROM customer WHERE customer_id = ?";
+		String sql = "SELECT customer_id customerId, customer_name customerName, customer_address customerAddress, customer_deaddress customerDeAddress, customer_telephone customerTelephone, update_date updateDate, create_date createDate FROM customer WHERE customer_id = ?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -57,6 +58,7 @@ public class CustomerDao {
 				map.put("customerId", rs.getString("customerId"));
 				map.put("customerName", rs.getString("customerName"));
 				map.put("customerAddress", rs.getString("customerAddress"));
+				map.put("customerDeAddress", rs.getString("customerDeAddress"));
 				map.put("customerTelephone", rs.getString("customerTelephone"));
 				map.put("updateDate", rs.getString("updateDate"));
 				map.put("createDate", rs.getString("createDate"));
@@ -98,7 +100,7 @@ public class CustomerDao {
 	// 회원가입
 	public int insertCustomer(Connection conn, Customer paramCustomer) throws Exception {
 		int row = 0;
-		String sql = "INSERT INTO customer VALUES(?,PASSWORD(?),?,?,?,NOW(),NOW())";
+		String sql = "INSERT INTO customer VALUES(?,PASSWORD(?),?,?,?,?,NOW(),NOW())";
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);
@@ -106,7 +108,8 @@ public class CustomerDao {
 			stmt.setString(2, paramCustomer.getCustomerPass());
 			stmt.setString(3, paramCustomer.getCustomerName());
 			stmt.setString(4, paramCustomer.getCustomerAddress());
-			stmt.setString(5, paramCustomer.getCustomerTelephone());
+			stmt.setString(5, paramCustomer.getCustomerDeAddress());
+			stmt.setString(6, paramCustomer.getCustomerTelephone());
 			System.out.println(stmt + "<--stmt");
 			row = stmt.executeUpdate();
 			System.out.println(row + "<--row");

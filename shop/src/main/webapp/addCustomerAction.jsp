@@ -11,6 +11,7 @@
 	customer.setCustomerPass(request.getParameter("customerPass"));
 	customer.setCustomerName(request.getParameter("customerName"));
 	customer.setCustomerAddress(request.getParameter("customerAddress"));
+	customer.setCustomerDeAddress(request.getParameter("customerDeAddress"));
 	customer.setCustomerTelephone(request.getParameter("customerTelephone"));
 	
 	// 디버깅

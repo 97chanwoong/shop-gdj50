@@ -17,6 +17,7 @@ public class OrdersDao {
 				+ "o.orders_no ordersNo,\r\n"
 				+ "o.orders_price ordersPrice,\r\n"
 				+ "o.orders_address ordersAddress,\r\n"
+				+ "o.orders_deaddress ordersDeAddress,\r\n"
 				+ "o.orders_quantity ordersQuantity,\r\n"
 				+ "o.orders_state ordersState,\r\n"
 				+ "o.update_date updateDate,\r\n"
@@ -43,6 +44,7 @@ public class OrdersDao {
 				map.put("ordersQuantity", rs.getInt("ordersQuantity"));
 				map.put("ordersState", rs.getString("ordersState"));
 				map.put("ordersAddress", rs.getString("ordersAddress"));
+				map.put("ordersDeAddress", rs.getString("ordersDeAddress"));
 				map.put("updateDate", rs.getString("updateDate"));
 				map.put("createDate", rs.getString("createDate"));
 				map.put("goodsName", rs.getString("goodsName"));
@@ -71,7 +73,7 @@ public class OrdersDao {
 		 * SELECT o. FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no ORDER
 		 * BY create_date DESC LIMIT ?,?
 		 */
-		String sql = "SELECT o.orders_no ordersNo, o.goods_no goodsNo, o.customer_id customerId, o.orders_quantity ordersQuantity, o.orders_price ordersPrice, o.orders_address ordersAddress, o.orders_state ordersState, o.update_date updateDate, o.create_date createDate, g.goods_name goodsName, g.goods_price goodsPrice FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no ORDER BY o.create_date DESC LIMIT ?,?";
+		String sql = "SELECT o.orders_no ordersNo, o.goods_no goodsNo, o.customer_id customerId, o.orders_quantity ordersQuantity, o.orders_price ordersPrice, o.orders_address ordersAddress, o.orders_deaddress ordersDeAddress, o.orders_state ordersState, o.update_date updateDate, o.create_date createDate, g.goods_name goodsName, g.goods_price goodsPrice FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no ORDER BY o.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
@@ -92,6 +94,7 @@ public class OrdersDao {
 				map.put("ordersQuantity", rs.getInt("ordersQuantity"));
 				map.put("ordersPrice", rs.getInt("ordersPrice"));
 				map.put("ordersAddress", rs.getString("ordersAddress"));
+				map.put("ordersDeAddress", rs.getString("ordersDeAddress"));
 				map.put("ordersState", rs.getString("ordersState"));
 				map.put("updateDate", rs.getString("updateDate"));
 				map.put("createDate", rs.getString("createDate"));
@@ -147,6 +150,7 @@ public class OrdersDao {
 					+ "o.orders_quantity ordersQuantity,\r\n" 
 					+ "o.orders_price ordersPrice,\r\n"
 					+ "o.orders_address ordersAddress,\r\n" 
+					+ "o.orders_deaddress ordersDeAddress,\r\n" 
 					+ "o.orders_state ordersState,\r\n"
 					+ "o.update_date updateDate,\r\n" 
 					+ "o.create_date createDate,\r\n" 
@@ -175,6 +179,7 @@ public class OrdersDao {
 				map.put("ordersQuantity", rs.getString("ordersQuantity"));
 				map.put("ordersPrice", rs.getInt("ordersPrice"));
 				map.put("ordersAddress", rs.getString("ordersAddress"));
+				map.put("ordersDeAddress", rs.getString("ordersDeAddress"));
 				map.put("ordersState", rs.getString("ordersState"));
 				map.put("updateDate", rs.getString("updateDate"));
 				map.put("createDate", rs.getString("createDate"));
@@ -195,15 +200,18 @@ public class OrdersDao {
 	
 	
 	// 주문 내역 수정하기 
-	public int insertOrdersOne(Connection conn, Map<String, Object> map ) throws Exception {
+	public int updateOrdersOne(Connection conn, Orders orders) throws Exception {
 		int row = 0;
-		String sql = "UPDATE orders SET orders_address = ? , orders_state = ?, update_date = NOW() WHERE orders_no = ?";
+		String sql = "UPDATE orders SET orders_address = ?, orders_deaddress = ?, orders_state = ?, update_date = NOW() WHERE orders_no = ?";
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, (String) map.get("ordersAddress"));
-			stmt.setString(2, (String) map.get("ordersState"));
-			stmt.setInt(3, (int) map.get("ordersNo"));
+			stmt.setString(1, orders.getOrdersAddress());
+			stmt.setString(2, orders.getOrdersDeAddress());
+			stmt.setString(3, orders.getOrdersState());
+			stmt.setInt(4, orders.getOrdersNo());
+			// 디버깅
+			System.out.println(stmt + "<-- updateOrdersOne stmt");
 			row = stmt.executeUpdate();
 		} finally {
 			if(stmt != null) {
@@ -212,40 +220,4 @@ public class OrdersDao {
 		}
 		return row;
 	}
-	 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

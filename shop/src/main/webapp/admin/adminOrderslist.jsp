@@ -171,7 +171,7 @@
 										<td><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/customerOrderslist.jsp?customerId=<%=m.get("customerId")%>"><%=m.get("customerId")%></a></td>
 										<td><%=m.get("ordersQuantity")%></td>
 										<td><%=m.get("ordersPrice")%></td>
-										<td><%=m.get("ordersAddress")%></td>
+										<td><%=m.get("ordersAddress")%>-<%=m.get("ordersDeAddress")%></td>
 										<td><%=m.get("ordersState")%></td>
 										<td><%=m.get("updateDate")%></td>
 										<td><%=m.get("createDate")%></td>

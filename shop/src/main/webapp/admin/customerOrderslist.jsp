@@ -168,7 +168,7 @@
 										<td style="font-size:18px;"><%=m.get("goodsName")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersPrice")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersAddress")%></td>
+										<td style="font-size:18px;"><%=m.get("ordersAddress")%>-<%=m.get("ordersDeAddress")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersState")%></td>
 										<td style="font-size:18px;"><%=m.get("updateDate")%></td>
 										<td style="font-size:18px;"><%=m.get("createDate")%></td>

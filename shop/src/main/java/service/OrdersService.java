@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import repository.OrdersDao;
+import vo.Orders;
 
 public class OrdersService {
 	private OrdersDao ordersDao;
@@ -132,7 +133,7 @@ public class OrdersService {
 	}
 
 	// 주문내역 수정하기
-	public int getOrdersOne( Map<String, Object> map) {
+	public int modifyOrdersOne(Orders orders) {
 		int row = 0;
 		Connection conn = null;
 		this.ordersDao = new OrdersDao();
@@ -140,12 +141,11 @@ public class OrdersService {
 		try {
 			conn = new DBUtil().getConnection();
 
-			row = ordersDao.insertOrdersOne(conn, map);
+			row = ordersDao.updateOrdersOne(conn, orders);
 			
 			if(row == 0) {
 				throw new Exception();
 			}
-			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

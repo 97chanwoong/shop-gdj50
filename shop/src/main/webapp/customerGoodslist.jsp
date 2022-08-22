@@ -117,7 +117,7 @@
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 					<li class="active"><a
-						href="<%=request.getContextPath()%>/customerGoodslist2.jsp">Shop</a></li>
+						href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
 					<li><a href="#">Community</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
@@ -129,9 +129,9 @@
 				<%
 				if (session.getAttribute("id") == null) {
 				%>
-				<a href="<%=request.getContextPath()%>/LoginForm2.jsp"
+				<a href="<%=request.getContextPath()%>/LoginForm.jsp"
 					class="cart-nav">Cart<span>(0)</span></a> <a
-					href="<%=request.getContextPath()%>/LoginForm2.jsp" class="fav-nav">MyPage</a>
+					href="<%=request.getContextPath()%>/LoginForm.jsp" class="fav-nav">MyPage</a>
 				<%
 				} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
 				%>
@@ -144,7 +144,7 @@
 				<%
 				if (session.getAttribute("id") != null && session.getAttribute("user").equals("employee")) {
 				%>
-				<a href="<%=request.getContextPath()%>/adminIndex2.jsp"
+				<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp"
 					class="fav-nav">AdminPage</a>
 				<%
 				}
@@ -165,7 +165,7 @@
 				<%
 				if (session.getAttribute("id") == null) {
 				%>
-				<a href="<%=request.getContextPath()%>/LoginForm2.jsp"
+				<a href="<%=request.getContextPath()%>/LoginForm.jsp"
 					class="btn amado-btn mb-15">Log In</a>
 				<%
 				} else if (session.getAttribute("id") != null) {
@@ -200,57 +200,57 @@
 						<li>
                      <%if(check==0){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=0">인기순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=0">인기순
                         </a>
                      <%} %>
                      <%if(check!=0){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=0">인기순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=0">인기순
                         </a>
                      <%} %>
                      </li>
                   <li>   
                      <%if(check==1){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=1">최신순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=1">최신순
                         </a>
                      <%} %>
                      <%if(check!=1){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=1">최신순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=1">최신순
                         </a>
                      <%} %></li>
                   <li>         
                      <%if(check==2){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=2">판매량순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=2">판매량순
                         </a>
                      <%} %>
                      <%if(check!=2){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=2">판매량순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=2">판매량순
                         </a>
                      <%} %></li>
                   <li>         
                      <%if(check==3){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=3">높은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=3">높은 가격순
                         </a>
                      <%} %>
                      <%if(check!=3){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=3">높은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=3">높은 가격순
                         </a>
                      <%} %></li>
                   <li>         
                      <%if(check==4){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=4">낮은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=4">낮은 가격순
                         </a>
                      <%} %>
                      <%if(check!=4){ %>
                         <a style="font-family: 'Jua', sans-serif;"
-                        href="<%=request.getContextPath()%>/customerGoodslist2.jsp?check=4">낮은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=4">낮은 가격순
                         </a>
                      <%} %></li>
 					</ul>
@@ -276,14 +276,14 @@
 											if (ROW_PER_PAGE == 20) {
 										%>
 											<option
-												value="<%=request.getContextPath()%>/customerGoodslist2.jsp?ROW_PER_PAGE=20"
+												value="<%=request.getContextPath()%>/customerGoodslist.jsp?ROW_PER_PAGE=20"
 												selected>20
 											</option>
 										<%
 											} else {
 										%>
 											<option
-											value="<%=request.getContextPath()%>/customerGoodslist2.jsp?ROW_PER_PAGE=20">20
+											value="<%=request.getContextPath()%>/customerGoodslist.jsp?ROW_PER_PAGE=20">20
 											</option>
 										<%
 											}
@@ -292,14 +292,14 @@
 											if (ROW_PER_PAGE == 40) {
 										%>
 											<option
-												value="<%=request.getContextPath()%>/customerGoodslist2.jsp?ROW_PER_PAGE=40"
+												value="<%=request.getContextPath()%>/customerGoodslist.jsp?ROW_PER_PAGE=40"
 												selected>40
 											</option>
 										<%
 											} else {
 										%>
 											<option
-												value="<%=request.getContextPath()%>/customerGoodslist2.jsp?ROW_PER_PAGE=40">40
+												value="<%=request.getContextPath()%>/customerGoodslist.jsp?ROW_PER_PAGE=40">40
 											</option>
 										<%
 											}
@@ -317,7 +317,7 @@
                            %>
                            <li class="page-item"><a
                               class="page-link"
-                              href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=currentPage - 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">이전</a>
+                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=currentPage - 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">이전</a>
                            </li>
                            <%
                            	}
@@ -328,14 +328,14 @@
                            %>
                            <li class="page-item active"><a
                               class="page-link"
-                              href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
+                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
                            </li>
                            <%
                           	 } else {
                            %>
                            <li class="page-item"><a
                               class="page-link"
-                              href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
+                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
                            </li>
                            <%
                           	 	}
@@ -345,7 +345,7 @@
                            %>
                            <li class="page-item"><a
                               class="page-link"
-                              href="<%=request.getContextPath()%>/customerGoodslist2.jsp?currentPage=<%=currentPage + 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">다음</a>
+                              href="<%=request.getContextPath()%>/customerGoodslist.jsp?currentPage=<%=currentPage + 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">다음</a>
                            </li>
                            <%
                           	 }

@@ -159,7 +159,7 @@
 									<tr>
 										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/customerOrderslist.jsp?customerId=<%=c.getCustomerId()%>"><%=c.getCustomerId()%></a></td>
 										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/adminCustomerOne.jsp?customerId=<%=c.getCustomerId()%>"><%=c.getCustomerName()%></a></td>
-										<td><%=c.getCustomerAddress()%></td>
+										<td><%=c.getCustomerAddress()%>-<%=c.getCustomerDeAddress()%></td>
 										<td><%=c.getCustomerTelephone()%></td>
 										<td><%=c.getCreateDate()%></td>
 									</tr>

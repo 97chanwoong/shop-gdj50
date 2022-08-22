@@ -5,20 +5,20 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
-}
-
-// 주문번호
-int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
-System.out.println(ordersNo + "<-- ordersNo");
-
-// 주문상품 상세 보기 메서드
-OrdersService ordersService = new OrdersService();
-Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm2.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "index.jsp?errorMsg=No permission");
+	}
+	
+	// 주문번호
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	System.out.println(ordersNo + "<-- ordersNo");
+	
+	// 주문상품 상세 보기 메서드
+	OrdersService ordersService = new OrdersService();
+	Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 %>
 
 <!DOCTYPE html>
@@ -123,7 +123,7 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 							<br>
 							<div style="text-align: right;">
 								<a
-									href="<%=request.getContextPath()%>/admin/adminUpdateOrdersOne.jsp?ordersNo=<%=map.get("ordersNo")%>&ordersQuantity=<%=map.get("ordersQuantity")%>&goodsName=<%=map.get("goodsName")%>&ordersPrice=<%=map.get("ordersPrice")%>&customerTelephone=<%=map.get("customerTelephone")%>&customerName=<%=map.get("customerName")%>&customerId=<%=map.get("customerId")%>&createDate=<%=map.get("createDate")%>"
+									href="<%=request.getContextPath()%>/admin/adminUpdateOrdersOne.jsp?ordersNo=<%=ordersNo%>"
 									class="btn amado-btn w-30">수정</a>
 							</div>
 							<br>
@@ -151,7 +151,7 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 										<td style="font-size:18px;"><%=map.get("customerName")%></td>
 										<td style="font-size:18px;"><%=map.get("customerId")%></td>
 										<td style="font-size:18px;"><%=map.get("customerTelephone")%></td>
-										<td style="font-size:18px;"><%=map.get("ordersAddress")%></td>
+										<td style="font-size:18px;"><%=map.get("ordersAddress")%>-<%=map.get("ordersDeAddress")%></td>
 										<td style="font-size:18px;"><%=map.get("ordersState")%></td>
 										<td style="font-size:18px;"><%=map.get("updateDate")%></td>
 										<td style="font-size:18px;"><%=map.get("createDate")%></td>
@@ -162,7 +162,7 @@ Map<String, Object> map = ordersService.getOrdersOne(ordersNo);
 							<div class="row">
 								<div class="col-1">
 									<a
-										href="<%=request.getContextPath()%>/admin/adminOrderslist2.jsp"
+										href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp"
 										class="btn amado-btn w-30">목록</a>
 								</div>
 							</div>
