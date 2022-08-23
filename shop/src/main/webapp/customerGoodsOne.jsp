@@ -3,17 +3,16 @@
 <%@page import="java.util.*"%>
 <%@ page import="service.*"%>
 <%
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-	// GoodsService 생성
-	GoodsService goodsService = new GoodsService();
-	// 상품 상세보기 메서드
-	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
-	
-	// ReviewService 생성
-	ReviewService reviewService = new ReviewService();
-	// 리뷰 메서드
-	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
-	
+int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+// GoodsService 생성
+GoodsService goodsService = new GoodsService();
+// 상품 상세보기 메서드
+Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
+
+// ReviewService 생성
+ReviewService reviewService = new ReviewService();
+// 리뷰 메서드
+List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -115,15 +114,18 @@
 			<!-- Cart Menu -->
 			<div class="cart-fav-search mb-100">
 				<a href="<%=request.getContextPath()%>/tmp2/cart.html"
-					class="cart-nav"><img
+					class="cart-nav"> <img
 					src="<%=request.getContextPath()%>/tmp2/img/core-img/cart.png"
-					alt=""> Cart <span>(0)</span></a> <a
-					href="<%=request.getContextPath()%>/tmp2/#" class="fav-nav"><img
+					alt=""> Cart <span>(0)</span>
+				</a> <a href="<%=request.getContextPath()%>/tmp2/#" class="fav-nav">
+					<img
 					src="<%=request.getContextPath()%>/tmp2/img/core-img/favorites.png"
-					alt=""> Favourite</a> <a
-					href="<%=request.getContextPath()%>/tmp2/#" class="search-nav"><img
+					alt=""> Favourite
+				</a> <a href="<%=request.getContextPath()%>/tmp2/#" class="search-nav">
+					<img
 					src="<%=request.getContextPath()%>/tmp2/img/core-img/search.png"
-					alt=""> Search</a>
+					alt=""> Search
+				</a>
 			</div>
 			<!-- Social Button -->
 			<div class="social-info d-flex justify-content-between">
@@ -166,7 +168,8 @@
 						<div class="single_product_desc">
 							<!-- Product Meta Data -->
 							<div class="product-meta-data">
-									<h1 class="mb-30" style="text-align: center;"><%=map.get("goodsName")%></h1>
+								<h1 class="mb-30" style="text-align: center;"><%=map.get("goodsName")%></h1>
+								<hr>
 								<!-- Ratings & Review -->
 								<!--                                 <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
                                     <div class="ratings">
@@ -194,7 +197,7 @@
 									</h3>
 								</div>
 							</div>
-
+							<hr>
 							<!--상품 설명 -->
 							<!-- <div class="short_overview my-5">
 								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -209,40 +212,43 @@
 									<p>Qty</p>
 									<div class="quantity">
 										<input type="number" id="cartQuantity" step="1" value="1"
-											min="1" max="300" name="cartQuantity">
+											min="1" max="5" name="cartQuantity">
 									</div>
 								</div>
 							</form>
 							<br>
 							<div class="container">
 								<button type="button" name="addCartBtn"
-									class="btn amado-btn w-100">Add to cart</button>
+									class="btn amado-btn w-100" value="5">Add to cart</button>
 							</div>
-							<br>
-							<br>
-							<br>
-							<h1>Reviews</h1>
-							<hr>
-							<%
-								for (Map<String, Object> m : list) {
-							%>
-							<table class="table table-borderd">
-								<tr>
-									<td>작성자 : <%=m.get("customerId")%></td>
-								</tr>
-								<tr>
-									<td>작성날짜: <%=m.get("createDate")%></td>
-								</tr>
-								
-								<tr>
-									<td><%=m.get("reviewContents")%></td>
-								</tr>
-							<%
-								}
-							%>	
-							</table>
 						</div>
 					</div>
+					<h1>Reviews</h1>
+					<hr>
+					<%
+					for (Map<String, Object> m : list) {
+					%>
+					<table class="table">
+						<tr>
+							<td><%=m.get("customerId")%>의 리뷰</td>
+							<td class="text-right"><%=m.get("createDate")%>에 작성</td>
+						</tr>
+						<tr>
+							<td>
+								<div>
+									<p><%=m.get("reviewContents")%></p>
+								</div>
+							</td>
+							<td>
+								<div  class="text-right">
+									<p><%=m.get("updateDate")%>에 수정</p>
+								</div>
+							</td>
+						</tr>
+						<%
+							}
+						%>
+					</table>
 				</div>
 			</div>
 		</div>
