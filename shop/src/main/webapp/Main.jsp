@@ -83,7 +83,7 @@
                 <ul>
                     <li class="active"><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
-					<li><a href="#">Community</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerNoticelist.jsp">Notice</a></li>
 					<li><a href="#">Contact</a></li>
                 </ul>
             </nav>
@@ -309,7 +309,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
-										<li class="nav-item"><a class="nav-link" href="#">Community</a>
+										<li class="nav-item"><a class="nav-link" href="#">Notice</a>
 										</li>
 										<li class="nav-item"><a class="nav-link"
 											href="#">Contact</a></li>
