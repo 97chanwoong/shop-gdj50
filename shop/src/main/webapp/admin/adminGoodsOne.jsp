@@ -27,7 +27,6 @@
 	int ordersNo = 0;
 	for (Map<String, Object> m : list) {
 		if (list != null) {
-	
 			ordersNo = Integer.parseInt(list.get(0).get("ordersNo").toString());
 		}
 	}
@@ -214,7 +213,7 @@
 									</thead>
 									<tbody style="font-family: 'Jua', sans-serif;">
 										<%
-										for (Map<String, Object> m : list) {
+											for (Map<String, Object> m : list) {
 										%>
 										<tr>
 											<td style="font-size: 20px;"><%=m.get("customerId")%></td>
@@ -225,7 +224,7 @@
 													onclick="removeReviewBtn()">삭제</button></td>
 										</tr>
 										<%
-										}
+											}
 										%>
 									</tbody>
 								</table>

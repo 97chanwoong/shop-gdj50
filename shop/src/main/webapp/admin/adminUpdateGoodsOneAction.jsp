@@ -87,7 +87,7 @@
 			System.out.println("예전 사진 삭제 실패");
 		}
 		System.out.println("상품 수정 성공");
-		response.sendRedirect(request.getContextPath() + "/admin/adminUpdateGoodsOne.jsp?goodsNo="+goods.getGoodsNo());
+		response.sendRedirect(request.getContextPath() + "/admin/adminGoodsOne.jsp?goodsNo="+goods.getGoodsNo());
 	} else {
 		System.out.println("상품 수정 실패");
 		response.sendRedirect(request.getContextPath() + "/admin/adminUpdateGoodsOne.jsp?goodsNo="+goods.getGoodsNo());

@@ -27,10 +27,12 @@
 	int lastPage = employeeService.getEmployeeLastPage(ROW_PER_PAGE);
 	
 	// 숫자페이징
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1; // 시작페이지값 ex) ROW_PER_PAGE 가 10 일경우 1, 11, 21, 31
-	int endPage = startPage + ROW_PER_PAGE - 1; // 끝페이지값 ex) ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40
-	// endPage 는 lastPage보다 크면 안된다
-	endPage = Math.min(endPage, lastPage); // 두 값의 최소값이 endPage가 된다
+	// ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
+	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1;
+	//ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40...
+	int endPage = startPage + ROW_PER_PAGE - 1;
+	// endPage < lastPage
+	endPage = Math.min(endPage, lastPage); 
 	
 	// 리스트
 	List<Employee> list = employeeService.getEmployeeList(ROW_PER_PAGE, currentPage);

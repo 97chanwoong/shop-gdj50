@@ -21,9 +21,9 @@
 	int row = reviewService.removeAdminReview(ordersNo);
 	if (row == 1) {
 		System.out.println(ordersNo + " 리뷰 삭제 성공");
-		response.sendRedirect(request.getContextPath() + "/admin/adminGoodsImgOne.jsp?goodsNo="+ goodsNo);
+		response.sendRedirect(request.getContextPath() + "/admin/adminGoodsOne.jsp?goodsNo="+ goodsNo);
 	} else {
 		System.out.println(ordersNo + " 리뷰 삭제 실패");
-		response.sendRedirect(request.getContextPath() + "/admin/adminGoodsImgOne.jsp?goodsNo="+ goodsNo);
+		response.sendRedirect(request.getContextPath() + "/admin/adminGoodsOne.jsp?goodsNo="+ goodsNo);
 	}
 %>

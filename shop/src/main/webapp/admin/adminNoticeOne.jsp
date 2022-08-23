@@ -146,16 +146,15 @@
                            </tr>   
                         </thead>
                      </table>
+					 <div style="text-align:right;">
+                        	<button class="btn amado-btn w-30" onclick="deleteNoticeBtn()">삭제</button>
+                     </div>	                    
                      <hr>
                      <div class="row">
                         <div class="col-1">
                            <a
                               href="<%=request.getContextPath()%>/admin/adminNoticelist.jsp"
                               class="btn amado-btn w-30">목록</a>
-                        </div>
-                        <div class="col-10"></div>
-                        <div class="col-1">
-                        <button class="btn amado-btn w-30" onclick="deleteNoticeBtn()">삭제</button>
                         </div>
                      </div>
                   </div>
