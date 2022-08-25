@@ -4,43 +4,42 @@
 <%@page import="java.util.*"%>
 <%@ page import="service.*"%>
 <%
-// controller : java class <- Servlet
-int ROW_PER_PAGE = 10;
-if (request.getParameter("ROW_PER_PAGE") != null) {
-	ROW_PER_PAGE = Integer.parseInt(request.getParameter("ROW_PER_PAGE"));
-}
-int currentPage = 1;
-if (request.getParameter("currentPage") != null) {
-	currentPage = Integer.parseInt(request.getParameter("currentPage"));
-}
-
-NoticeService noticeService = new NoticeService();
-
-// 리스트 보여지는 형식
-int check = 0;
-if (request.getParameter("check") != null) {
-	check = Integer.parseInt(request.getParameter("check"));
-	System.out.println(check + "리스트 확인 테스트용");
-}
-
-// 마지막 페이지 메서드
-int lastPage = noticeService.getNoticeLastPage(ROW_PER_PAGE);
-// 숫자페이징
-// ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
-int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1;
-//ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40...
-int endPage = startPage + ROW_PER_PAGE - 1;
-// endPage < lastPage
-endPage = Math.min(endPage, lastPage);
-
-// list
-List<Notice> list = noticeService.getNoticeList(ROW_PER_PAGE, currentPage);
-
-//오늘 방문자수, 총 방문자수
-CounterService counterService = new CounterService();
-int totalCounter = counterService.getTotalCount();
-int todayCounter = counterService.getTodayCount();
-int currentCount = (Integer) (application.getAttribute("currentCounter"));
+	int ROW_PER_PAGE = 10;
+	if (request.getParameter("ROW_PER_PAGE") != null) {
+		ROW_PER_PAGE = Integer.parseInt(request.getParameter("ROW_PER_PAGE"));
+	}
+	int currentPage = 1;
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	NoticeService noticeService = new NoticeService();
+	
+	// 리스트 보여지는 형식
+	int check = 0;
+	if (request.getParameter("check") != null) {
+		check = Integer.parseInt(request.getParameter("check"));
+		System.out.println(check + "리스트 확인 테스트용");
+	}
+	
+	// 마지막 페이지 메서드
+	int lastPage = noticeService.getNoticeLastPage(ROW_PER_PAGE);
+	// 숫자페이징
+	// ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
+	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1;
+	//ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40...
+	int endPage = startPage + ROW_PER_PAGE - 1;
+	// endPage < lastPage
+	endPage = Math.min(endPage, lastPage);
+	
+	// list
+	List<Notice> list = noticeService.getNoticeList(ROW_PER_PAGE, currentPage);
+	
+	//오늘 방문자수, 총 방문자수
+	CounterService counterService = new CounterService();
+	int totalCounter = counterService.getTotalCount();
+	int todayCounter = counterService.getTodayCount();
+	int currentCount = (Integer) (application.getAttribute("currentCounter"));
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -54,8 +53,7 @@ int currentCount = (Integer) (application.getAttribute("currentCounter"));
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
-	;
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -227,8 +225,8 @@ int currentCount = (Integer) (application.getAttribute("currentCounter"));
 							%>
 							<tr>
 								<td><%=n.getNoticeNo()%></td>
-								<td><a 
-									href="<%=request.getContextPath()%>/admin/adminNoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></td>
+								<td><a style="font-size:18px;" 
+									href="<%=request.getContextPath()%>/customerNoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></td>
 								<td><%=n.getCreateDate()%></td>
 							</tr>
 							<%

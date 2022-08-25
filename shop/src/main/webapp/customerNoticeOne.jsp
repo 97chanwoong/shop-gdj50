@@ -1,24 +1,21 @@
+<%@page import="vo.Notice"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@ page import="service.*"%>
 <%
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-	// GoodsService 생성
-	GoodsService goodsService = new GoodsService();
-	// 상품 상세보기 메서드
-	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
+	// 공지번호 정보 받아오기
+	int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+	// 공지사항 상세보기 메서드실행
+	NoticeService noticeService = new NoticeService();
+	Map<String,Object> map = noticeService.getNoticeOne(noticeNo);	
 	
-	// ReviewService 생성
-	ReviewService reviewService = new ReviewService();
-	// 리뷰 메서드
-	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
 	//오늘 방문자수, 총 방문자수
 	CounterService counterService = new CounterService();
 	int totalCounter = counterService.getTotalCount();
 	int todayCounter = counterService.getTodayCount();
-	int currentCount = (Integer)(application.getAttribute("currentCounter"));
-	%>
+	int currentCount = (Integer) (application.getAttribute("currentCounter"));
+%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -31,8 +28,7 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
-	;
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -41,7 +37,7 @@
 <link rel="icon" href="tmp2/img/core-img/CKEAfavicon.ico">
 
 <!-- Core Style CSS -->
-<link rel="stylesheet" href="tmp2/css/core-style.css">
+<link rel="stylesheet" href="tmp2/css/core-style2.css">
 <link rel="stylesheet" href="tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -137,34 +133,35 @@
 				%>
 			</div>
 			<div class="mt-30 mb-50">
-				오늘 방문자 수 : <%=todayCounter%><br>
-				총 방문자 수 :  <%=totalCounter%><br>
-				현재 접속자 수 : <%=currentCount%><br>
+				오늘 방문자 수 :
+				<%=todayCounter%><br> 총 방문자 수 :
+				<%=totalCounter%><br> 현재 접속자 수 :
+				<%=currentCount%><br>
 			</div>
 			<%
-				if (session.getAttribute("id") != null) {
+			if (session.getAttribute("id") != null) {
 			%>
-				<h5 style="font-family: 'Jua', sans-serif;"><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님
-				</h5>
+			<h5 style="font-family: 'Jua', sans-serif;"><%=session.getAttribute("id")%>(<%=session.getAttribute("name")%>)님
+			</h5>
 			<%
-				}
+			}
 			%>
 			<!-- 로그인 아이디 -->
 
 			<!-- Button Group -->
 			<div class="amado-btn-group mt-30 mb-100">
 				<%
-					if (session.getAttribute("id") == null) {
+				if (session.getAttribute("id") == null) {
 				%>
-					<a href="<%=request.getContextPath()%>/LoginForm.jsp"
-						class="btn amado-btn mb-15">Log In</a>
+				<a href="<%=request.getContextPath()%>/LoginForm.jsp"
+					class="btn amado-btn mb-15">Log In</a>
 				<%
-					} else if (session.getAttribute("id") != null) {
+				} else if (session.getAttribute("id") != null) {
 				%>
-					<a href="<%=request.getContextPath()%>/LogOut.jsp"
-						class="btn amado-btn mb-15">Log Out</a>
+				<a href="<%=request.getContextPath()%>/LogOut.jsp"
+					class="btn amado-btn mb-15">Log Out</a>
 				<%
-					}
+				}
 				%>
 			</div>
 
@@ -178,124 +175,39 @@
 		</header>
 		<!-- Header Area End -->
 
-		<!-- Product Details Area Start -->
-		<div class="single-product-area section-padding-100 clearfix">
+		<div class="shop_sidebar_area" style="background-color:#ffffff;"></div>
+		
+
+		<div class="amado_product_area section-padding-100">
 			<div class="container-fluid">
+				<br>
 
-				<div class="row">
-					<div class="col-12">
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb mt-50">
-								<li class="breadcrumb-item"><a href="#">Home</a></li>
-								<li class="breadcrumb-item"><a href="#">Shop</a></li>
-							</ol>
-						</nav>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-12 col-lg-6">
-						<div class="single_product_thumb">
-							<div class="carousel-item active">
-								<a class="gallery_img"
-									href="<%=request.getContextPath()%>/upload/<%=map.get("fileName")%>">
-									<img class="d-block w-100"
-									src='<%=request.getContextPath()%>/upload/<%=map.get("fileName")%>'>
-								</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-lg-6">
-						<div class="single_product_desc">
-							<!-- Product Meta Data -->
-							<div class="product-meta-data">
-								<h1 class="mb-30" style="text-align: center;"><%=map.get("goodsName")%></h1>
-								<hr>
-								<!-- Ratings & Review -->
-								<!--                                 <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
-                                    <div class="ratings">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="review">
-                                        <a href="#">Write A Review</a>
-                                    </div>
-                                </div> -->
-								<!-- Avaiable -->
-								<div class="container">
-									<p class="avaibility"
-										style="font-size: 20px; text-align: right;">
-										<i class="fa fa-circle"
-											style="font-size: 20px; text-align: right;"></i>&nbsp;품절여부 :
-										<%=map.get("soldOut")%>
-									</p>
-									<br>
-									<h3 class="product-price mb-50"
-										style="font-size: 50px; text-align: right;"><%=map.get("goodsPrice")%>원
-									</h3>
-								</div>
-							</div>
-							<hr>
-							<!--상품 설명 -->
-							<!-- <div class="short_overview my-5">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-									Aliquid quae eveniet culpa officia quidem mollitia impedit iste
-									asperiores nisi reprehenderit consequatur, autem, nostrum
-									pariatur enim?</p>
-							</div> -->
-
-							<!-- Add to Cart Form -->
-							<form class="cart clearfix" action="#" method="post">
-								<div class="container qty-btn d-flex">
-									<p>Qty</p>
-									<div class="quantity">
-										<input type="number" id="cartQuantity" step="1" value="1"
-											min="1" max="5" name="cartQuantity">
-									</div>
-								</div>
-							</form>
-							<br>
-							<div class="container">
-								<button type="button" name="addCartBtn"
-									class="btn amado-btn w-100" value="5">Add to cart</button>
-							</div>
-						</div>
-					</div>
-					<h1>Reviews</h1>
-					<hr>
-					<%
-					for (Map<String, Object> m : list) {
-					%>
-					<table class="table">
-						<tr>
-							<td><%=m.get("customerId")%>의 리뷰</td>
-							<td class="text-right"><%=m.get("createDate")%>에 작성</td>
-						</tr>
-						<tr>
-							<td>
-								<div>
-									<p><%=m.get("reviewContents")%></p>
-								</div>
-							</td>
-							<td>
-								<div  class="text-right">
-									<p><%=m.get("updateDate")%>에 수정</p>
-								</div>
-							</td>
-						</tr>
-						<%
-							}
-						%>
+				<div class="container-fulid">
+					<h1 style="text-align: center;"><span>공지사항</span></h1>
+					<br>
+					<!-- 공지사항 테이블 -->
+					<table class="table text-left">
+							<tr>
+								<td>No.<%=map.get("noticeNo")%></td>
+								<td><%=map.get("noticeTitle")%></td>
+								<td style="text-align:right"><%=map.get("createDate")%></td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<%=map.get("noticeContent")%>
+								</td>
+							<tr>
 					</table>
+					<hr>
+					<div class="row">
+					<div class="col-2">
+						 <a href="<%=request.getContextPath()%>/customerNoticelist.jsp" class="btn amado-btn w-30">목록</a>
+					</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Product Details Area End -->
 	</div>
-
 	<!-- ##### Footer Area Start ##### -->
 	<footer class="footer_area clearfix">
 		<div class="container">
@@ -320,7 +232,6 @@
 							Re-distributed by <a href="https://themewagon.com/"
 								target="_blank">Themewagon</a>
 							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						</p>
 					</div>
 				</div>
 				<!-- Single Widget Area -->
@@ -338,20 +249,15 @@
 								<div class="collapse navbar-collapse" id="footerNavContent">
 									<ul class="navbar-nav ml-auto">
 										<li class="nav-item active"><a class="nav-link"
-											href="<%=request.getContextPath()%>/tmp2/index.html">Home</a>
+											href="index.html">Home</a></li>
+										<li class="nav-item"><a class="nav-link" href="shop.html">Shop</a>
 										</li>
 										<li class="nav-item"><a class="nav-link"
-											href="<%=request.getContextPath()%>/tmp2/shop.html">Shop</a>
+											href="product-details.html">Product</a></li>
+										<li class="nav-item"><a class="nav-link" href="cart.html">Cart</a>
 										</li>
 										<li class="nav-item"><a class="nav-link"
-											href="<%=request.getContextPath()%>/tmp2/product-details.html">Product</a>
-										</li>
-										<li class="nav-item"><a class="nav-link"
-											href="<%=request.getContextPath()%>/tmp2/cart.html">Cart</a>
-										</li>
-										<li class="nav-item"><a class="nav-link"
-											href="<%=request.getContextPath()%>/tmp2/checkout.html">Checkout</a>
-										</li>
+											href="checkout.html">Checkout</a></li>
 									</ul>
 								</div>
 							</nav>
@@ -364,17 +270,15 @@
 	<!-- ##### Footer Area End ##### -->
 
 	<!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-	<script
-		src="<%=request.getContextPath()%>/tmp2/js/jquery/jquery-2.2.4.min.js"></script>
+	<script src="tmp2/js/jquery/jquery-2.2.4.min.js"></script>
 	<!-- Popper js -->
-	<script src="<%=request.getContextPath()%>/tmp2/js/popper.min.js"></script>
+	<script src="tmp2/js/popper.min.js"></script>
 	<!-- Bootstrap js -->
-	<script src="<%=request.getContextPath()%>/tmp2/js/bootstrap.min.js"></script>
+	<script src="tmp2/js/bootstrap.min.js"></script>
 	<!-- Plugins js -->
-	<script src="<%=request.getContextPath()%>/tmp2/js/plugins.js"></script>
+	<script src="tmp2/js/plugins.js"></script>
 	<!-- Active js -->
-	<script src="<%=request.getContextPath()%>/tmp2/js/active.js"></script>
+	<script src="tmp2/js/active.js"></script>
 
 </body>
-
 </html>

@@ -11,8 +11,9 @@
    } else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
       response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
    } 
-   // 오더정보 받아오기
+   // 공지번호 정보 받아오기
    int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+   
    // 공지사항 상세보기 메서드실행
    NoticeService noticeService = new NoticeService();
    Map<String,Object> map = noticeService.getNoticeOne(noticeNo);
