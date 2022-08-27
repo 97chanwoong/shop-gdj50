@@ -91,7 +91,7 @@
 				<ul>
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
-					<li><a href="#">Community</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerNoticelist.jsp">Notice</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
 			</nav>
@@ -118,12 +118,17 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/Main.jsp">나의 정보 확인</a>
+								    href="<%=request.getContextPath()%>/customerOne.jsp?customerId=<%=session.getAttribute("id")%>">나의 정보 확인</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
 								    href="<%=request.getContextPath()%>/Main.jsp">나의 정보 변경</a>
+							</p>
+							<hr>
+							<p style="font-family: 'Jua', sans-serif; text-align: center;">
+								<a  style="font-size:20px;" 
+								    href="<%=request.getContextPath()%>/Main.jsp">비밀 번호 변경</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">

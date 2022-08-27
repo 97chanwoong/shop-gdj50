@@ -4,42 +4,20 @@
 <%@page import="java.util.*"%>
 <%@ page import="service.*"%>
 <%
-	int ROW_PER_PAGE = 10;
-	if (request.getParameter("ROW_PER_PAGE") != null) {
-		ROW_PER_PAGE = Integer.parseInt(request.getParameter("ROW_PER_PAGE"));
-	}
-	int currentPage = 1;
-	if (request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("employee")) {
+		response.sendRedirect(request.getContextPath() + "/admin/adminIndex.jsp?errorMsg=No permission");
 	}
 	
-	NoticeService noticeService = new NoticeService();
+	// customerId 값 받아오기
+	String customerId = request.getParameter("customerId");
 	
-	// 리스트 보여지는 형식
-	int check = 0;
-	if (request.getParameter("check") != null) {
-		check = Integer.parseInt(request.getParameter("check"));
-		System.out.println(check + "리스트 확인 테스트용");
-	}
+	// customerService
+	CustomerService customerService = new CustomerService();
 	
-	// 마지막 페이지 메서드
-	int lastPage = noticeService.getNoticeLastPage(ROW_PER_PAGE);
-	// 숫자페이징
-	// ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
-	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1;
-	//ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40...
-	int endPage = startPage + ROW_PER_PAGE - 1;
-	// endPage < lastPage
-	endPage = Math.min(endPage, lastPage);
-	
-	// list
-	List<Notice> list = noticeService.getNoticeList(ROW_PER_PAGE, currentPage);
-	
-	//오늘 방문자수, 총 방문자수
-	CounterService counterService = new CounterService();
-	int totalCounter = counterService.getTotalCount();
-	int todayCounter = counterService.getTodayCount();
-	int currentCount = (Integer) (application.getAttribute("currentCounter"));
+	Map<String,Object> map = customerService.getCustomerOne(customerId);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -157,12 +135,6 @@
 				}
 				%>
 			</div>
-			<div class="mt-30 mb-50">
-				오늘 방문자 수 :
-				<%=todayCounter%><br> 총 방문자 수 :
-				<%=totalCounter%><br> 현재 접속자 수 :
-				<%=currentCount%><br>
-			</div>
 			<%
 			if (session.getAttribute("id") != null) {
 			%>
@@ -208,72 +180,40 @@
 				<br>
 
 				<div class="container-fulid">
-					<h1 style="text-align: center;"><span>공지사항</span></h1>
+					<h1 style="text-align: center;"><span><%=customerId%>님 회원정보</span></h1>
 					<br>
-					<!-- 공지사항 테이블 -->
+					<!-- 나의 정보 확인 테이블 -->
 					<table class="table text-center">
-						<thead>
+						<tbody class="center">	
 							<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>작성날짜</th>
+								<td colspan="2">아이디</td>
+								<td colspan="2"><%=map.get("customerId") %></td>
 							</tr>
-						</thead>
-						<tbody>
-							<%
-								for (Notice n : list) {
-							%>
 							<tr>
-								<td><%=n.getNoticeNo()%></td>
-								<td><a style="font-size:18px;" 
-									href="<%=request.getContextPath()%>/customerNoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></td>
-								<td><%=n.getCreateDate()%></td>
+								<td colspan="2">이름</td>
+								<td colspan="2"><%=map.get("customerName") %></td>
 							</tr>
-							<%
-								}
-							%>
-						</tbody>
+							<tr>
+								<td colspan="2">주소</td>
+								<td colspan="2"><%=map.get("customerAddress")%> / <%=map.get("customerDeAddress") %></td>
+							</tr>
+							<tr>
+								<td colspan="2">연락처</td>
+								<td colspan="2"><%=map.get("customerTelephone") %></td>
+							</tr>
+							<tr>
+								<td colspan="2">수정날짜</td>
+								<td colspan="2"><%=map.get("updateDate") %></td>
+							</tr>
+							<tr>
+								<td colspan="2">가입날짜</td>
+								<td colspan="2"><%=map.get("createDate") %></td>
+							</tr>
+						</tbody>	
 					</table>
 					<div class="row">
-					<div class="col-2"></div>
-					<div class="col-8"></div>
 					<div class="col-2">
-						<ul class="pagination justify-content-end">
-							<%
-							if (currentPage > 1) {
-							%>
-							<li class="page-item"><a class="page-link"
-								href="<%=request.getContextPath()%>/customerNoticelist.jsp?currentPage=<%=currentPage - 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">이전</a>
-							</li>
-							<%
-							}
-
-							// 숫자페이징
-							for (int i = startPage; i <= endPage; i++) {
-							if (i == currentPage) {
-							%>
-							<li class="page-item active"><a class="page-link"
-								href="<%=request.getContextPath()%>/customerNoticelist.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
-							</li>
-							<%
-							} else {
-							%>
-							<li class="page-item"><a class="page-link"
-								href="<%=request.getContextPath()%>/customerNoticelist.jsp?currentPage=<%=i%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>"><%=i%></a>
-							</li>
-							<%
-							}
-							}
-
-							if (currentPage < lastPage) {
-							%>
-							<li class="page-item"><a class="page-link"
-								href="<%=request.getContextPath()%>/customerNoticelist.jsp?currentPage=<%=currentPage + 1%>&ROW_PER_PAGE=<%=ROW_PER_PAGE%>">다음</a>
-							</li>
-							<%
-							}
-							%>
-						</ul>
+						<a href="<%=request.getContextPath()%>/customerIndex.jsp" class="btn amado-btn w-30">목록</a>
 					</div>
 				</div>
 				</div>

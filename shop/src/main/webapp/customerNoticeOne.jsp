@@ -100,7 +100,7 @@
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 					<li class="active"><a
 						href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
-					<li><a href="#">Community</a></li>
+					<li><a href="<%=request.getContextPath()%>/customerNoticelist.jsp">Notice</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
 			</nav>

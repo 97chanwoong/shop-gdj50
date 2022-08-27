@@ -5,17 +5,17 @@
 <%@ page import="service.*"%>
 <%@ page import="vo.*"%>
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
-}
-// 고객 아이디 받아오기
-String customerId = request.getParameter("customerId");
-// 공지사항 상세보기 메서드실행
-CustomerService customerService = new CustomerService();
-Map<String, Object> map = customerService.getCustomerOne(customerId);
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
+		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
+	}
+	// 고객 아이디 받아오기
+	String customerId = request.getParameter("customerId");
+	// 고객 상세보기 메서드실행
+	CustomerService customerService = new CustomerService();
+	Map<String, Object> map = customerService.getCustomerOne(customerId);
 %>
 <!DOCTYPE html>
 <html lang="ko">
