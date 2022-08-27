@@ -123,7 +123,7 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/Main.jsp">나의 정보 변경</a>
+								    href="<%=request.getContextPath()%>/customerCheckIdAndPass.jsp?customerId=<%=session.getAttribute("id")%>">나의 정보 변경</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
@@ -202,7 +202,7 @@
 											href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
-										<li class="nav-item"><a class="nav-link" href="#">Community</a>
+										<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/customerNoticelist.jsp">Notice</a>
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
 									</ul>

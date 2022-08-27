@@ -14,6 +14,28 @@ import vo.Customer;
 public class CustomerService {
 	private CustomerDao customerDao;
 
+	// 회원 정보수정을 위한 아이디 비밀번호 확인
+	public Customer checkCustomerIdAndPass(Customer paramCustomer) {
+		Customer customer = null;
+		Connection conn = null;
+		customerDao = new CustomerDao();
+		try {
+			conn = new DBUtil().getConnection();
+			customer = customerDao.selectCustomerIdAndPass(conn, paramCustomer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return customer;
+	}
+
 	// 비밀번호 변경
 	public int modifyCustomerPass(Customer customer) {
 		// 리턴 갑
@@ -111,7 +133,7 @@ public class CustomerService {
 		// 초기화
 		Connection conn = null;
 		// CustomerDao 객체
-		 customerDao = new CustomerDao();
+		customerDao = new CustomerDao();
 		try {
 			conn = new DBUtil().getConnection();
 			int totalRow = customerDao.selectCustomerCount(conn);

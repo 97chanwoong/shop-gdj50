@@ -148,11 +148,58 @@ public class CustomerDao {
 		return loginCustomer;
 	}
 
-	// 관리자 -> 회원 임시 비밀번호  변경 & 회원 비밀번호 변경
+	// 회원 정보수정을 위한 아이디 비밀번호 확인
+	public Customer selectCustomerIdAndPass(Connection conn, Customer customer) throws Exception {
+		Customer checkCustomer = null;
+		String sql = "SELECT customer_id customerId FROM customer WHERE customer_id = ? AND customer_pass = PASSWORD(?)";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customer.getCustomerId());
+			stmt.setString(2, customer.getCustomerPass());
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				 checkCustomer = new Customer();
+				 checkCustomer.setCustomerId(rs.getString("customerId"));
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return  checkCustomer;
+	}
+
+	// 수정
+	public int updateCustomer(Connection conn, Customer customer) throws SQLException { // 동일한 Connection 사용
+		int row = 0;
+		String sql = "UPDATE customer SET customer_name = ?, customer_address = ?, customer_deaddress, customer_telephone = ?, update_date = NOW() WHERE customer_id = ?";
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customer.getCustomerName());
+			stmt.setString(2, customer.getCustomerAddress());
+			stmt.setString(3, customer.getCustomerTelephone());
+			stmt.setString(4, customer.getCustomerId());
+			row = stmt.executeUpdate();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+
+	// 관리자 -> 회원 임시 비밀번호 변경 & 회원 비밀번호 변경
 	public int updateCustomerPass(Connection conn, Customer customer) throws Exception {
 		int row = 0;
-		PreparedStatement stmt = null;
 		String sql = "UPDATE  customer SET customer_pass=PASSWORD(?) WHERE customer_id= ? ";
+		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getCustomerPass());
@@ -167,25 +214,25 @@ public class CustomerDao {
 		}
 		return row;
 	}
-	
+
 	// 관리자 -> 회원 강제 탈퇴
-		public int deleteAdminCustomer(Connection conn, String customerId) throws Exception {
-			int row = 0;
-			String sql ="DELETE FROM customer WHERE customer_id= ?";
-			PreparedStatement stmt = null;
-			try {
-				stmt = conn.prepareStatement(sql);
-				stmt.setString(1, customerId);
-				// 디버깅
-				System.out.println(stmt + "<-- deleteCustomerOne stmt");
-				row = stmt.executeUpdate();
-			} finally {
-				if(stmt != null) {
-					stmt.close();
-				}
+	public int deleteAdminCustomer(Connection conn, String customerId) throws Exception {
+		int row = 0;
+		String sql = "DELETE FROM customer WHERE customer_id= ?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			// 디버깅
+			System.out.println(stmt + "<-- deleteCustomerOne stmt");
+			row = stmt.executeUpdate();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
 			}
-			return row;
 		}
+		return row;
+	}
 
 	// 탈퇴
 	// CustomerService.removeCustomer(Customer paramCustomer)가 호출
