@@ -36,6 +36,31 @@ public class CustomerService {
 		return customer;
 	}
 
+	// 회원 정보 수정
+	public int modifyCustomerOne(Customer customer) {
+		int row = 0;
+		Connection conn = null;
+		customerDao = new CustomerDao();
+		try {
+			conn = new DBUtil().getConnection();
+			row = customerDao.updateCustomerOne(conn, customer);
+			if (row == 0) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return row;
+	}
+
 	// 비밀번호 변경
 	public int modifyCustomerPass(Customer customer) {
 		// 리턴 갑

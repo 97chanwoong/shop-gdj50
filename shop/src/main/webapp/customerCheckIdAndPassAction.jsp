@@ -30,6 +30,6 @@
 		return;
 	} else {
 		System.out.println("본인 확인 성공");
-		response.sendRedirect(request.getContextPath()+"/customerUpdateOne.jsp");
+		response.sendRedirect(request.getContextPath()+"/customerUpdateOne.jsp?customerId="+ customerId);
 	}
 %>

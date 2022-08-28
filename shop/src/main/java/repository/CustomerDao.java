@@ -175,17 +175,17 @@ public class CustomerDao {
 	}
 
 	// 수정
-	public int updateCustomer(Connection conn, Customer customer) throws SQLException { // 동일한 Connection 사용
+	public int updateCustomerOne(Connection conn, Customer customer) throws Exception {
 		int row = 0;
-		String sql = "UPDATE customer SET customer_name = ?, customer_address = ?, customer_deaddress, customer_telephone = ?, update_date = NOW() WHERE customer_id = ?";
+		String sql = "UPDATE customer SET customer_name = ?, customer_address = ?, customer_deaddress = ?, customer_telephone = ?, update_date = NOW() WHERE customer_id = ?";
 		PreparedStatement stmt = null;
-
 		try {
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, customer.getCustomerName());
 			stmt.setString(2, customer.getCustomerAddress());
-			stmt.setString(3, customer.getCustomerTelephone());
-			stmt.setString(4, customer.getCustomerId());
+			stmt.setString(3, customer.getCustomerDeAddress());
+			stmt.setString(4, customer.getCustomerTelephone());
+			stmt.setString(5, customer.getCustomerId());
 			row = stmt.executeUpdate();
 		} finally {
 			if (stmt != null) {
