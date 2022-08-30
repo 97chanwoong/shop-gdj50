@@ -403,7 +403,7 @@
 											class="fa fa-star" aria-hidden="true"></i>
 									</div> -->
 									<div class="cart">
-										<a href="CustomerCart.jsp" data-toggle="tooltip"
+										<a href="customerCartAction.jsp?goodsNo=<%=m.get("goodsNo")%>&goodsPrice=<%=m.get("goodsPrice")%>&cartQuantity=1" data-toggle="tooltip"
 											data-placement="left" title="Add to Cart"><img
 											src="tmp2/img/core-img/cart.png" alt=""></a>
 									</div>

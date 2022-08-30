@@ -174,7 +174,7 @@ public class CustomerDao {
 		return  checkCustomer;
 	}
 
-	// 수정
+	// 개인정보수정
 	public int updateCustomerOne(Connection conn, Customer customer) throws Exception {
 		int row = 0;
 		String sql = "UPDATE customer SET customer_name = ?, customer_address = ?, customer_deaddress = ?, customer_telephone = ?, update_date = NOW() WHERE customer_id = ?";
@@ -194,11 +194,32 @@ public class CustomerDao {
 		}
 		return row;
 	}
-
-	// 관리자 -> 회원 임시 비밀번호 변경 & 회원 비밀번호 변경
-	public int updateCustomerPass(Connection conn, Customer customer) throws Exception {
+	
+	// 비밀번호 변경
+	public int updateCustomerPass(Connection conn, Map<String,Object> map) throws Exception {
 		int row = 0;
-		String sql = "UPDATE  customer SET customer_pass=PASSWORD(?) WHERE customer_id= ? ";
+		String sql = "UPDATE  customer SET customer_pass = PASSWORD(?), update_date = NOW() WHERE customer_id= ? And customer_pass = PASSWORD(?)";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, (String)map.get("customerNewPass"));
+			stmt.setString(2, (String)map.get("customerId"));
+			stmt.setString(3,(String)map.get("customerPass"));
+			// 디버깅
+			System.out.println(stmt + "<-- updateCustomerPass stmt");
+			row = stmt.executeUpdate();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+
+	// 관리자 -> 회원 임시 비밀번호 변경
+	public int updateAdminCustomerPass(Connection conn, Customer customer) throws Exception {
+		int row = 0;
+		String sql = "UPDATE  customer SET customer_pass = PASSWORD(?), update_date = NOW() WHERE customer_id= ?";
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);

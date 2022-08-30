@@ -95,12 +95,12 @@
              <%
              	if(session.getAttribute("id") == null){
              %>  
-                <a href="<%=request.getContextPath()%>/LoginForm.jsp" class="cart-nav">Cart<span>(0)</span></a>
+                <a href="<%=request.getContextPath()%>/customerCart.jsp" class="cart-nav">Cart<span>(0)</span></a>
                 <a href="<%=request.getContextPath()%>/LoginForm.jsp" class="fav-nav">MyPage</a>
             <%
              	} else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer") ){
             %>
-            	<a href="<%=request.getContextPath()%>/Main.jsp" class="cart-nav">Cart<span>(0)</span></a>
+            	<a href="<%=request.getContextPath()%>/customerCart.jsp" class="cart-nav">Cart<span>(0)</span></a>
                 <a href="<%=request.getContextPath()%>/customerIndex.jsp" class="fav-nav">MyPage</a>
             <%
              	} 

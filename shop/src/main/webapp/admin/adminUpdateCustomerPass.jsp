@@ -19,7 +19,7 @@
 	
 	// 메서드 실행 및 재요청
 	CustomerService customerService = new CustomerService();
-	int row = customerService.modifyCustomerPass(customer);
+	int row = customerService.modifyAdminCustomerPass(customer);
 	if (row == 0) {
 		System.out.println(customerId + " 비밀번호 변경 실패");
 		response.sendRedirect(request.getContextPath() + "/admin/CustomerOne.jsp?customerId=" + customerId);

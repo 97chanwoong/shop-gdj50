@@ -13,7 +13,7 @@ import vo.Customer;
 
 public class CustomerService {
 	private CustomerDao customerDao;
-
+	
 	// 회원 정보수정을 위한 아이디 비밀번호 확인
 	public Customer checkCustomerIdAndPass(Customer paramCustomer) {
 		Customer customer = null;
@@ -61,8 +61,8 @@ public class CustomerService {
 		return row;
 	}
 
-	// 비밀번호 변경
-	public int modifyCustomerPass(Customer customer) {
+	// 회원 비밀번호 변경
+	public int modifyCustomerPass(Map<String,Object> map) {
 		// 리턴 갑
 		int row = 0;
 		// 초기화
@@ -71,7 +71,35 @@ public class CustomerService {
 		customerDao = new CustomerDao();
 		try {
 			conn = new DBUtil().getConnection();
-			row = customerDao.updateCustomerPass(conn, customer);
+			row = customerDao.updateCustomerPass(conn, map);
+			if (row == 0) {
+				throw new Exception(); // 예외처리
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return row;
+	}
+
+	// 강제 비밀번호 변경
+	public int modifyAdminCustomerPass(Customer customer) {
+		// 리턴 갑
+		int row = 0;
+		// 초기화
+		Connection conn = null;
+		// CustomerDao
+		customerDao = new CustomerDao();
+		try {
+			conn = new DBUtil().getConnection();
+			row = customerDao.updateAdminCustomerPass(conn, customer);
 			if (row == 0) {
 				throw new Exception(); // 예외처리
 			}

@@ -128,7 +128,7 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/Main.jsp">비밀 번호 변경</a>
+								    href="<%=request.getContextPath()%>/customerUpdatePass.jsp?customerId=<%=session.getAttribute("id")%>">비밀 번호 변경</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
