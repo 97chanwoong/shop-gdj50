@@ -6,6 +6,9 @@
 	int totalCounter = counterService.getTotalCount();
 	int todayCounter = counterService.getTodayCount();
 	int currentCount = (Integer)(application.getAttribute("currentCounter"));
+	String customerId = (String) session.getAttribute("id");
+	CartService cartService = new CartService();
+	int cnt = cartService.getCartCount(customerId);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -100,7 +103,7 @@
             <%
              	} else if(session.getAttribute("id") != null && session.getAttribute("user").equals("customer") ){
             %>
-            	<a href="<%=request.getContextPath()%>/customerCart.jsp" class="cart-nav">Cart<span>(0)</span></a>
+            	<a href="<%=request.getContextPath()%>/customerCart.jsp" class="cart-nav">Cart<span>(<%=cnt%>)</span></a>
                 <a href="<%=request.getContextPath()%>/customerIndex.jsp" class="fav-nav">MyPage</a>
             <%
              	} 

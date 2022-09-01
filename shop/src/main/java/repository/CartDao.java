@@ -22,22 +22,23 @@ public class CartDao {
 			stmt.setString(1, cart.getCustomerId());
 			stmt.setInt(2, cart.getGoodsNo());
 			rs = stmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				count = rs.getInt("count");
 			}
 		} finally {
-			if(rs != null) {
+			if (rs != null) {
 				rs.close();
 			}
-			if(stmt != null) {
+			if (stmt != null) {
 				stmt.close();
 			}
 		}
 		return count;
 	}
+
 	// 장바구니 리스트
-	public List<Map<String,Object>> selectCartList(Connection conn, String customerId) throws Exception {
-		List<Map<String,Object>> list = new ArrayList<>();
+	public List<Map<String, Object>> selectCartList(Connection conn, String customerId) throws Exception {
+		List<Map<String, Object>> list = new ArrayList<>();
 		String sql = "SELECT c.cart_quantity cartQuantity, c.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, gi.filename fileName FROM cart c INNER JOIN goods g USING(goods_no) INNER JOIN goods_img gi USING(goods_no) WHERE customer_Id = ?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -47,9 +48,9 @@ public class CartDao {
 			// 디버깅
 			System.out.println(stmt + "<-- selectCart");
 			rs = stmt.executeQuery();
-			while(rs.next()) {
-				Map<String,Object> map = new HashMap<>();
-				map.put("cartQuantity",rs.getInt("cartQuantity"));
+			while (rs.next()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("cartQuantity", rs.getInt("cartQuantity"));
 				map.put("goodsNo", rs.getInt("goodsNo"));
 				map.put("goodsName", rs.getString("goodsName"));
 				map.put("goodsPrice", rs.getInt("goodsPrice"));
@@ -57,16 +58,16 @@ public class CartDao {
 				list.add(map);
 			}
 		} finally {
-			if(rs != null) {
+			if (rs != null) {
 				rs.close();
 			}
-			if(stmt != null) {
+			if (stmt != null) {
 				stmt.close();
 			}
 		}
 		return list;
 	}
-	
+
 	// 장바구니 담기
 	public int insertCart(Connection conn, Cart cart) throws Exception {
 		// 리턴값
@@ -88,7 +89,8 @@ public class CartDao {
 		}
 		return row;
 	}
-	//장바구니에 같은물건이 있을 경우 update문
+
+	// 장바구니에 같은물건이 있을 경우 update문
 	public int updateCartSame(Connection conn, Cart cart) throws Exception {
 		// 리턴값
 		int row = 0;
@@ -109,8 +111,9 @@ public class CartDao {
 			}
 		}
 		return row;
-		}
-	// 장바구니  상품수정
+	}
+
+	// 장바구니 상품수정
 	public int updateCartOne(Connection conn, Cart cart) throws Exception {
 		// 리턴값
 		int row = 0;
@@ -132,7 +135,7 @@ public class CartDao {
 		}
 		return row;
 	}
-	
+
 	// 장바구니 상품 하나삭제
 	public int deleteCartOne(Connection conn, Cart cart) throws Exception {
 		// 리턴할 변수 선언
@@ -154,24 +157,53 @@ public class CartDao {
 		}
 		return row;
 	}
+
 	// 장바구니 상품 전체삭제
-		public int deleteCart(Connection conn, String customerId) throws Exception {
-			// 리턴할 변수 선언
-			int row = 0;
-			// DB
-			String sql = "DELETE FROM cart WHERE customer_id = ?";
-			PreparedStatement stmt = null;
-			try {
-				stmt = conn.prepareStatement(sql);
-				stmt.setString(1, customerId);
-				// 디버깅
-				System.out.println(stmt + "<-- deleteCart stmt");
-				row = stmt.executeUpdate();
-			} finally {
-				if (stmt != null) {
-					stmt.close();
-				}
+	public int deleteCart(Connection conn, String customerId) throws Exception {
+		// 리턴할 변수 선언
+		int row = 0;
+		// DB
+		String sql = "DELETE FROM cart WHERE customer_id = ?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			// 디버깅
+			System.out.println(stmt + "<-- deleteCart stmt");
+			row = stmt.executeUpdate();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
 			}
-			return row;
 		}
+		return row;
+	}
+
+	// 장바구니 담긴 개수
+	public int CartCount(Connection conn, String customerId) throws Exception {
+		int cnt = 0;
+		String sql = "SELECT COUNT(*) cnt FROM cart WHERE customer_Id = ?";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			// 디버깅
+			System.out.println(stmt + "<-- CartCount");
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				cnt = rs.getInt("cnt");
+				System.out.println(cnt + " <-- CartCount cnt");
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return cnt;
+	}
+
 }

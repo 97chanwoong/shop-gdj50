@@ -74,33 +74,33 @@ public class CartService {
 		}
 		return row;
 	}
-	
-	// 장바구니 수정
-		public int modifyCartOne(Cart cart) {
-			int row = 0;
-			Connection conn = null;
-			cartDao = new CartDao();
-			dbutil = new DBUtil();
 
-			try {
-				conn = dbutil.getConnection();
-				row = cartDao.updateCartOne(conn, cart);
-				if (row == 0) {
-					throw new Exception();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				if (conn != null) {
-					try {
-						conn.close();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+	// 장바구니 수정
+	public int modifyCartOne(Cart cart) {
+		int row = 0;
+		Connection conn = null;
+		cartDao = new CartDao();
+		dbutil = new DBUtil();
+
+		try {
+			conn = dbutil.getConnection();
+			row = cartDao.updateCartOne(conn, cart);
+			if (row == 0) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
-			return row;
 		}
+		return row;
+	}
 
 	// 장바구니 하나 삭제
 	public int removeCartOne(Cart cart) {
@@ -127,7 +127,7 @@ public class CartService {
 		}
 		return row;
 	}
-	
+
 	// 장바구니 전체 삭제
 	public int removeCartAll(String customerId) {
 		int row = 0;
@@ -154,5 +154,27 @@ public class CartService {
 		return row;
 	}
 
+	// 장바구니 담긴 개수
+	public int getCartCount(String customerId) {
+		int cnt = 0;
+		Connection conn = null;
+		cartDao = new CartDao();
+		dbutil = new DBUtil();
+		try {
+			conn = dbutil.getConnection();
+			cnt = cartDao.CartCount(conn, customerId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return cnt;
+	}
 
 }
