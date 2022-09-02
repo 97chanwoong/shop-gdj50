@@ -10,7 +10,43 @@ import vo.Orders;
 
 public class OrdersService {
 	private OrdersDao ordersDao;
-
+	
+	// 고객 주문 추가
+		public int addCustomerOrders(Orders orders) {
+			int row = 0;
+			Connection conn = null;
+			
+			try {
+				conn = new DBUtil().getConnection();
+				conn.setAutoCommit(false); // executeUpdate() 실행 시 자동 커밋을 막음
+				
+				this.ordersDao = new OrdersDao();		 			
+				row = ordersDao.insertCustomerOrders(conn, orders);
+				
+				if(row == 0) { // 쿼리문이 정상적으로 적용되었는지 확인 후 아닐 시 예외처리
+					throw new Exception();
+				}
+				conn.commit();		
+			} catch (Exception e) {
+				e.printStackTrace();
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			} finally {
+				// DB 자원해제
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			return row;
+		}
+	
 	// OrdersNo 상세보기
 	public Map<String, Object> getOrdersOne(int ordersNo) {
 		Map<String, Object> map = null;

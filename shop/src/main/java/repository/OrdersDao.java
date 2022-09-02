@@ -5,6 +5,29 @@ import java.util.*;
 import vo.*;
 
 public class OrdersDao {
+	
+	// 고객 주문 추가
+	public int insertCustomerOrders(Connection conn, Orders orders) throws SQLException {
+		int row = 0;
+		String sql = "INSERT INTO orders (goods_no, customer_id, orders_quantity, orders_price, orders_address, orders_deaddress, orders_state, update_date, create_date) VALUES (?, ?, ?, ?, ?, ?, ?,  NOW(), NOW())";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, orders.getGoodsNo());
+			stmt.setString(2, orders.getCustomerId());
+			stmt.setInt(3, orders.getOrdersQuantity());
+			stmt.setInt(4, orders.getOrdersPrice());
+			stmt.setString(5, orders.getOrdersAddress());
+			stmt.setString(6, orders.getOrdersDeAddress());
+			stmt.setString(7, orders.getOrdersState());
+			row = stmt.executeUpdate();
+		} finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
 	// 5-2) 주문 상세보기
 	public Map<String, Object> selectOrdersOne(Connection conn, int ordersNo) throws Exception {
 		Map<String, Object> map = null;
@@ -199,7 +222,7 @@ public class OrdersDao {
 	}
 	
 	
-	// 주문 내역 수정하기 
+	// 관리자-> 주문 내역 수정하기 
 	public int updateOrdersOne(Connection conn, Orders orders) throws Exception {
 		int row = 0;
 		String sql = "UPDATE orders SET orders_address = ?, orders_deaddress = ?, orders_state = ?, update_date = NOW() WHERE orders_no = ?";

@@ -16,7 +16,7 @@
 	
 %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="">
@@ -246,7 +246,7 @@
 							<div class="cart-btn mt-100">
 								<a href="<%=request.getContextPath()%>/customerCartAction.jsp?customerId=<%=customerId%>&check1=removeAll" class="btn amado-btn w-100">장바구니 전체삭제</a>
 								<br><br>
-								<a href="cart.html?" class="btn amado-btn w-100">결제</a>
+								<a href="<%=request.getContextPath()%>/customerOrdersPage.jsp?customerId=<%=customerId%>" class="btn amado-btn w-100">결제</a>
 							</div>
 						</div>
 					</div>
