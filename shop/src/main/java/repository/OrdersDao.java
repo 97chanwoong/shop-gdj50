@@ -9,7 +9,7 @@ public class OrdersDao {
 	// 고객 주문 추가
 	public int insertCustomerOrders(Connection conn, Orders orders) throws SQLException {
 		int row = 0;
-		String sql = "INSERT INTO orders (goods_no, customer_id, orders_quantity, orders_price, orders_address, orders_deaddress, orders_state, update_date, create_date) VALUES (?, ?, ?, ?, ?, ?, ?,  NOW(), NOW())";
+		String sql = "INSERT INTO orders (goods_no, customer_id, orders_quantity, orders_price, orders_address, orders_deaddress, orders_state, update_date, create_date) VALUES (?, ?, ?, ?, ?, ?, '주문완료',  NOW(), NOW())";
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);
@@ -19,7 +19,6 @@ public class OrdersDao {
 			stmt.setInt(4, orders.getOrdersPrice());
 			stmt.setString(5, orders.getOrdersAddress());
 			stmt.setString(6, orders.getOrdersDeAddress());
-			stmt.setString(7, orders.getOrdersState());
 			row = stmt.executeUpdate();
 		} finally {
 			if(stmt != null) {
@@ -28,6 +27,46 @@ public class OrdersDao {
 		}
 		return row;
 	}
+	
+	// 고객 주문 환불하기 단 결제완료상태일때만
+	public int updateCustomerOrders(Connection conn, int ordersNo) throws Exception {
+		int row = 0;
+		String sql = "UPDATE orders SET orders_state = '환불 진행중', update_date = NOW() WHERE orders_no = ? AND orders_state = '결제완료'";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, ordersNo);
+			// 디버깅
+			System.out.println(stmt + "<--  updateCustomerOrders stmt");
+			row = stmt.executeUpdate();
+		} finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+	
+	// 고객 주문 취소하기 단 주문완료상태일때만
+	public int deleteCustomerOrders(Connection conn, int ordersNo) throws Exception {
+		int row = 0;
+		String sql = "DELETE FROM orders WHERE orders_no = ?";
+		PreparedStatement stmt = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, ordersNo);
+			// 디버깅
+			System.out.println(stmt + "<--  deleteCustomerOrders stmt");
+			row = stmt.executeUpdate();
+		} finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+	
+	
 	// 5-2) 주문 상세보기
 	public Map<String, Object> selectOrdersOne(Connection conn, int ordersNo) throws Exception {
 		Map<String, Object> map = null;

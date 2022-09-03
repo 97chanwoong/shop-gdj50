@@ -5,7 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import repository.CartDao;
 import repository.OrdersDao;
+import vo.Cart;
 import vo.Orders;
 
 public class OrdersService {
@@ -46,7 +49,55 @@ public class OrdersService {
 			}
 			return row;
 		}
-	
+		
+	// 고객 주문 환불하기 단 결제완료상태일때만 
+		public int modifyCartOrders(int ordersNo) {
+			int row = 0;
+			Connection conn = null;
+			this.ordersDao = new OrdersDao();
+			try {
+				conn = new DBUtil().getConnection();
+				row = this.ordersDao.updateCustomerOrders(conn, ordersNo);
+				if (row == 0) {
+					throw new Exception();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			return row;
+		}	
+	// 고객 주문 취소하기 단 주문완료상태일때만	
+		public int removeCartOrders(int ordersNo) {
+			int row = 0;
+			Connection conn = null;
+			this.ordersDao = new OrdersDao();
+			try {
+				conn = new DBUtil().getConnection();
+				row = this.ordersDao.deleteCustomerOrders(conn, ordersNo);
+				if (row == 0) {
+					throw new Exception();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (conn != null) {
+					try {
+						conn.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			return row;
+		}
 	// OrdersNo 상세보기
 	public Map<String, Object> getOrdersOne(int ordersNo) {
 		Map<String, Object> map = null;

@@ -13,6 +13,7 @@
 	for (Map<String, Object> m : cartList) {
 		sum = sum + (int) m.get("goodsPrice") * (int) m.get("cartQuantity");
 	}
+	int cnt = cartService.getCartCount(customerId);
 	
 %>
 <!DOCTYPE html>
@@ -117,7 +118,7 @@
 				<%
 				} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
 				%>
-				<a href="<%=request.getContextPath()%>/Main.jsp" class="cart-nav">Cart<span>(0)</span></a>
+				<a href="<%=request.getContextPath()%>/Main.jsp" class="cart-nav">Cart<span>(<%=cnt%>)</span></a>
 				<a href="<%=request.getContextPath()%>/customerIndex.jsp"
 					class="fav-nav">MyPage</a>
 				<%
@@ -192,7 +193,6 @@
 									<%
 									int i = 1;
 									for (Map<String, Object> m : cartList) {
-									
 									%>
 									<tr>
 										<td class="cart_product_img"><img
@@ -246,7 +246,7 @@
 							<div class="cart-btn mt-100">
 								<a href="<%=request.getContextPath()%>/customerCartAction.jsp?customerId=<%=customerId%>&check1=removeAll" class="btn amado-btn w-100">장바구니 전체삭제</a>
 								<br><br>
-								<a href="<%=request.getContextPath()%>/customerOrdersPage.jsp?customerId=<%=customerId%>" class="btn amado-btn w-100">결제</a>
+								<a href="<%=request.getContextPath()%>/customerOrders.jsp?customerId=<%=customerId%>" class="btn amado-btn w-100">결제</a>
 							</div>
 						</div>
 					</div>

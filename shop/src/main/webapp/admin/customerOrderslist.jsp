@@ -181,7 +181,19 @@
 										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersPrice")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersAddress")%>-<%=m.get("ordersDeAddress")%></td>
-										<td style="font-size:18px;"><%=m.get("ordersState")%></td>
+										<td style="font-size:18px;"><%=m.get("ordersState")%><br>
+										<%
+											if(m.get("ordersState").equals("주문완료")){
+										%> 
+										 	<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerUpdateOrdersAction.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>&ordersState=<%=m.get("ordersState")%>">주문취소</a>
+										<%
+											} else if(m.get("ordersState").equals("결제완료")) {
+										%>
+											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerUpdateOrdersAction.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>&ordersState=<%=m.get("ordersState")%>" >환불</a>
+										<%
+											}
+										%> 
+										</td>
 										<td style="font-size:18px;"><%=m.get("updateDate")%></td>
 										<td style="font-size:18px;"><%=m.get("createDate")%></td>
 									</tr>

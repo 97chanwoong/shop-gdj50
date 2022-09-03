@@ -194,8 +194,9 @@
 								<br>
 								<select id="ordersState" name="ordersState">
 										<option value="default">------- 주문상황--------</option>
-										<option value="결제대기">결제 대기</option>
 										<option value="주문완료">주문 완료</option>
+										<option value="결제대기">결제 대기</option>
+										<option value="결제완료">결제 완료</option>
 										<option value="배송준비중">배송 준비중</option>
 										<option value="배송중">배송 중</option>
 										<option value="배송완료">배송 완료</option>

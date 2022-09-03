@@ -8,8 +8,6 @@
 		response.sendRedirect("./LoginForm.jsp"); // 페이지 재요청
 		return;
 	}
-	
-	
 	//인코딩
 	request.setCharacterEncoding("utf-8");
 	

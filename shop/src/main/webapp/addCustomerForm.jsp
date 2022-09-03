@@ -286,6 +286,8 @@
 			alert('성함을 입력하세요');
 		} else if($('#customerAddress').val() == ''){
 			alert('주소를 입력하세요');
+		} else if($('#customerDeAddress').val() == ''){
+			alert('상세주소를 입력하세요');
 		} else if($('#customerTelephone').val() == ''){
 			alert('핸드폰번호를 입력하세요');
 		} else {

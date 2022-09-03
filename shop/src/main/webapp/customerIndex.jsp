@@ -133,7 +133,7 @@
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">
 								<a  style="font-size:20px;" 
-								    href="<%=request.getContextPath()%>/Main.jsp">나의 장바 구니</a>
+								    href="<%=request.getContextPath()%>/customerCart.jsp?customerId=<%=session.getAttribute("id")%>">나의 장바 구니</a>
 							</p>
 							<hr>
 							<p style="font-family: 'Jua', sans-serif; text-align: center;">

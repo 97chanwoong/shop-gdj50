@@ -176,5 +176,27 @@ public class CartService {
 		}
 		return cnt;
 	}
-
+	
+	// 상품 가격 찾아주는 메서드
+	public int getGoodsPrice(int goodsNo) {
+		int goodsPrice = 0 ;
+		Connection conn = null;
+		cartDao = new CartDao();
+		dbutil = new DBUtil();
+		try {
+			conn = dbutil.getConnection();
+			goodsPrice = cartDao.selectGoodsPrice(conn, goodsNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return goodsPrice;
+	}
 }

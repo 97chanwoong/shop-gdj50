@@ -205,5 +205,30 @@ public class CartDao {
 		}
 		return cnt;
 	}
-
+	// 상품 가격 찾아주는 메서드
+	public int selectGoodsPrice(Connection conn, int goodsNo) throws Exception {
+		int goodsPrice = 0 ;
+		String sql = "SELECT goods_price goodsPrice FROM goods WHERE goods_no = ?";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, goodsNo);
+			// 디버깅
+			System.out.println(stmt + "<-- selectPrice");
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				goodsPrice = rs.getInt("goodsPrice");
+				System.out.println(goodsPrice + " <-- selectPrice  goodsPrice");
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return goodsPrice;
+	}
 }
