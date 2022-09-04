@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("employee")) {
+		response.sendRedirect(request.getContextPath() + "/admin/adminIndex.jsp?errorMsg=No permission");
+	}
+	
+	request.setCharacterEncoding("utf-8");
+	String customerId = request.getParameter("customerId");
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	
 %>	
 <!DOCTYPE html>
 <html lang="ko">
@@ -103,25 +113,18 @@
 							<h5 style="font-family: 'Jua', sans-serif;">리뷰 작성</h5>
 							<br>
 							<form
-								action="<%=request.getContextPath()%>/admin/adminAddNoticeAction.jsp"
-								method="post" id="addNoticeForm">
-								<label style="font-family: 'Jua', sans-serif; font-size: 30px;"
-									for="noticeTitle" class="form-group">제목
-								</label> 
-								<input
-									  style="font-family: 'Jua', sans-serif; font-size: 25px;"
-									  name="noticeTitle" id="noticeTitle" type="text"
-									  class="form-control"> 
-								<br> 
+								action="<%=request.getContextPath()%>/customerAddReviewAction.jsp"
+								method="post" id="addReviewForm">
+								<input type="hidden" name="customerId" value="<%=customerId%>" >
+								<input type="hidden" name="ordersNo" value="<%=ordersNo%>" >
 								<label
 									   style="font-family: 'Jua', sans-serif; font-size: 30px;"
-									   for="noticeContent" class="form-group">내용 
+									   for="reviewContents" class="form-group">리뷰내용 
 							    </label>
 								<textarea
 									   style="font-family: 'Jua', sans-serif; font-size: 25px; width: 100%;"
-									   name="noticeContent" id="noticeContent" rows="5" cols="50" 
-									   class="form-control">
-								</textarea>
+									   name="reviewContents" id="reviewContents" rows="5" cols="50" 
+									   class="form-control"></textarea>
 								<br> 
 								<br>
 								<div class="form-group">
@@ -131,8 +134,7 @@
 								<br>
 								<div class="form-group">
 									<button id="addBtn" type="button" class="btn login-btn w-100"
-										style="font-family: 'Jua', sans-serif; font-size: 30px;">공지
-										추가</button>
+										style="font-family: 'Jua', sans-serif; font-size: 30px;">리뷰 작성</button>
 								</div>
 							</form>
 						</div>
@@ -218,12 +220,10 @@
 </body>
 <script>
 	$('#addBtn').click(function() {
-		if ($('#noticeTitle').val().length < 1) {
-			alert('공지사항 제목을 입력하세요');
-		} else if ($('#noticeContent').val().length < 1) {
-			alert('공지사항 내용을 입력하세요');
+		if ($('#reviewContents').val()==''){
+			alert('리뷰내용을 입력해주세요');
 		} else {
-			$('#addNoticeForm').submit();
+			$('#addReviewForm').submit();
 		}
 	});
 </script>

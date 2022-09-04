@@ -1,13 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-if (session.getAttribute("id") == null) {
-	response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
-	return;
-} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("customer")) {
-	response.sendRedirect(request.getContextPath() + "customerIndex.jsp?errorMsg=No permission");
-}
-%>
+	if (session.getAttribute("id") == null) {
+		response.sendRedirect(request.getContextPath() + "/LoginForm.jsp");
+		return;
+	} else if (session.getAttribute("id") != null && session.getAttribute("user").equals("employee")) {
+		response.sendRedirect(request.getContextPath() + "/admin/adminIndex.jsp?errorMsg=No permission");
+	}
+	
+	request.setCharacterEncoding("utf-8");
+	String customerId = request.getParameter("customerId");
+	int ordersNo = Integer.parseInt(request.getParameter("ordersNo"));
+	
+%>	
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -26,11 +31,11 @@ if (session.getAttribute("id") == null) {
 <title>CKEA</title>
 
 <!-- Favicon  -->
-<link rel="icon" href="../tmp2/img/core-img/CKEAfavicon.ico">
+<link rel="icon" href="tmp2/img/core-img/CKEAfavicon.ico">
 
 <!-- Core Style CSS -->
-<link rel="stylesheet" href="../tmp2/css/core-style2.css">
-<link rel="stylesheet" href="../tmp2/css/core-style4.css">
+<link rel="stylesheet" href="tmp2/css/core-style2.css">
+<link rel="stylesheet" href="tmp2/css/core-style4.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -49,7 +54,7 @@ if (session.getAttribute("id") == null) {
 							<input type="search" name="search" id="search"
 								placeholder="Type your keyword...">
 							<button type="submit">
-								<img src="../tmp2/img/core-img/search.png" alt="">
+								<img src="tmp2/img/core-img/search.png" alt="">
 							</button>
 						</form>
 					</div>
@@ -67,7 +72,7 @@ if (session.getAttribute("id") == null) {
 			<!-- Navbar Brand -->
 			<div class="amado-navbar-brand">
 				<a href="LoginForm2.jsp"><img
-					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
+					src="tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Navbar Toggler -->
 			<div class="amado-navbar-toggler">
@@ -84,7 +89,7 @@ if (session.getAttribute("id") == null) {
 			<!-- Logo -->
 			<div class="logo">
 				<a href="<%=request.getContextPath()%>/Main.jsp"><img
-					src="../tmp2/img/core-img/CKEALOGO.png" alt=""></a>
+					src="tmp2/img/core-img/CKEALOGO.png" alt=""></a>
 			</div>
 			<!-- Amado Nav -->
 			<nav class="amado-nav">
@@ -92,7 +97,7 @@ if (session.getAttribute("id") == null) {
 					<li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 					<li><a
 						href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
-					<li><a href="#">Community</a></li>
+					<li><a href="#">Notice</a></li>
 					<li><a href="#">Contact</a></li>
 				</ul>
 			</nav>
@@ -105,26 +110,20 @@ if (session.getAttribute("id") == null) {
 				<div class="row">
 					<div class="col-12">
 						<div class="Notice-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">공지 추가</h5>
+							<h5 style="font-family: 'Jua', sans-serif;">리뷰 수정</h5>
 							<br>
 							<form
-								action="<%=request.getContextPath()%>/admin/adminAddNoticeAction.jsp"
-								method="post" id="addNoticeForm">
-								<label style="font-family: 'Jua', sans-serif; font-size: 30px;"
-									for="noticeTitle" class="form-group">제목
-								</label> 
-								<input
-									  style="font-family: 'Jua', sans-serif; font-size: 25px;"
-									  name="noticeTitle" id="noticeTitle" type="text"
-									  class="form-control"> 
-								<br> 
+								action="<%=request.getContextPath()%>/customerUpdateReviewAction.jsp"
+								method="post" id="updateReviewForm">
+								<input type="hidden" name="customerId" value="<%=customerId%>" >
+								<input type="hidden" name="ordersNo" value="<%=ordersNo%>" >
 								<label
 									   style="font-family: 'Jua', sans-serif; font-size: 30px;"
-									   for="noticeContent" class="form-group">내용 
+									   for="reviewContents" class="form-group">리뷰내용 
 							    </label>
 								<textarea
 									   style="font-family: 'Jua', sans-serif; font-size: 25px; width: 100%;"
-									   name="noticeContent" id="noticeContent" rows="5" cols="50" 
+									   name="reviewContents" id="reviewContents" rows="5" cols="50" 
 									   class="form-control"></textarea>
 								<br> 
 								<br>
@@ -134,9 +133,8 @@ if (session.getAttribute("id") == null) {
 								</div>
 								<br>
 								<div class="form-group">
-									<button id="addBtn" type="button" class="btn login-btn w-100"
-										style="font-family: 'Jua', sans-serif; font-size: 30px;">공지
-										추가</button>
+									<button id="updateBtn" type="button" class="btn login-btn w-100"
+										style="font-family: 'Jua', sans-serif; font-size: 30px;">리뷰 수정</button>
 								</div>
 							</form>
 						</div>
@@ -158,7 +156,7 @@ if (session.getAttribute("id") == null) {
 					<div class="single_widget_area">
 						<!-- Logo -->
 						<div class="footer-logo mr-50">
-							<a href="index.html"><img src="img/core-img/logo2.png" alt=""></a>
+							<a href="index.html"><img src="tmp2/img/core-img/logo2.png" alt=""></a>
 						</div>
 						<!-- Copywrite Text -->
 						<p class="copywrite">
@@ -195,10 +193,10 @@ if (session.getAttribute("id") == null) {
 										<li class="nav-item"><a class="nav-link"
 											href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a>
 										</li>
-										<li class="nav-item"><a class="nav-link" href="#">Community</a>
+										<li class="nav-item"><a class="nav-link" href="#">Notice</a>
 										</li>
 										<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
-									</ul>
+									</ul>ㄴ
 								</div>
 							</nav>
 						</div>
@@ -210,24 +208,22 @@ if (session.getAttribute("id") == null) {
 	<!-- ##### Footer Area End ##### -->
 
 	<!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
-	<script src="../tmp2/js/jquery/jquery-2.2.4.min.js"></script>
+	<script src="tmp2/js/jquery/jquery-2.2.4.min.js"></script>
 	<!-- Popper js -->
-	<script src="../tmp2/js/popper.min.js"></script>
+	<script src="tmp2/js/popper.min.js"></script>
 	<!-- Bootstrap js -->
-	<script src="../tmp2/js/bootstrap.min.js"></script>
+	<script src="tmp2/js/bootstrap.min.js"></script>
 	<!-- Plugins js -->
-	<script src="../tmp2/js/plugins.js"></script>
+	<script src="tmp2/js/plugins.js"></script>
 	<!-- Active js -->
-	<script src="../tmp2/js/active.js"></script>
+	<script src="tmp2/js/active.js"></script>
 </body>
 <script>
-	$('#addBtn').click(function() {
-		if ($('#noticeTitle').val().length < 1) {
-			alert('공지사항 제목을 입력하세요');
-		} else if ($('#noticeContent').val().length < 1) {
-			alert('공지사항 내용을 입력하세요');
+	$('#updateBtn').click(function() {
+		if ($('#reviewContents').val()==''){
+			alert('리뷰내용을 입력해주세요');
 		} else {
-			$('#addNoticeForm').submit();
+			$('#updateReviewForm').submit();
 		}
 	});
 </script>

@@ -135,11 +135,8 @@
 								<label style="font-family: 'Jua', sans-serif; font-size:30px;"
 										for="noticeContent" class="form-group" >내용
 								</label> 
-								<textarea style="font-family: 'Jua', sans-serif; font-size:25px;"
-										rows="5" cols="50"
-										name="noticeContent" id="noticeContent"
-										class="form-control"> 
-								</textarea>		
+								<textarea style="font-family:'Jua', sans-serif;font-size: 25px; width: 100%;" 
+								          name="noticeContent" id="noticeContent" rows="5" cols="50" class="form-control"></textarea>
 								<br>
 								<br>
 								<div class="form-group">
@@ -239,8 +236,8 @@
 	$('#updateBtn').click(function(){
 		if($('#noticeTitle').val().length == "") {
 			alert('제목을 입력하세요');
-		} else if($('#noticeContent').val().length == "" ) {
-			alert('내용을 입력하세요');
+		} else if($('#noticeContent').val()==''){
+			alert('내용을 입력해주세요');
 		} else {
 			updateNoticeForm.submit();
 		}

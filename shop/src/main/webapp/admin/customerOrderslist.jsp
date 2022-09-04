@@ -36,6 +36,10 @@
 	
 	// 리스트
 	List<Map<String, Object>> list = ordersService.getOrdersListByCustomer(ROW_PER_PAGE, currentPage, customerId);
+	
+	// 리뷰
+	ReviewService reviewService = new ReviewService();
+		
 %>
 
 <!DOCTYPE html>
@@ -176,7 +180,9 @@
 									<%
 										}
 									%>
-										<td style="font-size:18px;"><%=m.get("goodsNo")%></td>
+										<td style="font-size:18px;">
+											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerGoodsOne.jsp?customerId=<%=customerId%>&goodsNo=<%=m.get("goodsNo")%>"><%=m.get("goodsNo")%></a>
+										</td>
 										<td style="font-size:18px;"><%=m.get("goodsName")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
 										<td style="font-size:18px;"><%=m.get("ordersPrice")%></td>
@@ -192,9 +198,16 @@
 											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerUpdateOrdersAction.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>&ordersState=<%=m.get("ordersState")%>" >환불</a>
 										<%
 											} else if(m.get("ordersState").equals("배송완료")) {
+												if((int)m.get("orederNoRv")==0){
 										%> 
-											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerAddReview.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>">리뷰작성</a>
+													<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerAddReview.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>">리뷰작성</a>
 										<%
+												} else {
+										%>
+													<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerUpdateReview.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>">리뷰수정</a><br>
+													<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerDeleteReviewAction.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>">리뷰삭제</a>
+										<% 			
+												}
 											}
 										%>
 										</td>

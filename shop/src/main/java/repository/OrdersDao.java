@@ -206,23 +206,7 @@ public class OrdersDao {
 		 * SELECT o. FROM orders o INNER JOIN goods g ON o.goods_no = g.goods_no WHERE
 		 * customer_id = ? ORDER BY create_date DESC LIMIT ?,?
 		 */
-		String sql = "SELECT\r\n" 
-					+ "o.orders_no ordersNo,\r\n" 
-					+ "o.goods_no goodsNo,\r\n"
-					+ "o.orders_quantity ordersQuantity,\r\n" 
-					+ "o.orders_price ordersPrice,\r\n"
-					+ "o.orders_address ordersAddress,\r\n" 
-					+ "o.orders_deaddress ordersDeAddress,\r\n" 
-					+ "o.orders_state ordersState,\r\n"
-					+ "o.update_date updateDate,\r\n" 
-					+ "o.create_date createDate,\r\n" 
-					+ "g.goods_name goodsName,\r\n"
-					+ "g.goods_price goodsPrice\r\n" 
-					+ "FROM orders o INNER JOIN goods g\r\n"
-					+ "ON o.goods_no = g.goods_no\r\n" 
-					+ "WHERE customer_id = ? \r\n" 
-					+ "ORDER BY o.create_date DESC\r\n"
-					+ "LIMIT ?,?";
+		String sql = "SELECT o.orders_no ordersNo, o.goods_no goodsNo, o.orders_quantity ordersQuantity, o.orders_price ordersPrice, o.orders_address ordersAddress, o.orders_deaddress ordersDeAddress, o.orders_state ordersState, o.update_date updateDate, o.create_date createDate, g.goods_name goodsName, g.goods_price goodsPrice, r.orders_no orederNoRv FROM orders o  LEFT JOIN review r ON o.orders_no = r.orders_no INNER JOIN goods g ON o.goods_no = g.goods_no WHERE o.customer_id = ? ORDER BY o.create_date DESC LIMIT ?,?";
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -247,6 +231,7 @@ public class OrdersDao {
 				map.put("createDate", rs.getString("createDate"));
 				map.put("goodsName", rs.getString("goodsName"));
 				map.put("goodsPrice", rs.getInt("goodsPrice"));
+				map.put("orederNoRv", rs.getInt("orederNoRv"));
 				list.add(map);
 			}
 		} finally {
