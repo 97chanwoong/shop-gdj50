@@ -41,7 +41,7 @@ public class ReviewService {
 		return list;
 	}
 	
-	// 리뷰 강제삭제
+	// 관리자 -> 리뷰 강제 삭제 & 고객 -> 리뷰 삭제
 	public int removeAdminReview(int ordersNo) {
 		int row = 0;
 		// 초기화

@@ -3,6 +3,8 @@ package repository;
 import java.sql.*;
 import java.util.*;
 
+import vo.Review;
+
 public class ReviewDao {
 	// 리뷰 리스트
 	public List<Map<String, Object>> selectReviewList(Connection conn, int goodsNo) throws Exception {
@@ -38,7 +40,148 @@ public class ReviewDao {
 		return list;
 	}
 
-	// 리뷰 강제 삭제
+	public int reviewTotalCountBygoodsNo(Connection conn, int goodsNo) throws Exception {
+		// 리턴값 초기화
+		int totalCount = 0;
+
+		// 쿼리
+		String sql = "SELECT COUNT(*) count FROM review r INNER JOIN orders o ON r.orders_no = o.orders_no INNER JOIN goods g ON o.goods_no = g.goods_no WHERE o.goods_no = ?";
+
+		// 초기화
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			// 쿼리담기
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, goodsNo);
+			// 디버깅
+			System.out.println(stmt + "<--reviewTotalCountBygoodsNo stmt");
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				totalCount = rs.getInt("count");
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+
+		return totalCount;
+	}
+
+	// 주문 리스트 총 Count
+	public int selectReviewCount(Connection conn) throws Exception {
+		int totalRow = 0;
+		String sql = "SELECT COUNT(*) count FROM orders";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				totalRow = rs.getInt("count");
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return totalRow;
+	}
+
+	// 해당 주문번호에대한 리뷰가 있는지 확인
+	public String selectAvailableReview(Connection conn, int ordersNo) throws Exception {
+		// 리턴값 초기화
+		String result = null;
+		// 쿼리
+		String sql = "SELECT orders_no ordersNo FROM review WHERE orders_no = ?";
+
+		// 초기화
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, ordersNo);
+			// 디버깅
+			System.out.println(stmt + "<-- selectAvailableReview stmt");
+
+			// 쿼리실행
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getString("orderNo");
+				// null 이라면 리뷰 없음
+			}
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+
+		return result;
+	}
+
+	// 고객 리뷰 작성
+	public int insertCustomerReview(Connection conn, Review review) throws Exception {
+		// 리턴값
+		int row = 0;
+		PreparedStatement stmt = null;
+		String sql = "INSERT INTO review (order_no, review_content, update_date, create_date) VALUES (?, ?, NOW(), NOW())";
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, review.getOrdersNo());
+			stmt.setString(2, review.getReviewContents());
+			System.out.println(stmt + "<-- insertCustomerReview stmt");
+			row = stmt.executeUpdate();
+		} finally {
+			// DB자원해제
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+
+	// 고객 리뷰 수정
+	public int updateCustomerReviewByOrderNo(Connection conn, Review review) throws Exception {
+		// 리턴값 초기화
+		int row = 0;
+
+		// 쿼리
+		String sql = "UPDATE review SET review_contents = ?, update_date = NOW() WHERE orders_no = ?";
+
+		// 초기화
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = conn.prepareStatement(sql);
+			// stmt setter
+			stmt.setString(1, review.getReviewContents());
+			stmt.setInt(2, review.getOrdersNo());
+			// 디버깅
+			System.out.println(stmt + "<-- update updateCustomerReviewByOrderNo");
+			// 쿼리실행
+			row = stmt.executeUpdate();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
+
+	// 관리자 -> 리뷰 강제 삭제 & 고객 -> 리뷰 삭제
 	public int deleteAdminReview(Connection conn, int ordersNo) throws Exception {
 		int row = 0;
 		String sql = "DELETE FROM review WHERE orders_no = ?";

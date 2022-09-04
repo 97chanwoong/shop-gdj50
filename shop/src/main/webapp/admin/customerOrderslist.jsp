@@ -191,8 +191,12 @@
 										%>
 											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerUpdateOrdersAction.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>&ordersState=<%=m.get("ordersState")%>" >환불</a>
 										<%
-											}
+											} else if(m.get("ordersState").equals("배송완료")) {
 										%> 
+											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerAddReview.jsp?customerId=<%=customerId%>&ordersNo=<%=m.get("ordersNo")%>">리뷰작성</a>
+										<%
+											}
+										%>
 										</td>
 										<td style="font-size:18px;"><%=m.get("updateDate")%></td>
 										<td style="font-size:18px;"><%=m.get("createDate")%></td>
