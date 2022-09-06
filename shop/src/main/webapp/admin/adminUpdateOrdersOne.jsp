@@ -200,6 +200,7 @@
 										<option value="배송준비중">배송 준비중</option>
 										<option value="배송중">배송 중</option>
 										<option value="배송완료">배송 완료</option>
+										<option value="배송완료">환불 완료</option>
 								</select>
 							<br>
 							<br>

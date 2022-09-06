@@ -72,7 +72,7 @@ public class CartDao {
 	public int insertCart(Connection conn, Cart cart) throws Exception {
 		// 리턴값
 		int row = 0;
-		String sql = "INSERT INTO CART (goods_no, customer_id, cart_quantity, update_date, create_date) VALUES (?, ?, ?, NOW(), NOW())";
+		String sql = "INSERT INTO cart (goods_no, customer_id, cart_quantity, update_date, create_date) VALUES (?, ?, ?, NOW(), NOW())";
 		PreparedStatement stmt = null;
 		try {
 			stmt = conn.prepareStatement(sql);

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@ page import="service.*"%>
 <%
@@ -9,23 +8,18 @@
    // 상품 상세보기 메서드
    Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
    
-   // ReviewService 생성
-   ReviewService reviewService = new ReviewService();
-   // 상품 최종 결제 금액
    int sumPrice = 0;
    sumPrice += (int)map.get("goodsPrice");
-   
-   
    // 페이징
    int currentPage = 1; // 현재 페이지
    int ROW_PER_PAGE = 5; // 5개씩
-   
    if (request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
 	}
+   // ReviewService 생성
+   ReviewService reviewService = new ReviewService();
    // 마지막 페이지 메서드
    int lastPage = reviewService.OrdersLastPage(goodsNo, ROW_PER_PAGE);
-	
    // 숫자페이징
    // ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
    int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1;
@@ -33,9 +27,9 @@
    int endPage = startPage + ROW_PER_PAGE - 1;
    // endPage < lastPage
    endPage = Math.min(endPage, lastPage); 
-   
    // 리뷰 메서드
    List<Map<String, Object>> list = reviewService.getReviewList(goodsNo, ROW_PER_PAGE, currentPage);
+   
    //오늘 방문자수, 총 방문자수
    CounterService counterService = new CounterService();
    int totalCounter = counterService.getTotalCount();
@@ -273,7 +267,7 @@ input
                      <!-- Add to Cart Form -->
                      <form class="cart clearfix" action="<%=request.getContextPath()%>/customerCartAction.jsp" method="post">
                         <div class="container qty-btn d-flex">
-                           <input type="hidden" name="goodsNo" value="<%=goodsNo%>">
+                           <input type="hidden" name="goodsNo" value="<%=map.get("goodsNo")%>">
                            <input type="hidden" name="goodsPrice" id="goodsPrice" value="<%=map.get("goodsPrice")%>">
                            <p>Qty</p>
                            <div class="quantity">
@@ -289,7 +283,7 @@ input
                            <span  class="product-price mb-50" style="font-size: 50px; text-align: right; border:none;" >원</span>
                         </div>
                         <div class="container">
-                           <button type="submit" name="addCartBtn"
+                           <button type="submit"
                               class="btn amado-btn w-100" value="5">Add to cart</button>
                         </div>
                      </form>

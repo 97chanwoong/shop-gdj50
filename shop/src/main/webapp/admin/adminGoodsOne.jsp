@@ -16,13 +16,29 @@
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	System.out.println(goodsNo + "<--goodsNo");
 	
+	int currentPage = 1; // 현재 페이지
+	int ROW_PER_PAGE = 5; // 5개씩
+	if (request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage")); // 받아오는 페이지 있을 시 현재페이지 변수에 담기
+	}
+	
 	// 상세페이지 메서드
 	GoodsService goodsService = new GoodsService();
 	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 	
 	//리뷰 가져오기
 	ReviewService reviewService = new ReviewService();
-	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo);
+	List<Map<String, Object>> list = reviewService.getReviewList(goodsNo, ROW_PER_PAGE, currentPage);
+	// 마지막 페이지 메서드
+	int lastPage = reviewService.OrdersLastPage(goodsNo, ROW_PER_PAGE);
+	// 숫자페이징
+	// ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
+	int startPage = ((currentPage - 1) / ROW_PER_PAGE) * ROW_PER_PAGE + 1;
+	//ROW_PER_PAGE 가 10 일경우 10, 20, 30, 40...
+	int endPage = startPage + ROW_PER_PAGE - 1;
+	// endPage < lastPage
+	endPage = Math.min(endPage, lastPage); 
+	
 	// ordersNo값 list에서 빼오기
 	int ordersNo = 0;
 	for (Map<String, Object> m : list) {
@@ -228,6 +244,47 @@
 										%>
 									</tbody>
 								</table>
+								<div class="row">
+									<div class="col-9"></div>
+									<div class="col-2">
+										<ul class="pagination justify-content-end">
+											<%
+											if (currentPage > 1) {
+											%>
+											<li class="page-item"><a class="page-link"
+												href="<%=request.getContextPath()%>/adminGoodsOne.jsp?&goodsNo=<%=goodsNo%>&currentPage=<%=currentPage - 1%>">이전</a>
+											</li>
+											<%
+											}
+
+											// 숫자페이징
+											for (int i = startPage; i <= endPage; i++) {
+											if (i == currentPage) {
+											%>
+											<li class="page-item active"><a class="page-link"
+												href="<%=request.getContextPath()%>/adminGoodsOne.jsp?&goodsNo=<%=goodsNo%>&currentPage=<%=i%>"><%=i%></a>
+											</li>
+											<%
+											} else {
+											%>
+											<li class="page-item"><a class="page-link"
+												href="<%=request.getContextPath()%>/adminGoodsOne.jsp?&goodsNo=<%=goodsNo%>&currentPage=<%=i%>"><%=i%></a>
+											</li>
+											<%
+											}
+											}
+
+											if (currentPage < lastPage) {
+											%>
+											<li class="page-item"><a class="page-link"
+												href="<%=request.getContextPath()%>/adminGoodsOne.jsp?&goodsNo=<%=goodsNo%>&currentPage=<%=currentPage + 1%>">다음</a>
+											</li>
+											<%
+											}
+											%>
+										</ul>
+									</div>
+								</div>
 							</div>
 							<hr>
 							<div class="row">
