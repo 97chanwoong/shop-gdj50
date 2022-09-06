@@ -12,6 +12,10 @@
 	if (request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
+	String word = null;
+	if (request.getParameter("word") != null) {
+		word = request.getParameter("word");
+	}	
 	
 	GoodsService goodsService = new GoodsService();
 	
@@ -21,7 +25,7 @@
 		check = Integer.parseInt(request.getParameter("check"));
 		System.out.println(check + "리스트 확인 테스트용");
 	} 
-	
+
 	// 마지막 페이지 메서드
 	int lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
 	// 숫자페이징
@@ -31,9 +35,16 @@
 	int endPage = startPage + ROW_PER_PAGE - 1;
 	// endPage < lastPage
 	endPage = Math.min(endPage, lastPage); 
+	List<Map<String, Object>> list = null;
 	
-	// list
-	List<Map<String, Object>> list = goodsService.getCustomerGoodsListByPage(ROW_PER_PAGE, currentPage, check);
+	if (word == null || word.equals("") || word.equals("null")) { //검색어가 없을 경우
+		//상품리스트 Service에서 받아오기
+		list = goodsService.getCustomerGoodsListByPage(ROW_PER_PAGE, currentPage, check);
+		
+	} else { //검색어가 있을 경우
+		//특정 검색어가 포함된 상품리스트 Service에서 받아오기
+		list = goodsService.getCustomerGoodsListByWordPage(word, ROW_PER_PAGE, currentPage, check);
+	}
 	
 	//오늘 방문자수, 총 방문자수
 	CounterService counterService = new CounterService();
@@ -79,9 +90,9 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="search-content">
-						<form action="#" method="get">
-							<input type="search" name="search" id="search"
-								placeholder="Type your keyword...">
+						<form action="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check<%=check%>" method="get">
+							<input type="text" name="word"
+								placeholder="검색어를 입력하세요...">
 							<button type="submit">
 								<img src="tmp2/img/core-img/search.png" alt="">
 							</button>
@@ -213,57 +224,57 @@
 						<li>
                      <%if(check==0){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=0">인기순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=0">인기순
                         </a>
                      <%} %>
                      <%if(check!=0){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=0">인기순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=0">인기순
                         </a>
                      <%} %>
                      </li>
                   <li>   
                      <%if(check==1){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=1">최신순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=1">최신순
                         </a>
                      <%} %>
                      <%if(check!=1){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=1">최신순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=1">최신순
                         </a>
                      <%} %></li>
                   <li>         
                      <%if(check==2){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=2">판매량순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=2">판매량순
                         </a>
                      <%} %>
                      <%if(check!=2){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=2">판매량순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=2">판매량순
                         </a>
                      <%} %></li>
                   <li>         
                      <%if(check==3){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=3">높은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=3">높은 가격순
                         </a>
                      <%} %>
                      <%if(check!=3){ %>
                         <a style="font-family: 'Jua', sans-serif; "
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=3">높은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=3">높은 가격순
                         </a>
                      <%} %></li>
                   <li>         
                      <%if(check==4){ %>
                         <a style="font-family: 'Jua', sans-serif; color: #00498D"
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=4">낮은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=4">낮은 가격순
                         </a>
                      <%} %>
                      <%if(check!=4){ %>
                         <a style="font-family: 'Jua', sans-serif;"
-                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?check=4">낮은 가격순
+                        href="<%=request.getContextPath()%>/customerGoodslist.jsp?word=<%=word%>&check=4">낮은 가격순
                         </a>
                      <%} %></li>
 					</ul>
@@ -403,9 +414,21 @@
 											class="fa fa-star" aria-hidden="true"></i>
 									</div> -->
 									<div class="cart">
+									<%
+										if(session.getAttribute("id") == null){
+									%>	
+										<a href="LoginForm.jsp?goodsNo=<%=m.get("goodsNo")%>&goodsPrice=<%=m.get("goodsPrice")%>&cartQuantity=1" data-toggle="tooltip"
+											data-placement="left" title="Add to Cart"><img
+											src="tmp2/img/core-img/cart.png" alt=""></a>
+									<%
+										} else {
+									%>
 										<a href="customerCartAction.jsp?goodsNo=<%=m.get("goodsNo")%>&goodsPrice=<%=m.get("goodsPrice")%>&cartQuantity=1" data-toggle="tooltip"
 											data-placement="left" title="Add to Cart"><img
 											src="tmp2/img/core-img/cart.png" alt=""></a>
+									<%
+										}
+									%>
 									</div>
 								</div>
 							</div>

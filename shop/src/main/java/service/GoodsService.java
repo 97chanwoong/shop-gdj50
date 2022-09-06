@@ -78,6 +78,39 @@ public class GoodsService {
 		return list;
 	}
 
+	// 고객상품리스트액션에서 호출되는 메서드 상품목록 검색어
+	public List<Map<String, Object>> getCustomerGoodsListByWordPage(String word, int rowPerPage, int currentPage,
+			int check) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		// GoodsDao 호출
+		this.goodsDao = new GoodsDao();
+		Connection conn = null;
+
+		int beginRow = (currentPage - 1) * rowPerPage;
+
+		try {
+			conn = new DBUtil().getConnection();
+			list = goodsDao.selectCustomerGoodsListByWordPage(conn, word, rowPerPage, beginRow, check);
+			if (list != null) {
+				System.out.print("실행성공");
+			} else {
+				System.out.print("실행실패");
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+
 	// 상품리스트
 	public List<Goods> getGoodsListByPage(int rowPerPage, int currentPage) {
 		List<Goods> list = null;

@@ -32,21 +32,71 @@ public class GoodsDao {
 		}
 		return row;
 	}
+	// 고객 상품리스트 페이지에서 사용 검색어
+		public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn,int rowPerPage, int beginRow,
+				int check) throws Exception {
+			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+			PreparedStatement stmt = null;
+			ResultSet rs = null;
+			// 판매량순
+			String sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename, g.goods_count cnt FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY cnt DESC LIMIT ?,?";
+			
+			if(check == 1) { sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date DESC LIMIT ?,?";}
+			else if(check == 2) {sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, IFNULL(t.sumNum, 0) sumNum, gi.filename fileName FROM goods g LEFT JOIN (SELECT goods_no, SUM(orders_quantity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY IFNULL(t.sumNum, 0) DESC LIMIT ?,?";}
+			else if(check == 3) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.goods_price DESC LIMIT ?,?";}
+			else if(check == 4) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.goods_price ASC LIMIT ?,?";}
+			/*
+			 * 고객이 판매량수 많은것 부터 SELECT g.goods_no goodsNo , g.goods_name goodsName ,
+			 * g.goods_price goodsPrice , gi.filename filename FROM goods g LEFT JOIN
+			 * (SELECT goods_no, SUM(orders_quantity) sumNum FROM orders GROUP BY goods_no)
+			 * t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no =
+			 * gi.goods_no ORDER BY IFNULL(t.sumNUm, 0) DESC
+			 */
+			try {
 
-	// 고객 상품리스트 페이지에서 사용
+				stmt = conn.prepareStatement(sql);
+				stmt.setInt(1, beginRow);
+				stmt.setInt(2, rowPerPage);
+				rs = stmt.executeQuery();
+				while (rs.next()) {
+					Map<String, Object> m = new HashMap<String, Object>();
+					m.put("goodsNo", rs.getInt("goodsNo"));
+					m.put("goodsName", rs.getString("goodsName"));
+					m.put("goodsPrice", rs.getInt("goodsPrice"));
+					m.put("soldOut", rs.getString("soldOut"));
+					m.put("fileName", rs.getString("fileName"));
+					// 디버깅
+					System.out.println(m.get("goodsNo") + " <-- goodsNo selectCustomerGoodsListByPage");
+					System.out.println(m.get("goodsName") + " <-- goodsName selectCustomerGoodsListByPage");
+					System.out.println(m.get("goodsPrice") + " <-- goodsPrice selectCustomerGoodsListByPage");
+					System.out.println(m.get("soldOut") + " <-- soldOut selectCustomerGoodsListByPage");
+					System.out.println(m.get("fileName") + " <-- fileName selectCustomerGoodsListByPage");
+					list.add(m);
+				}
+			} finally {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+			return list;
+		}
 
-	public List<Map<String, Object>> selectCustomerGoodsListByPage(Connection conn, int rowPerPage, int beginRow,
+	// 고객 상품리스트 페이지에서 사용 검색어
+	public List<Map<String, Object>> selectCustomerGoodsListByWordPage(Connection conn,String word ,int rowPerPage, int beginRow,
 			int check) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		// 판매량순
-		String sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename, g.goods_count cnt FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY cnt DESC LIMIT ?,?";
+		String sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename, g.goods_count cnt FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_name LIKE ? ORDER BY cnt DESC LIMIT ?,?";
 		
-		if(check == 1) { sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.create_date DESC LIMIT ?,?";}
-		else if(check == 2) {sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, IFNULL(t.sumNum, 0) sumNum, gi.filename fileName FROM goods g LEFT JOIN (SELECT goods_no, SUM(orders_quantity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY IFNULL(t.sumNum, 0) DESC LIMIT ?,?";}
-		else if(check == 3) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.goods_price DESC LIMIT ?,?";}
-		else if(check == 4) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no ORDER BY g.goods_price ASC LIMIT ?,?";}
+		if(check == 1) { sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_name LIKE ? ORDER BY g.create_date DESC LIMIT ?,?";}
+		else if(check == 2) {sql = "SELECT g.goods_no goodsNo, g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, IFNULL(t.sumNum, 0) sumNum, gi.filename fileName FROM goods g LEFT JOIN (SELECT goods_no, SUM(orders_quantity) sumNum FROM orders GROUP BY goods_no) t ON g.goods_no = t.goods_no INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_name LIKE ? ORDER BY IFNULL(t.sumNum, 0) DESC LIMIT ?,?";}
+		else if(check == 3) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_name LIKE ? ORDER BY g.goods_price DESC LIMIT ?,?";}
+		else if(check == 4) {sql = "SELECT g.goods_no goodsNo , g.goods_name goodsName, g.goods_price goodsPrice, g.sold_out soldOut, gi.filename filename FROM goods g INNER JOIN goods_img gi ON g.goods_no = gi.goods_no WHERE g.goods_name LIKE ? ORDER BY g.goods_price ASC LIMIT ?,?";}
 		/*
 		 * 고객이 판매량수 많은것 부터 SELECT g.goods_no goodsNo , g.goods_name goodsName ,
 		 * g.goods_price goodsPrice , gi.filename filename FROM goods g LEFT JOIN
@@ -57,8 +107,9 @@ public class GoodsDao {
 		try {
 
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, beginRow);
-			stmt.setInt(2, rowPerPage);
+			stmt.setString(1, "%"+word+"%");
+			stmt.setInt(2, beginRow);
+			stmt.setInt(3, rowPerPage);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				Map<String, Object> m = new HashMap<String, Object>();
