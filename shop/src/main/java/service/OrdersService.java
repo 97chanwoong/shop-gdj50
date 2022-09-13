@@ -126,7 +126,7 @@ public class OrdersService {
 		int lastPage = 0;
 		int totalRow = 0;
 		Connection conn = null;
-		this.ordersDao = new OrdersDao();
+		ordersDao = new OrdersDao();
 
 		try {
 			conn = new DBUtil().getConnection();
@@ -161,9 +161,9 @@ public class OrdersService {
 	public List<Map<String, Object>> getOrdersList(int rowPerPage, int currentPage) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Connection conn = null;
-
+		
 		int beginRow = (currentPage - 1) * rowPerPage;
-
+		
 		try {
 			conn = new DBUtil().getConnection();
 			list = ordersDao.selectOrdersList(conn, rowPerPage, beginRow);
@@ -192,7 +192,7 @@ public class OrdersService {
 	public List<Map<String, Object>> getOrdersListByCustomer(int rowPerPage, int currentPage, String customerId) {
 		List<Map<String, Object>> list = new ArrayList<>();
 		Connection conn = null;
-
+		ordersDao = new OrdersDao();
 		int beginRow = (currentPage - 1) * rowPerPage;
 
 		try {

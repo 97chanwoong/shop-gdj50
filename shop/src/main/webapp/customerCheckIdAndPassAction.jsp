@@ -13,12 +13,11 @@
 	// 인코딩
 	request.setCharacterEncoding("utf-8");
 	// 아이디값 비밀번호값 받아오기
-	String customerId = request.getParameter("customerId");
 	String customerPass = request.getParameter("customerPass");
-	
+	String custoemrId = (String)session.getAttribute("id");
 	// Customer
 	Customer customer = new Customer();
-	customer.setCustomerId(customerId);
+	customer.setCustomerId(custoemrId);
 	customer.setCustomerPass(customerPass);
 	
 	// CustomerService 생성 및  본인 확인 메서드실행
@@ -30,6 +29,6 @@
 		return;
 	} else {
 		System.out.println("본인 확인 성공");
-		response.sendRedirect(request.getContextPath()+"/customerUpdateOne.jsp?customerId="+ customerId);
+		response.sendRedirect(request.getContextPath()+"/customerUpdateOne.jsp?customerId="+ custoemrId);
 	}
 %>

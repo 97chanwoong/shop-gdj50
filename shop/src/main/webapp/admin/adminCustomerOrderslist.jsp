@@ -12,6 +12,8 @@
 		response.sendRedirect(request.getContextPath() + "/customerIndex.jsp?errorMsg=No permission");
 	}
 	
+	String customerId = request.getParameter("customerId");
+	
 	// 페이징
 	int currentPage = 1; // 현재 페이지
 	int ROW_PER_PAGE = 10; // 10개씩
@@ -21,10 +23,10 @@
 	}
 	
 	// 메서드를 위한 객체 생성
-	GoodsService goodsService = new GoodsService();
+	OrdersService ordersService = new OrdersService();
 	
 	// 마지막 페이지 메서드
-    int	lastPage = goodsService.getGoodsLastPage(ROW_PER_PAGE);
+	int lastPage = ordersService.OrdersLastPage(ROW_PER_PAGE);
 	
 	// 숫자페이징
 	// ROW_PER_PAGE 가 10이면 1, 11, 21, 31...
@@ -35,7 +37,11 @@
 	endPage = Math.min(endPage, lastPage); 
 	
 	// 리스트
-	List<Goods> list = goodsService.getGoodsListByPage(ROW_PER_PAGE, currentPage);
+	List<Map<String, Object>> list = ordersService.getOrdersListByCustomer(ROW_PER_PAGE, currentPage, customerId);
+	
+	// 리뷰
+	ReviewService reviewService = new ReviewService();
+		
 %>
 
 <!DOCTYPE html>
@@ -49,7 +55,8 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <!-- font -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
+	;
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -60,6 +67,7 @@
 <!-- Core Style CSS -->
 <link rel="stylesheet" href="../tmp2/css/core-style2.css">
 <link rel="stylesheet" href="../tmp2/css/core-style5.css">
+
 <link rel="stylesheet" href="../tmp2/style.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -74,100 +82,65 @@
 	<!-- header -->
 	<jsp:include page="../inc/header.jsp" />
 
+
 		<div class="Order-table-area section-padding-100 mb-100">
 			<div class="container-fluid">
 				<div class="row">
-					<%
-					if (request.getParameter("errorMsg") != null) {
-					%>
-					<span style="color: red"><%=request.getParameter("errorMsg")%></span>
-					<%
-					}
-					%>
 					<div class="col-12">
 						<div class="Order-summary">
-							<h5 style="font-family: 'Jua', sans-serif;">상품 리스트</h5>
+							<h5 style="font-family: 'Jua', sans-serif;"><%=customerId%>님의 주문 목록</h5>
 							<br>
-							<div style="text-align:right;">
-								<a href="<%=request.getContextPath()%>/admin/adminAddGoodsForm.jsp" class="btn amado-btn w-20">상품추가</a>
-							</div>
-							<br>
+							<%
+								if (request.getParameter("errorMsg") != null) {
+							%>
+									<span style="color: red"><%=request.getParameter("errorMsg")%></span>
+							<%
+								}
+							%>
 							<table class="table table-hover text-center">
 								<thead class="thead-light"
 									style="font-family: 'Jua', sans-serif;">
 									<tr>
+										<th>주문번호</th>
 										<th>상품번호</th>
 										<th>상품이름</th>
+										<th>상품수량</th>
 										<th>상품가격</th>
-										<th>등록날짜</th>
+										<th>배송주소</th>
+										<th>배송현황</th>
 										<th>수정날짜</th>
-										<th>품절여부</th>
+										<th>주문날짜</th>
 									</tr>
 								</thead>
 								<tbody style="font-family: 'Jua', sans-serif;">
 									<%
-									for (Goods g : list) {
+										for(Map<String, Object> m : list){
 									%>
 									<tr>
-										<td><%=g.getGoodsNo()%></td>
-										<td><a style="font-size:20px; color:#1521b5;"  href="<%=request.getContextPath()%>/admin/adminGoodsOne.jsp?goodsNo=<%=g.getGoodsNo()%>"><%=g.getGoodsName()%></a></td>
-										<td><%=g.getGoodsPrice()%></td>
-										<td><%=g.getUpdateDate()%></td>
-										<td><%=g.getCreateDate()%></td>
-										<td><%=g.getSoldOut() %></td>
+										<td style="font-size:18px;"><a style="font-size:20px; color:#1521b5;" href="<%=request.getContextPath()%>/admin/adminOrdersOne.jsp?ordersNo=<%=m.get("ordersNo")%>"><%=m.get("ordersNo")%></a></td>
+										<td style="font-size:18px;">
+											<a style="font-size:17px; color:blue;" type="button" href="<%=request.getContextPath()%>/customerGoodsOne.jsp?customerId=<%=customerId%>&goodsNo=<%=m.get("goodsNo")%>"><%=m.get("goodsNo")%></a>
+										</td>
+										<td style="font-size:18px;"><%=m.get("goodsName")%></td>
+										<td style="font-size:18px;"><%=m.get("ordersQuantity")%></td>
+										<td style="font-size:18px;"><%=m.get("ordersPrice")%></td>
+										<td style="font-size:18px;"><%=m.get("ordersAddress")%>-<%=m.get("ordersDeAddress")%></td>
+										<td style="font-size:18px;"><%=m.get("ordersState")%></td>
+										<td style="font-size:18px;"><%=m.get("updateDate")%></td>
+										<td style="font-size:18px;"><%=m.get("createDate")%></td>
 									</tr>
 									<%
-									}
+										}
 									%>
 								</tbody>
 							</table>
 							<hr>
 							<div class="row">
 								<div class="col-2">
-									<a href="<%=request.getContextPath()%>/admin/adminIndex.jsp" class="btn amado-btn w-50">목록</a>
+									<a href="<%=request.getContextPath()%>/admin/adminOrderslist.jsp" class="btn amado-btn w-50">목록</a>
 								</div>
 								<div class="col-8"></div>
 								<div class="col-2">
-								<ul class="pagination justify-content-end">
-									<%
-									if (currentPage > 1) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=currentPage - 1%>">이전</a>
-									</li>
-									<%
-									}
-
-									// 숫자페이징
-									for (int i = startPage; i <= endPage; i++) {
-									if (i == currentPage) {
-									%>
-									<li class="page-item active"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									} else {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=i%>"><%=i%></a>
-									</li>
-									<%
-									}
-									}
-
-									if (currentPage < lastPage) {
-									%>
-									<li class="page-item"><a
-										class="page-link"
-										href="<%=request.getContextPath()%>/admin/adminGoodslist.jsp?currentPage=<%=currentPage + 1%>">다음</a>
-									</li>
-									<%
-									}
-									%>
-								</ul>
 							</div>
 							</div>
 						</div>
@@ -180,10 +153,10 @@
 	<!-- ##### Main Content Wrapper End ##### -->
 	<br>
 	<br>
-	
 	<!-- footer -->
 	<jsp:include page="../inc/footer.jsp" />
-
+	
+	
 	<!-- ##### jQuery (Necessary for All JavaScript Plugins) ##### -->
 	<script src="../tmp2/js/jquery/jquery-2.2.4.min.js"></script>
 	<!-- Popper js -->
