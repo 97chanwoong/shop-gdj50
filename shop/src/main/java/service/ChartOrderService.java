@@ -8,26 +8,29 @@ import repository.ChartOrderDao;
 import repository.IChartOrderDao;
 
 public class ChartOrderService implements IChartOrderService {
-	private IChartOrderDao chartorderDao;
 	private DBUtil dbutil;
-
+	private ChartOrderDao chartorderDao;
+	
 	@Override
 	public List<Map<String, Object>> getCountByOrder() {
-		// 리턴 객체
+		// 리턴값
 		List<Map<String, Object>> list = null;
-		dbutil = new DBUtil();
-		chartorderDao = new ChartOrderDao();
 		// 초기화
 		Connection conn = null;
+
+		this.dbutil = new DBUtil();
+		this.chartorderDao = new ChartOrderDao();
+		
 		try {
-			conn = dbutil.getConnection();
+			conn = this.dbutil.getConnection();
 			// 디버깅
-			System.out.println(conn + "<-- getCountByOrder DB연동");
+			System.out.println(conn + "<-- getCountByOrder conn");
 			// 자동커밋 막음
 			conn.setAutoCommit(false);
+			// 메서드실행
 			list = chartorderDao.selectCountByOrder(conn);
 			if (list == null) {
-				throw new Exception();
+				throw new Exception();  // 예외처리
 			}
 			conn.commit();
 		} catch (Exception e) {

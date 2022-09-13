@@ -3,40 +3,40 @@ package service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import repository.CustomerDao;
 import repository.SignDao;
 import vo.*;
 
 public class SignService {
+	private DBUtil dbutil;
 	private SignDao signDao;
 
 	public String getIdCheck(String idck) {
-		// return 변수
+		// 리턴값
 		String id = null;
-		this.signDao = new SignDao();
+		// 초기화
 		Connection conn = null;
+
+		this.dbutil = new DBUtil();
+		this.signDao = new SignDao();
 		
 		try {
-			conn = new DBUtil().getConnection();
-			id = signDao.selectIdCheck(conn, idck);
-			
-		} catch (Exception e) { // 오류발생
+			conn = this.dbutil.getConnection();
+			// 디버깅
+			System.out.println(conn + "<-- getIdCheck conn");
+			// 메서드실행
+			id = this.signDao.selectIdCheck(conn, idck);
+		} catch (Exception e) {
 			e.printStackTrace();
-			if(conn != null) {
-	            try {
-	               conn.rollback();
-	            } catch (SQLException e1) {
-	               e1.printStackTrace();
-	            }
-	         }
-	      } finally {
-	         if(conn != null) {
-	            try {
-	               conn.close();
-	            } catch (SQLException e) {
-	               e.printStackTrace();
-	            }
-	         }
-	      }
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return id;
 	}
 }
