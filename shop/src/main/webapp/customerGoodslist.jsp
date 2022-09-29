@@ -64,8 +64,7 @@
 <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap')
-	;
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 </style>
 <!-- Title  -->
 <title>CKEA</title>
@@ -305,14 +304,6 @@
 									
 								</div>
 								<!-- Ratings & Cart -->
-								<div class="ratings-cart text-right">
-									<!-- <div class="ratings">
-										<i class="fa fa-star" aria-hidden="true"></i> <i
-											class="fa fa-star" aria-hidden="true"></i> <i
-											class="fa fa-star" aria-hidden="true"></i> <i
-											class="fa fa-star" aria-hidden="true"></i> <i
-											class="fa fa-star" aria-hidden="true"></i>
-									</div> -->
 									<div class="cart">
 									<%
 										if(session.getAttribute("id") == null){
@@ -330,7 +321,6 @@
 										}
 									%>
 									</div>
-								</div>
 							</div>
 						</div>
 					</div>

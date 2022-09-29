@@ -51,11 +51,11 @@
 								%>
 								<div class="form-group">
 									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="customerId"
-										id="customerId" placeholder="아이디">
+										id="customerId" placeholder="아이디" value="guest">
 								</div>
 								<div class="form-group">
 									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="customerPass"
-										id="customerPass" placeholder="비밀번호">
+										id="customerPass" placeholder="비밀번호" value="1234">
 								</div>
 								<div class="amoda-btn mt-70">
 									<button type="button" class="btn login-btn w-100"
@@ -83,11 +83,11 @@
 									%>
 								<div class="form-group">
 									<input style="font-family: 'Jua', sans-serif;" type="text" class="form-control" name="employeeId"
-										id="employeeId" placeholder="아이디">
+										id="employeeId" placeholder="아이디" value="admin" >
 								</div>
 								<div class="form-group">
 									<input style="font-family: 'Jua', sans-serif;" type="password" class="form-control" name="employeePass"
-										id="employeePass" placeholder="비밀번호">
+										id="employeePass" placeholder="비밀번호" value="1234" >
 								</div>
 							</form>
 							<div class="amoda-btn mt-70">

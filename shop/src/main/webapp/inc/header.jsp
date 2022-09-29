@@ -7,7 +7,10 @@
 	int totalCounter = counterService.getTotalCount();
 	int todayCounter = counterService.getTodayCount();
 	int currentCount = (Integer)(application.getAttribute("currentCounter"));
+	
+	// 세션에 담긴 아이디값
 	String customerId = (String) session.getAttribute("id");
+	// 장바구니서비스 객체 생성
 	CartService cartService = new CartService();
 	int cnt = cartService.getCartCount(customerId);
 %>
@@ -24,7 +27,7 @@
             <!-- Amado Nav -->
             <nav class="amado-nav">
                 <ul>
-                    <li class="active"><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
+                    <li><a href="<%=request.getContextPath()%>/Main.jsp">Home</a></li>
 					<li><a href="<%=request.getContextPath()%>/customerGoodslist.jsp">Shop</a></li>
 					<li><a href="<%=request.getContextPath()%>/customerNoticelist.jsp">Notice</a></li>
                 </ul>

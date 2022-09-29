@@ -70,18 +70,8 @@ public class ReviewService {
 			// 메서드실행
 			totalCount = this.reviewDao.reviewTotalCountBygoodsNo(conn, goodsNo);
 			lastPage = (int) Math.ceil(totalCount / (double) rowPerPage);
-			if (lastPage == 0) {
-				throw new Exception(); // 예외처리
-			}
-			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			// 실패라면 rollback
-			try {
-				conn.rollback();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
 		} finally {
 			if (conn != null) {
 				try {

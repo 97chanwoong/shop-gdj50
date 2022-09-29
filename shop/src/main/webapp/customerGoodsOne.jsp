@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
-<%@ page import="service.*"%>
+<%@page import="service.*"%>
 <%
    int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
    // GoodsService 생성
@@ -109,20 +109,6 @@ input
                      <div class="product-meta-data">
                         <h1 class="mb-30" style="text-align: center;"><%=map.get("goodsName")%></h1>
                         <hr>
-                        <!-- Ratings & Review -->
-                        <!--                                 <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
-                                    <div class="ratings">
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="review">
-                                        <a href="#">Write A Review</a>
-                                    </div>
-                                </div> -->
-                        <!-- Avaiable -->
                         <div class="container">
                            <p class="avaibility"
                               style="font-size: 20px; text-align: right;">
@@ -138,15 +124,6 @@ input
                         </div>
                      </div>
                      <hr>
-                     <!--상품 설명 -->
-                     <!-- <div class="short_overview my-5">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                           Aliquid quae eveniet culpa officia quidem mollitia impedit iste
-                           asperiores nisi reprehenderit consequatur, autem, nostrum
-                           pariatur enim?</p>
-                     </div> -->
-
-                     <!-- Add to Cart Form -->
                      <form class="cart clearfix" action="<%=request.getContextPath()%>/customerCartAction.jsp" method="post">
                         <div class="container qty-btn d-flex">
                            <input type="hidden" name="goodsNo" value="<%=map.get("goodsNo")%>">
@@ -165,8 +142,19 @@ input
                            <span  class="product-price mb-50" style="font-size: 50px; text-align: right; border:none;" >원</span>
                         </div>
                         <div class="container">
+                        <%
+                        if(session.getAttribute("id") != null){
+                        %>   
                            <button type="submit"
-                              class="btn amado-btn w-100" value="5">Add to cart</button>
+                              class="btn amado-btn w-100" value="5">Add to cart
+                           </button>
+                        <%
+                        } else {
+                        %>
+                        	<a type="button" class="btn amado-btn w-100" href="<%=request.getContextPath()%>/LoginForm.jsp">Add to cart</a>
+                        <%
+                        }
+                        %>    
                         </div>
                      </form>
                      
@@ -174,10 +162,23 @@ input
                </div>
                <h1>Reviews</h1>
                <hr>
+               <table class="table">
+                <%
+              	 if(lastPage == 0){
+                %>  
+                  <tr>
+                     <td>
+                     	<div>
+                           <p>등록된 리뷰가 없습니다.</p>
+                        </div>
+                    </td>
+                  </tr>
+               <%
+                }
+               %>    
                <%
                for (Map<String, Object> m : list) {
                %>
-               <table class="table">
                   <tr>
                      <td><%=m.get("customerId")%>님의 리뷰</td>
                      <td class="text-right"><%=m.get("createDate")%>에 작성</td>
